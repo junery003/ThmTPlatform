@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+
+
+service Update {
+    rcp GetUpdate(UpdateReq) returns (stream UpdateRsp);
+}
+
+message UpdateReq {
+
+}
+
+message UpdateRsp {
+
+}

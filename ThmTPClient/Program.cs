@@ -6,7 +6,7 @@ namespace ThmTPClient {
         static async Task Main(string[] args) {
             Console.WriteLine("Hello World!");
             var client = new GreetClient();
-            await client.Start();
+            Console.WriteLine(await client.Start());
         }
     }
 }

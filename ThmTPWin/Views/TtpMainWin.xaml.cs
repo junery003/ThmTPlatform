@@ -12,14 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ThmTPWin.ViewControllers;
 
-namespace ThmTPWin {
+namespace ThmTPWin.Views {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        public MainWindow() {
+    public partial class TtpMainWin : Window {
+        private readonly TtpMainWinVM _vm;
+        public TtpMainWin() {
             InitializeComponent();
+
+            _vm = new TtpMainWinVM();
+            DataContext = _vm;
         }
     }
 }

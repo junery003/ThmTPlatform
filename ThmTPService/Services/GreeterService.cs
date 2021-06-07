@@ -17,5 +17,9 @@ namespace ThmTPService {
                 Message = "Hello " + request.Name
             });
         }
+
+        public override Task<HelloReply> SayHelloA(HelloRequest req, ServerCallContext context) {
+            return Task.FromResult(new HelloReply { Message = "Hello-async " + req.Name });
+        }
     }
 }
