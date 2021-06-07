@@ -1,6 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+//-----------------------------------------------------------------------------
+// File Name   : GreeterService
+// Author      : junlei
+// Date        : 6/1/2021 1:44:24 PM
+// Description : 
+// Version     : 1.0.0      
+// Updated     : 
+//
+//-----------------------------------------------------------------------------
+
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
@@ -12,14 +19,16 @@ namespace ThmTPService {
             _logger = logger;
         }
 
-        public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context) {
+        public override Task<HelloReply> SayHello(HelloRequest req, ServerCallContext context) {
             return Task.FromResult(new HelloReply {
-                Message = "Hello " + request.Name
+                Message = "Hello " + req.Name
             });
         }
 
         public override Task<HelloReply> SayHelloA(HelloRequest req, ServerCallContext context) {
-            return Task.FromResult(new HelloReply { Message = "Hello-async " + req.Name });
+            return Task.FromResult(new HelloReply {
+                Message = "Hello-async " + req.Name
+            });
         }
     }
 }

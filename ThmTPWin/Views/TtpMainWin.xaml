@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:ThmTPWin.Views"
         mc:Ignorable="d"
         Title="TTP" Height="450" Width="800">
-    <StackPanel Margin="5">
+
+    <StackPanel Margin="0">
+        <Menu x:Name="File">
+            <MenuItem Header="Open" Command="{Binding TestCmd}" />
+        </Menu>
+
         <TextBlock Text="test" Margin="3" />
         <TextBlock Text="{Binding Test, FallbackValue=test 1}" Margin="3" />
     </StackPanel>

@@ -1,8 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+//-----------------------------------------------------------------------------
+// File Name   : Program
+// Author      : junlei
+// Date        : 6/1/2021 1:44:24 PM
+// Description : 
+// Version     : 1.0.0      
+// Updated     : 
+//
+//-----------------------------------------------------------------------------
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

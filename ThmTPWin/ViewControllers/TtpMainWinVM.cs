@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Prism.Commands;
 using Prism.Mvvm;
 using ThmTPClient;
 
@@ -20,11 +21,11 @@ namespace ThmTPWin.ViewControllers {
 
         private readonly GreetClient _client;
 
+        public DelegateCommand TestCmd { get; }
         internal TtpMainWinVM() {
             _client = new GreetClient();
 
-            Task.Delay(1000).Wait();
-            Start();
+            TestCmd = new DelegateCommand(Start);
         }
 
         private string _test;
@@ -33,7 +34,7 @@ namespace ThmTPWin.ViewControllers {
             set => SetProperty(ref _test, value);
         }
 
-        internal async Task Start() {
+        internal async void Start() {
             Test = await _client.Start();
         }
     }

@@ -1,8 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//-----------------------------------------------------------------------------
+// File Name   : TtpMainWinVM
+// Author      : junlei
+// Date        : 6/7/2021 12:32:49 PM
+// Description : 
+// Version     : 1.0.0      
+// Updated     : 
+//
+//-----------------------------------------------------------------------------
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;

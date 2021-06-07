@@ -1,6 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿//-----------------------------------------------------------------------------
+// File Name   : Startup
+// Author      : junlei
+// Date        : 6/1/2021 1:44:24 PM
+// Description : 
+// Version     : 1.0.0      
+// Updated     : 
+//
+//-----------------------------------------------------------------------------
+
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
