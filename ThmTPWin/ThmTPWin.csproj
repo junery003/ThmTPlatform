@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>ThmTPWin</AssemblyName>
     <RootNamespace>ThmTPWin</RootNamespace>
+    <Description>Any issue, please contact jun.lei@themeinternationaltrading.com</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

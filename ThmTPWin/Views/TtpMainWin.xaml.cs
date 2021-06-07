@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : TtpMainWinVM
+// File Name   : TtpMainWin
 // Author      : junlei
 // Date        : 6/7/2021 12:32:49 PM
 // Description : 
@@ -21,7 +21,7 @@ using ThmTPWin.ViewControllers;
 
 namespace ThmTPWin.Views {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TtpMainWin.xaml
     /// </summary>
     public partial class TtpMainWin : Window {
         private readonly TtpMainWinVM _vm;
