@@ -7,6 +7,7 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,9 @@ namespace ThmTPService {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
+            
+            // for compatibilities only (does not support HTTP/2)
+            //AppContext.SetSwitch("Microsoft.AspNetCore.Server.Kestrel.EnableWindows81Http2", true);
 
             app.UseRouting();
 
