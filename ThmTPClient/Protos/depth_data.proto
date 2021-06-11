@@ -1,5 +1,7 @@
 ﻿syntax = "proto3";
 
+package depth_data;
+option csharp_namespace = "ThmTPClient.ServiceAdapters"
 
 service Update {
     rcp GetUpdate(UpdateReq) returns (stream UpdateRsp);

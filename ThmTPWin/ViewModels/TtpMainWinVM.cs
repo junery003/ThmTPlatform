@@ -8,30 +8,42 @@
 //
 //-----------------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 using Prism.Commands;
 using Prism.Mvvm;
-using ThmTPClient;
+using ThmTPClient.ServiceAdapters;
 
-namespace ThmTPWin.ViewControllers {
+namespace ThmTPWin.ViewModels {
     internal class TtpMainWinVM : BindableBase {
 
         private readonly GreetClient _client;
 
         public DelegateCommand TestCmd { get; }
-        internal TtpMainWinVM() {
-            _client = new GreetClient();
-
-            TestCmd = new DelegateCommand(Start);
-        }
 
         private string _test;
         public string Test {
             get => _test;
             set => SetProperty(ref _test, value);
+        }
+
+        private DateTime _currentTime = DateTime.Now;
+        public DateTime CurrentTime {
+            get => _currentTime;
+            set => SetProperty(ref _currentTime, value);
+        }
+
+        public TtpMainWinVM() {
+            _client = new GreetClient();
+            TestCmd = new DelegateCommand(Start);
+
+            var timer = new Timer() {
+                Interval = 1000,
+                Enabled = true
+            };
+
+            timer.Elapsed += (object sender, ElapsedEventArgs e) => {
+                CurrentTime = DateTime.Now;
+            };
         }
 
         internal async void Start() {

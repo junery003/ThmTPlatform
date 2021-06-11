@@ -15,6 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog" Version="4.7.10" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
   </ItemGroup>
 

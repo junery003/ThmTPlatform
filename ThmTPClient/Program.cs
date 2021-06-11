@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 using System;
 using System.Threading.Tasks;
+using ThmTPClient.ServiceAdapters;
 
 namespace ThmTPClient {
     class Program {
