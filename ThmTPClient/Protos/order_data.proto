@@ -1,0 +1,44 @@
+﻿syntax = "proto3";
+
+//import "google/protobuf/any.proto";
+
+option csharp_namespace = "ThmTPClient.ServiceAdapters";
+package order_data;
+
+
+service SnedOrderSvc {
+    rpc SendOrder(SendOrderReq) returns (SendOrderRsp);
+}
+
+message SendOrderReq {
+    string symbol = 1;
+    double price = 2;
+    double qty = 3;
+    bool is_buy = 4;
+    string tag = 7;
+}
+
+message SendOrderRsp {
+
+}
+
+message UpdateOrderReq {
+    string symbol = 1;
+    double price = 2;
+    double qty = 3;
+    bool is_buy = 4;
+    string tag = 7;
+}
+
+message UpdataOrderRsp {
+
+}
+
+message DeleteOrderReq {
+    string orderID = 1;
+    string tag = 7;
+}
+
+message DeleteOrderRsp {
+
+}

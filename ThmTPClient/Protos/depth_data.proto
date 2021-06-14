@@ -1,16 +1,50 @@
 ﻿syntax = "proto3";
 
-package depth_data;
 option csharp_namespace = "ThmTPClient.ServiceAdapters"
+package depth_data;
 
-service Update {
-    rcp GetUpdate(UpdateReq) returns (stream UpdateRsp);
+service DepthDataService {
+    rcp SubscribeDepthData(DepthDataReq) returns (stream DepthDataRsp);
 }
 
-message UpdateReq {
-
+message DepthDataReq { // subscirbe
+    string symbol = 1;
 }
 
-message UpdateRsp {
+message DepthDataRsp {
+    string symbol = 1;
+    string contract = 2;
+    string exchange = 3;
+    
+    double bid1 = 5;
+    double bid2 = 6;
+    double bid3 = 7;
+    double bid4 = 8;
+    double bid5 = 9;
+   
+    double bQty1 = 6;
+    double bQty2 = 6;
+    double bQty3 = 6;
+    double bQty4 = 6;
+    double bQty5 = 6;
+        
+    double ask1 = 6;
+    double ask2 = 6;
+    double ask3 = 6;
+    double ask4 = 6;
+    double ask5 = 6;
+   
+    double aQty1 = 6;
+    double aQty2 = 6;
+    double aQty3 = 6;
+    double aQty4 = 6;
+    double aQty5 = 6;
+}
+
+service UnsubscribeService {
+    string symbol = 1;
+}
+
+message DepthDataUnscribeReq {
 
 }
