@@ -5,9 +5,10 @@
 option csharp_namespace = "ThmTPClient.ServiceAdapters";
 package order_data;
 
-
-service SnedOrderSvc {
+service OrderService {
     rpc SendOrder(SendOrderReq) returns (SendOrderRsp);
+    rpc UpdateOrder(UpdateOrderReq) returns (UpdateOrderRsp);
+    rpc DeleteOrder(DeleteOrderReq) returns (DeleteOrderRsp);
 }
 
 message SendOrderReq {
@@ -30,7 +31,7 @@ message UpdateOrderReq {
     string tag = 7;
 }
 
-message UpdataOrderRsp {
+message UpdateOrderRsp {
 
 }
 

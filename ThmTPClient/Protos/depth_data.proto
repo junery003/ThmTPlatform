@@ -4,14 +4,15 @@ option csharp_namespace = "ThmTPClient.ServiceAdapters"
 package depth_data;
 
 service DepthDataService {
-    rcp SubscribeDepthData(DepthDataReq) returns (stream DepthDataRsp);
+    rcp Subscribe(DepthDataSubscribeReq) returns (stream DepthDataSubscribeRsp);
+    rcp Unsubscribe(DepthDataUnscribeReq) returns (DepthDataUnscribeRsp);
 }
 
-message DepthDataReq { // subscirbe
+message DepthDataSubscribeReq { // subscirbe
     string symbol = 1;
 }
 
-message DepthDataRsp {
+message DepthDataSubscribeRsp {
     string symbol = 1;
     string contract = 2;
     string exchange = 3;
@@ -41,10 +42,10 @@ message DepthDataRsp {
     double aQty5 = 6;
 }
 
-service UnsubscribeService {
+message DepthDataUnscribeReq {
     string symbol = 1;
 }
 
-message DepthDataUnscribeReq {
+message DepthDataUnscribeRsp {
 
 }
