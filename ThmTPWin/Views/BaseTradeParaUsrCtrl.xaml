@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="ThmTPWin.Views.BaseTradeParaUsrCtrl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ThmTPWin.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="110">
+    <StackPanel Background="LightGray">
+        <ComboBox Margin="1" ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount}" ToolTip="{Binding SelectedAccount}" />
+
+        <ComboBox Name="AlgoCmbox" Margin="1 1 1 2" ItemsSource="{Binding AllAlgos}" SelectedItem="{Binding SelectedAlgoType}" SelectionChanged="AlgoCmbox_SelectionChanged" Style="{StaticResource CstComboBox}" />
+
+        <TextBlock Text="{Binding Position}" Background="{Binding PositionBackground}" Foreground="White" FontWeight="Bold" Margin="1 2 1 1" TextAlignment="Center" Padding="2" />
+
+        <TextBox Text="{Binding Quantity}" Background="{Binding QtyBackground}" Margin="1" ToolTip="{Binding QtyTip}" TextAlignment="Center" Padding="2" MaxLength="5" PreviewTextInput="NumberOnlyTxtb_PreviewTextInput" Style="{StaticResource CstTextBox}" >
+            
+        </TextBox>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="1" Grid.Column="0" Margin="1 1 0 0" Click="Quantity_Click" Style="{StaticResource CstButton}"/>
+            <Button Content="5" Grid.Column="1" Margin="0 1 1 0" Click="Quantity_Click" Style="{StaticResource CstButton}"/>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="10" Grid.Column="0" Margin="1 0 0 0" Click="Quantity_Click" Style="{StaticResource CstButton}"/>
+            <Button Content="20" Grid.Column="1" Margin="0 0 1 0" Click="Quantity_Click" Style="{StaticResource CstButton}"/>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="50" Grid.Column="0" Margin="0 0 0 1" Click="Quantity_Click" Style="{StaticResource CstButton}"/>
+            <Button Content="CLR" Grid.Column="1" Margin="0 0 1 1" Click="Quantity_Click" Style="{StaticResource CstButton}"/>
+        </Grid>
+
+        <TextBox Text="{Binding MinQuantity}" Padding="2" Margin="1" TextAlignment="Center" MaxLength="5" PreviewTextInput="NumberOnlyTxtb_PreviewTextInput" Style="{StaticResource CstTextBox}"/>
+    </StackPanel>
+
+</UserControl>

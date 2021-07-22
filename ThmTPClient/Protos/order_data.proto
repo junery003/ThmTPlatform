@@ -15,7 +15,7 @@ message SendOrderReq {
     string symbol = 1;
     double price = 2;
     double qty = 3;
-    bool is_buy = 4;
+    bool isBuy = 4;
     string tag = 7;
 }
 
@@ -27,7 +27,7 @@ message UpdateOrderReq {
     string symbol = 1;
     double price = 2;
     double qty = 3;
-    bool is_buy = 4;
+    bool isBuy = 4;
     string tag = 7;
 }
 

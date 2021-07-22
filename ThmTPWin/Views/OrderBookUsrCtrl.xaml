@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="ThmTPWin.Views.OrderBookUsrCtrl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ThmTPWin.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel Margin="3" LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" Margin="0 0 0 5" HorizontalAlignment="Left">
+            <Button Content="Cancel" IsEnabled="{Binding IsCancelEnabled}" FontWeight="Bold" Background="Crimson" Foreground="White" Width="80" Click="CancelSelectedOrders_Click" Style="{DynamicResource CstButton}"  />
+        </StackPanel>
+
+        <DataGrid x:Name="DataGridOrders" ItemsSource="{Binding OrderViewList}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" HorizontalAlignment="Stretch" MouseRightButtonDown="DataGridOrders_MouseRightButtonDown" >
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Cancel" Click="CancelSelectedOrders_Click" />
+                    <Separator HorizontalAlignment="Stretch" />
+                    <MenuItem Header="Cancel Buys" Click="CancelBuyOrders_Click" />
+                    <MenuItem Header="Cancel Sells" Click="CancelSellOrders_Click" />
+                    <MenuItem Header="Cancel All" Click="CancelAllOrders_Click" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="Selected" Handler="RowSelected" />
+                </Style>
+            </DataGrid.ItemContainerStyle>
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn MaxWidth="30" MinWidth="25">
+                    <DataGridTemplateColumn.Header>
+                        <CheckBox Click="SelectAll_Click" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Provider" Binding="{Binding InstrumentInfo.Provider}" />
+                <DataGridTextColumn Header="Exchange" Binding="{Binding InstrumentInfo.Exchange}" />
+                <DataGridTextColumn Header="Product"  Binding="{Binding InstrumentInfo.Product}" />
+                <DataGridTextColumn Header="Contract" Binding="{Binding InstrumentInfo.Contract}"/>
+                <DataGridTextColumn Header="Account"  Binding="{Binding Account}" />
+                <DataGridTextColumn Header="Transaction Time" Binding="{Binding TransactionTime}"/>
+                <DataGridTextColumn Header="Local Time" Binding="{Binding LocalTime}"/>
+                <DataGridTextColumn Header="Buy Sell"  Binding="{Binding BuySell}" />
+                <DataGridTextColumn Header="Entry Price" Binding="{Binding EntryPrice}" />
+                <DataGridTextColumn Header="Order Qty" Binding="{Binding OrderQty}"/>
+                <DataGridTextColumn Header="Fill Qty"  Binding="{Binding FillQty}" />
+                <DataGridTextColumn Header="Trigger Qty" Binding="{Binding TriggerQty}"/>
+                <DataGridTextColumn Header="Trigger Price" Binding="{Binding TriggerPrice}"/>
+                <DataGridTextColumn Header="Type"     Binding="{Binding Type}" />
+                <DataGridTextColumn Header="Status"   Binding="{Binding Status}" />
+                <DataGridTextColumn Header="Tag" Binding="{Binding Tag}" />
+                <DataGridTextColumn Header="Text" Binding="{Binding Text}" />
+                <DataGridTextColumn Header="Order ID"  Binding="{Binding OrderID}" />
+                <DataGridTextColumn Header="Order Ref" Binding="{Binding OrderRef}"/>
+                <DataGridTextColumn Header="Algo ID"  Binding="{Binding AlgoID}" />
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding BuySell}" Value="Buy">
+                            <Setter Property="Foreground" Value="DodgerBlue" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding BuySell}" Value="Sell">
+                            <Setter Property="Foreground" Value="Crimson" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

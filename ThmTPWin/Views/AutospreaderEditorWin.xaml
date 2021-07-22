@@ -1,0 +1,77 @@
+﻿<Window x:Class="ThmTPWin.Views.AutospreaderEditorWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ThmTPWin.Views"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
+        Title="Spread Edit" Height="400" Width="460" ResizeMode="NoResize" >
+    <Window.Resources>        
+        <Style TargetType="DataGridRow" >
+            <Setter Property="Height" Value="80" />
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="IsEnabled" Value="True"/>            
+            <Setter Property="LayoutTransform">
+                <Setter.Value>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1" ScaleY="-1"/>
+                        <RotateTransform Angle="90"/>
+                    </TransformGroup>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Height" Value="25" />
+            <Setter Property="LayoutTransform">
+                <Setter.Value>
+                    <TransformGroup>
+                        <RotateTransform Angle="-90"/>
+                        <ScaleTransform ScaleX="1" ScaleY="-1"/>
+                    </TransformGroup>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel Margin="10">
+        <TextBlock Text="{Binding SpreadName}" Margin="3 0" Background="WhiteSmoke"/>
+        <DataGrid Name="AutospeaderDg" Margin="3" ItemsSource="{Binding ASLegs}" AutoGenerateColumns="False" SelectionUnit="Cell" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" CanUserSortColumns="False" IsEnabled="{Binding IsEnabled}" Width="290" >
+            <DataGrid.LayoutTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="-90" />
+                    <ScaleTransform ScaleX="1" ScaleY="-1"/>
+                </TransformGroup>
+            </DataGrid.LayoutTransform>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn MaxWidth="25" MinWidth="25">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="LEGS" FontWeight="Bold" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Contract" MaxWidth="25" MinWidth="25">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Margin="2 1" Content="{Binding InstrumentHandler.InstrumentInfo.InstrumentID, FallbackValue='Select a contract'}" Click="SelectInstrument_Click" ToolTip="{Binding InstrumentHandler.InstrumentInfo.InstrumentID, FallbackValue='Instrument'}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Ratio" Binding="{Binding Ratio}" MaxWidth="25" MinWidth="25" />
+                <DataGridTextColumn Header="Multiplier" Binding="{Binding Multiplier}" MaxWidth="25"  MinWidth="25"/>
+                <DataGridTextColumn Header="Pay Up Ticks" Binding="{Binding PayupTicks}" MaxWidth="25" MinWidth="25" />
+                <DataGridCheckBoxColumn Header="Active Quoting" Binding="{Binding IsActiveQuoting}" MaxWidth="25" MinWidth="25" />
+            </DataGrid.Columns> 
+        </DataGrid>
+        <StackPanel DockPanel.Dock="Bottom"  Margin="3" Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button Content="Cancel" Width="80" Margin="5 0 0 0" Click="CancelBtn_Click" Style="{StaticResource CstButton}"/>
+            <Button Content="OK" Width="80" Margin="5 0 0 0" Click="OKBtn_Click" Style="{StaticResource CstButton}"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

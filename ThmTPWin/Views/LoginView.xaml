@@ -1,0 +1,23 @@
+﻿<Window x:Class="ThmTPWin.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ThmTPWin.Views"        
+        mc:Ignorable="d" Title="Login" Height="500" Width="480"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowStyle="SingleBorderWindow" >
+    <Border BorderThickness="2" BorderBrush="LightGray" CornerRadius="3" Margin="3">
+        <DockPanel LastChildFill="True" Margin="3 0" >
+            <StackPanel DockPanel.Dock="Top" Margin="1">
+                <TabControl x:Name="tabLogin" Height="280" Margin="3" />
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="3" >
+                    <Button Content="Cancel" Width="80" Height="25" Margin="0 0 0 0" Click="BtnCancel_Click" Style="{StaticResource CstButton}"/>
+                    <Button Content="OK" Width="80" Height="25" Margin="5 0 0 0" IsEnabled="{Binding LoginEnabled}" Click="BtnOK_Click" Style="{StaticResource CstButton}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <DataGrid x:Name="DGProgress" ItemsSource="{Binding ProcessLogs, Mode=OneWay}" AutoGenerateColumns="True" IsReadOnly="True" HeadersVisibility="None" Margin="3" GridLinesVisibility="Horizontal" />
+        </DockPanel>
+    </Border>
+</Window>

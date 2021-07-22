@@ -15,11 +15,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.10" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ThmCommon5\ThmCommon.csproj" />
     <ProjectReference Include="..\ThmTPClient\ThmTPClient.csproj" />
   </ItemGroup>
 

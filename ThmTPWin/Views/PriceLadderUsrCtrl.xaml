@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="ThmTPWin.Views.PriceLadderUsrCtrl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ThmTPWin.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="260" >
+
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding NetChange}" Foreground="{Binding NetChangeForeColor}" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" />
+
+            <TextBlock Text="H:"  Grid.Column="1" Grid.Row="0" FontWeight="Bold" />
+            <TextBlock Text="{Binding HighPrice}" Grid.Column="2" Grid.Row="0" Foreground="Green" FontWeight="Bold" />
+
+            <TextBlock Text="L:" Grid.Column="1" Grid.Row="1" FontWeight="Bold" />
+            <TextBlock Text="{Binding LowPrice}" Grid.Column="2" Grid.Row="1" Foreground="Red" FontWeight="Bold" />
+
+            <TextBlock Text="O:" Grid.Column="3" Grid.Row="0" FontWeight="Bold" />
+            <TextBlock Text="{Binding OpenPrice}" Grid.Column="4" Grid.Row="0" FontWeight="Bold" />
+
+            <TextBlock Text="V:" Grid.Column="3" Grid.Row="1" FontWeight="Bold" />
+            <TextBlock Text="{Binding Volumn}" Grid.Column="4" Grid.Row="1" FontWeight="Bold" />
+        </Grid>
+
+        <DataGrid x:Name="DepthDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" HeadersVisibility="Column" ItemsSource="{Binding MarketData}" CanUserSortColumns="False" SelectionUnit="Cell" MouseLeftButtonUp="DepthDataGrid_Cell_MouseLeftButtonUp" >
+            <DataGrid.Resources>
+                <Style x:Key="DisableSelection" TargetType="DataGridCell">
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Bids" Binding="{Binding Bids}" Foreground="White" MinWidth="50" >
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="DodgerBlue" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Price" Binding="{Binding Price}" MinWidth="50" CellStyle="{StaticResource DisableSelection}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Asks" Binding="{Binding Asks}" Foreground="White" MinWidth="50" >
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="Crimson" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTemplateColumn Header="Algos" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding AlgoCount}">
+                                <TextBlock.ContextMenu>
+                                    <ContextMenu IsEnabled="{Binding IsCancelEnabled}">
+                                        <MenuItem Header="Cancel Algo" Click="CancelAlgos_Click" />
+                                        <MenuItem Header="Cancel All Algos" Click="CancelAllAlgos_Click" />
+                                    </ContextMenu>
+                                </TextBlock.ContextMenu>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

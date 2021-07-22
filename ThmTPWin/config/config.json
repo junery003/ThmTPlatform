@@ -1,0 +1,12 @@
+{
+    "Login": {
+        "UserID": "Jun",
+        "Password": "jun123"
+    },
+
+    "Save2DB": false,
+    "Notification": false,
+    "AtpEnabled": false,
+    "TTEnabled": true,
+    "TitanEnabled": true
+}
