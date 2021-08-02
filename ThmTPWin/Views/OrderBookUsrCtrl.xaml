@@ -4,33 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ThmTPWin.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d"
+             d:DesignWidth="800">
     <DockPanel Margin="3" LastChildFill="True">
         <StackPanel DockPanel.Dock="Top" Margin="0 0 0 5" HorizontalAlignment="Left">
-            <Button Content="Cancel" IsEnabled="{Binding IsCancelEnabled}" FontWeight="Bold" Background="Crimson" Foreground="White" Width="80" Click="CancelSelectedOrders_Click" Style="{DynamicResource CstButton}"  />
+            <Button Content="Cancel" IsEnabled="{Binding IsCancelEnabled}" FontWeight="Bold" Background="Crimson" Foreground="White" Width="80" Command="{Binding CancelSelectedOrdersCmd}" Style="{DynamicResource CstButton}" />
         </StackPanel>
 
-        <DataGrid x:Name="DataGridOrders" ItemsSource="{Binding OrderViewList}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" HorizontalAlignment="Stretch" MouseRightButtonDown="DataGridOrders_MouseRightButtonDown" >
+        <DataGrid ItemsSource="{Binding OrderViewList}" SelectedItem="{Binding SelectedOrder}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" HorizontalAlignment="Stretch"  >
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Cancel" Click="CancelSelectedOrders_Click" />
+                    <MenuItem Header="Cancel" Command="{Binding CancelSelectedOrdersCmd}" />
                     <Separator HorizontalAlignment="Stretch" />
-                    <MenuItem Header="Cancel Buys" Click="CancelBuyOrders_Click" />
-                    <MenuItem Header="Cancel Sells" Click="CancelSellOrders_Click" />
-                    <MenuItem Header="Cancel All" Click="CancelAllOrders_Click" />
+                    <MenuItem Header="Cancel Buys" Command="{Binding CancelBuyOrdersCmd}" />
+                    <MenuItem Header="Cancel Sells" Command="{Binding CancelSellOrdersCmd}" />
+                    <MenuItem Header="Cancel All" Command="{Binding CancelAllOrdersCmd}" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
-            <DataGrid.ItemContainerStyle>
-                <Style TargetType="DataGridRow">
-                    <EventSetter Event="Selected" Handler="RowSelected" />
-                </Style>
-            </DataGrid.ItemContainerStyle>
 
             <DataGrid.Columns>
                 <DataGridTemplateColumn MaxWidth="30" MinWidth="25">
                     <DataGridTemplateColumn.Header>
-                        <CheckBox Click="SelectAll_Click" />
+                        <CheckBox Click="SelectAllChkbox_Click" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -51,9 +46,9 @@
                 <DataGridTextColumn Header="Fill Qty"  Binding="{Binding FillQty}" />
                 <DataGridTextColumn Header="Trigger Qty" Binding="{Binding TriggerQty}"/>
                 <DataGridTextColumn Header="Trigger Price" Binding="{Binding TriggerPrice}"/>
-                <DataGridTextColumn Header="Type"     Binding="{Binding Type}" />
-                <DataGridTextColumn Header="Status"   Binding="{Binding Status}" />
-                <DataGridTextColumn Header="Tag" Binding="{Binding Tag}" />
+                <DataGridTextColumn Header="Type"   Binding="{Binding Type}" />
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                <DataGridTextColumn Header="Tag"  Binding="{Binding Tag}" />
                 <DataGridTextColumn Header="Text" Binding="{Binding Text}" />
                 <DataGridTextColumn Header="Order ID"  Binding="{Binding OrderID}" />
                 <DataGridTextColumn Header="Order Ref" Binding="{Binding OrderRef}"/>

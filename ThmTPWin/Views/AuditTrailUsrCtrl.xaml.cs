@@ -8,25 +8,14 @@
 //
 //-----------------------------------------------------------------------------
 using System.Windows.Controls;
-using ThmCommon.Models;
-using ThmTPWin.ViewModels;
 
 namespace ThmTPWin.Views {
     /// <summary>
     /// Interaction logic for AuditTrailUsrCtrl.xaml
     /// </summary>
     public partial class AuditTrailUsrCtrl : UserControl {
-        public static string ID => "Audit Trail";
-
-        private readonly AuditTrailVM _vm = new AuditTrailVM();
         public AuditTrailUsrCtrl() {
             InitializeComponent();
-
-            DataContext = _vm;
-        }
-
-        internal void OnOrderDataUpdated(OrderData orderData) {
-            _vm.AddRecord(orderData);
         }
     }
 }

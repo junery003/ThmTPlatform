@@ -36,36 +36,38 @@ namespace ThmCommon.Handlers {
         /// <returns>1 if added successfully but not being executed; 
         ///          0 if added and executed; 
         ///         -1 if not added</returns>
-        public int ProcessAlgo(AlgoData algoData, MarketDepthData depthData) {
+        public int ProcessAlgo(AlgoData algoData, BestQuot bestQuot) {
             switch (algoData.Type) {
             case EAlgoType.PreOpen: {
                 AddAlgo(algoData);
                 return 1;
             }
             case EAlgoType.Limit: {
-                _tradeHandler.SendNewOrder(algoData.BuyOrSell, algoData.Price, algoData.Qty,
-                    algoData.Type.ToString(), algoData.Tag);
+                _tradeHandler.SendNewOrder(algoData.BuyOrSell,
+                    algoData.Price,
+                    algoData.Qty,
+                    algoData.Type.ToString());
                 return 0;
             }
             case EAlgoType.Market:
                 Logger.Warn("Market order not supported yet");
                 return 0;
             case EAlgoType.Trigger: {
-                if (Trigger(algoData, depthData.CurBestQuot)) { // executed 
+                if (Trigger(algoData, bestQuot) > 0) { // executed 
                     return 0;
                 }
-                AddTrigger(algoData, depthData);
+                AddTrigger(algoData);
                 return 1;
             }
             case EAlgoType.Sniper: {
-                if (Snipe(algoData, depthData.CurBestQuot)) {
+                if (Snipe(algoData, bestQuot) >= algoData.Qty) { // finished
                     return 0;
                 }
-                AddSniper(algoData, depthData);
+                AddSniper(algoData);
                 return 1;
             }
             case EAlgoType.InterTrigger: {
-                AddInterTrigger(algoData, depthData);
+                AddInterTrigger(algoData);
                 return 1;
             }
             default: {
@@ -75,12 +77,12 @@ namespace ThmCommon.Handlers {
             }
         }
 
-        private void AddInterTrigger(AlgoData algoData, MarketDepthData depthData) {
-            algoData.Provider = depthData.Provider;
-            algoData.Product = depthData.Product;
-            algoData.ExchangeID = depthData.Exchange;
-            algoData.InstrumentID = depthData.InstrumentID;
-            algoData.Contract = depthData.Contract;
+        private void AddInterTrigger(AlgoData algoData) {
+            algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
+            algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
+            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
+            algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
+            algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
 
             AddAlgo(algoData);
             _tradeHandler.AddOrUpdateAlgoOrder(algoData);
@@ -88,12 +90,12 @@ namespace ThmCommon.Handlers {
             Logger.Info($"Added algo: {algoData.Type} {algoData.AlgoID} - {algoData.BuyOrSell} {algoData.Qty}@{algoData.Price} ");
         }
 
-        private void AddSniper(AlgoData algoData, MarketDepthData depthData) {
-            algoData.Provider = depthData.Provider;
-            algoData.Product = depthData.Product;
-            algoData.ExchangeID = depthData.Exchange;
-            algoData.InstrumentID = depthData.InstrumentID;
-            algoData.Contract = depthData.Contract;
+        private void AddSniper(AlgoData algoData) {
+            algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
+            algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
+            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
+            algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
+            algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
 
             AddAlgo(algoData);
             _tradeHandler.AddOrUpdateAlgoOrder(algoData);
@@ -101,12 +103,12 @@ namespace ThmCommon.Handlers {
             Logger.Info($"Added algo: {algoData.Type} {algoData.AlgoID} - {algoData.BuyOrSell} {algoData.Qty}@{algoData.Price} ");
         }
 
-        private void AddTrigger(AlgoData algoData, MarketDepthData depthData) {
-            algoData.Provider = depthData.Provider;
-            algoData.Product = depthData.Product;
-            algoData.ExchangeID = depthData.Exchange;
-            algoData.InstrumentID = depthData.InstrumentID;
-            algoData.Contract = depthData.Contract;
+        private void AddTrigger(AlgoData algoData) {
+            algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
+            algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
+            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
+            algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
+            algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
 
             AddAlgo(algoData);
             _tradeHandler.AddOrUpdateAlgoOrder(algoData);
@@ -154,7 +156,7 @@ namespace ThmCommon.Handlers {
         public bool DeleteAlgo(string algoID) {
             foreach (var tmp in _algoDic.Values) {
                 if (tmp.ContainsKey(algoID)) {
-                    Logger.Info("Algo removed: " + algoID);
+                    Logger.Info("Algo Deleted: " + algoID);
                     return tmp.Remove(algoID);
                 }
             }
@@ -164,23 +166,49 @@ namespace ThmCommon.Handlers {
         #endregion algos
 
         #region working algos
+        private readonly object _triggerLock = new object();
+        private readonly object _sniperLock = new object();
         public void ProcessWorkingAlgos(BestQuot md) {
             var triggerTask = Task.Run(() => {
-                var algos = _algoDic[EAlgoType.Trigger];
-                foreach (var key in algos.Keys.ToList()) {
-                    if (Trigger(algos[key], md)) {
-                        _tradeHandler.DeleteAlgoOrder(key, EOrderStatus.AlgoFired);
-                        algos.Remove(key);
+                lock (_triggerLock) {
+                    var algos = _algoDic[EAlgoType.Trigger];
+                    foreach (var key in algos.Keys.ToList()) {
+                        var qty = Trigger(algos[key], md);
+                        if (qty > 0) {
+                            _tradeHandler.DeleteAlgoOrder(key, EOrderStatus.AlgoFired, qty);
+
+                            if (algos.Remove(key)) {
+                                Logger.Info("Algo Trigger {} removed from {}", key, algos.Count);
+                            }
+                            else {
+                                Logger.Error("Algo Trigger {} removed already; {} left", key, algos.Count);
+                            }
+                        }
                     }
                 }
             });
 
             var sniperTask = Task.Run(() => {
-                var algos = _algoDic[EAlgoType.Sniper];
-                foreach (var key in algos.Keys.ToList()) {
-                    if (Snipe(algos[key], md)) {
-                        _tradeHandler.DeleteAlgoOrder(key, EOrderStatus.AlgoFired);
-                        algos.Remove(key);
+                lock (_sniperLock) {
+                    var algos = _algoDic[EAlgoType.Sniper];
+                    foreach (var key in algos.Keys.ToList()) {
+                        var algo = algos[key];
+                        var qty = Snipe(algo, md);
+                        if (qty > 0) { // executed some qty
+                            if (algo.FillQty >= algo.Qty) { // algo done: no qty left
+                                _tradeHandler.DeleteAlgoOrder(key, EOrderStatus.AlgoFired, qty);
+
+                                if (algos.Remove(key)) {
+                                    Logger.Info("Algo Sniper {} removed from {}", key, algos.Count);
+                                }
+                                else {
+                                    Logger.Error("Algo Sniper {} removed already; {} left", key, algos.Count);
+                                }
+                            }
+                            else {
+                                _tradeHandler.AddOrUpdateAlgoOrder(algo);
+                            }
+                        }
                     }
                 }
             });
@@ -190,8 +218,8 @@ namespace ThmCommon.Handlers {
 
         #endregion working algos
 
-        // return true if trigger conditions satisfied and executed successfully
-        private bool Trigger(AlgoData algo, BestQuot md) {
+        // return the executed qty if trigger conditions satisfied and executed successfully
+        private int Trigger(AlgoData algo, BestQuot md) {
             if (algo.BuyOrSell == EBuySell.Buy) {
                 switch (algo.TriggerPriceType) {
                 case EPriceType.OppositeSide: {
@@ -202,15 +230,15 @@ namespace ThmCommon.Handlers {
                             _tradeHandler.SendNewOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
 
                             Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
-                            return true;
+                            return algo.Qty;
                         }
                     }
                     else if (algo.Price < md.AskPrice1) {
                         //orderId = _tradeHandler.SendInsertOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
-                        return false;
+                        return 0;
                     }
 
-                    return false;
+                    return 0;
                 }
                 case EPriceType.SameSide: {
                     if (algo.Price == md.BidPrice1) {
@@ -219,15 +247,15 @@ namespace ThmCommon.Handlers {
                             _tradeHandler.SendNewOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
 
                             Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
-                            return true;
+                            return algo.Qty;
                         }
                     }
                     else if (algo.Price < md.BidPrice1) {
                         //orderId = _tradeHandler.SendInsertOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
-                        return false;
+                        return 0;
                     }
 
-                    return false;
+                    return 0;
                 }
                 default: {
                     break;
@@ -244,15 +272,15 @@ namespace ThmCommon.Handlers {
                             _tradeHandler.SendNewOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
 
                             Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
-                            return true;
+                            return algo.Qty;
                         }
                     }
                     else if (algo.Price > md.BidPrice1) {
                         //orderId = _tradeHandler.SendInsertOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
-                        return false;
+                        return 0;
                     }
 
-                    return false;
+                    return 0;
                 }
                 case EPriceType.SameSide: {
                     if (algo.Price == md.AskPrice1) { // for best price 
@@ -261,15 +289,15 @@ namespace ThmCommon.Handlers {
                             _tradeHandler.SendNewOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
 
                             Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
-                            return true;
+                            return algo.Qty;
                         }
                     }
                     else if (algo.Price > md.AskPrice1) {
                         //orderId = _tradeHandler.SendInsertOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
-                        return false;
+                        return 0;
                     }
 
-                    return false;
+                    return 0;
                 }
                 default: {
                     break;
@@ -277,38 +305,43 @@ namespace ThmCommon.Handlers {
                 }
             }
 
-            return false;
+            return 0;
         }
 
-        // return true, if snipe executed successfully
-        private bool Snipe(AlgoData algo, BestQuot md) {
+        // return qty executed
+        private int Snipe(AlgoData algo, BestQuot md) {
             if (algo.BuyOrSell == EBuySell.Buy) {
                 if (md.AskPrice1 <= algo.Price) {
-                    int qty = Math.Min(algo.Qty, md.AskQty1);
-                    _tradeHandler.SendNewOrder(algo.BuyOrSell, algo.Price, qty, algo.Type.ToString());
-                    algo.Qty -= qty;
+                    var qtyLeft = algo.Qty - algo.FillQty;
+                    _tradeHandler.SendNewOrder(algo.BuyOrSell, algo.Price, qtyLeft, algo.Type.ToString(), ETIF.FAK);
 
-                    Logger.Info("Snipe: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, qty, algo.Price);
-                    return algo.Qty == 0;
+                    var qty = Math.Min(qtyLeft, md.AskQty1);
+                    algo.FillQty += qty;
+
+                    Logger.Info("Snipe: {} {}-'{}/{}'@'{}'", algo.AlgoID, algo.BuyOrSell, qty, qtyLeft, algo.Price);
+
+                    return qty;
                 }
 
-                return false;
+                return 0;
             }
 
             if (algo.BuyOrSell == EBuySell.Sell) {
                 if (md.BidPrice1 >= algo.Price) {
-                    int qty = Math.Min(algo.Qty, md.BidQty1);
-                    _tradeHandler.SendNewOrder(algo.BuyOrSell, algo.Price, qty, algo.Type.ToString());
-                    algo.Qty -= qty;
+                    var qtyLeft = algo.Qty - algo.FillQty;
+                    _tradeHandler.SendNewOrder(algo.BuyOrSell, algo.Price, qtyLeft, algo.Type.ToString(), ETIF.FAK);
 
-                    Logger.Info("Snipe: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
-                    return algo.Qty == 0;
+                    var qty = Math.Min(qtyLeft, md.BidQty1);
+                    algo.FillQty += qty;
+
+                    Logger.Info("Snipe: {} {}-'{}/{}'@'{}'", algo.AlgoID, algo.BuyOrSell, qty, qtyLeft, algo.Price);
+                    return qty;
                 }
-                return false;
+                return 0;
             }
 
             Logger.Error("Sniper should not be here");
-            return false;
+            return 0;
         }
 
         public virtual void Dispose() {

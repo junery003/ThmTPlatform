@@ -52,7 +52,7 @@ namespace ThmCommon.Database {
                 + "(`Source`,`Exchange`,`Product`,`ProductType`,`Contract`,`InstrumentId`,`ExchangeDateTime`,`LocalDateTime`,"
                 + "`BidPrice1`,`BidPrice2`,`BidQty1`,`BidQty2`,`AskPrice1`,`AskPrice2`,`AskQty1`,`AskQty2`) VALUES('"
                 + depthData.Provider + "','" + depthData.Exchange + "','" + depthData.Product + "','" + depthData.ProductType + "','" + depthData.Contract + "','" + depthData.InstrumentID + "','"
-                + TimeUtil.DateTime2MilliSecondsString(depthData.DateTime) + "','" + TimeUtil.DateTime2MilliSecondsString(depthData.LocalDateTime) + "',"
+                + TimeUtil.DateTime2MilliSecondsStr(depthData.DateTime) + "','" + TimeUtil.DateTime2MilliSecondsStr(depthData.LocalDateTime) + "',"
                 + depthData.BidPrice1 + "," + depthData.BidPrice2 + ","
                 + depthData.BidQty1 + "," + depthData.BidQty2 + ","
                 + depthData.AskPrice1 + "," + depthData.AskPrice2 + ","
@@ -77,7 +77,7 @@ namespace ThmCommon.Database {
                 + "(`Source`,`Exchange`,`Product`,`ProductType`,`Contract`,`InstrumentId`,`ExchangeDateTime`,`LocalDateTime`,"
                 + "`Direction`, `Price`,`Qty`) VALUES ('"
                 + tsObj.Provider + "','" + tsObj.Exchange + "','" + tsObj.Product + "','" + tsObj.ProductType + "','" + tsObj.Contract + "','" + tsObj.InstrumentId + "','"
-                + TimeUtil.DateTime2MilliSecondsString(tsObj.ExchangeDateTime) + "','" + TimeUtil.DateTime2MilliSecondsString(tsObj.LocalTime) + "',"
+                + TimeUtil.DateTime2MilliSecondsStr(tsObj.ExchangeDateTime) + "','" + TimeUtil.DateTime2MilliSecondsStr(tsObj.LocalTime) + "',"
                 + (sbyte)tsObj.BuySell + "," + tsObj.Price + "," + tsObj.Qty + ")";
 
             return await _dbCtrl.InsertAsync(GetConnStr(dbIdx), sql);

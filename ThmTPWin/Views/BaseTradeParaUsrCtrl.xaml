@@ -4,18 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ThmTPWin.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="110">
+             mc:Ignorable="d"
+             d:DesignWidth="110">
     <StackPanel Background="LightGray">
         <ComboBox Margin="1" ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount}" ToolTip="{Binding SelectedAccount}" />
 
-        <ComboBox Name="AlgoCmbox" Margin="1 1 1 2" ItemsSource="{Binding AllAlgos}" SelectedItem="{Binding SelectedAlgoType}" SelectionChanged="AlgoCmbox_SelectionChanged" Style="{StaticResource CstComboBox}" />
+        <ComboBox Name="AlgoCmbox" Margin="1 1 1 2" ItemsSource="{Binding AllAlgos}" SelectedItem="{Binding SelectedAlgoType}" Style="{StaticResource CstComboBox}" SelectionChanged="AlgoCmbox_SelectionChanged" />
 
         <TextBlock Text="{Binding Position}" Background="{Binding PositionBackground}" Foreground="White" FontWeight="Bold" Margin="1 2 1 1" TextAlignment="Center" Padding="2" />
 
-        <TextBox Text="{Binding Quantity}" Background="{Binding QtyBackground}" Margin="1" ToolTip="{Binding QtyTip}" TextAlignment="Center" Padding="2" MaxLength="5" PreviewTextInput="NumberOnlyTxtb_PreviewTextInput" Style="{StaticResource CstTextBox}" >
-            
-        </TextBox>
+        <TextBox Text="{Binding Quantity}" Background="{Binding QtyBackground}" Margin="1" ToolTip="{Binding QtyTip}" TextAlignment="Center" Padding="2" MaxLength="5" PreviewTextInput="NumberOnlyTxtb_PreviewTextInput" Style="{StaticResource CstTextBox}" />
 
         <Grid>
             <Grid.ColumnDefinitions>

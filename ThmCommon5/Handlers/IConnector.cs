@@ -13,11 +13,14 @@ using ThmCommon.Config;
 
 namespace ThmCommon.Handlers {
     public interface IConnector : IDisposable {
-        bool Init();
+        bool IsConnected { get; }
+        bool Init(ILoginCfg loginCfg = null);
         bool Connect();
+        //IAccount GetAccount();
         bool StartContract(string instrumentID);
         bool StopContract(string instrumentID);
         void StartContracts();
+
         InstrumentHandlerBase GetInstrumentHandler(string market, string productType, string product, string contract);
         InstrumentHandlerBase GetInstrumentHandler(string instrumentID);
 

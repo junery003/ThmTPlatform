@@ -14,6 +14,8 @@ using System.Collections.Generic;
 namespace ThmCommon.Handlers {
     public class SytheticInstrumentHandler : InstrumentHandlerBase, IDisposable {
         private readonly List<InstrumentHandlerBase> _instrumentHandlers = new List<InstrumentHandlerBase>();
+        protected override AlgoHandlerBase AlgoHandler { get => throw new NotImplementedException(); }
+        protected override TradeHandlerBase TradeHandler { get => throw new NotImplementedException(); }
 
         public SytheticInstrumentHandler() {
 
@@ -28,14 +30,6 @@ namespace ThmCommon.Handlers {
         }
 
         public override void Stop() {
-            throw new NotImplementedException();
-        }
-
-        protected override AlgoHandlerBase GetAlgoHandler() {
-            throw new NotImplementedException();
-        }
-
-        protected override TradeHandlerBase GetTradeHandler() {
             throw new NotImplementedException();
         }
 

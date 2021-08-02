@@ -13,6 +13,7 @@
             <Button Content="Edit" Width="80" Margin="5 0 0 0" Click="EditBtn_Click" Style="{StaticResource CstButton}"/>
             <Button Content="Delete" Width="80" Margin="5 0 0 0" Command="{Binding DeleteCmd}" Style="{StaticResource CstButton}"/>
         </StackPanel>
+        
         <DataGrid Name="AutospeadersDg" Margin="3" ItemsSource="{Binding ASParaList}" SelectedItem="{Binding SelectedASPara}" AutoGenerateColumns="False" Height="200" SelectionUnit="FullRow" HeadersVisibility="Column" CanUserAddRows="False" CanUserDeleteRows="False" MouseDoubleClick="AutospeadersDg_MouseDoubleClick" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" />

@@ -11,14 +11,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Data;
+using System.Windows.Input;
+using Prism.Commands;
 using Prism.Mvvm;
 using ThmCommon.Models;
 using ThmCommon.Utilities;
 using ThmTPWin.Models;
 
 namespace ThmTPWin.ViewModels {
-    public class OrderBookVM : BindableBase {
-        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; } = new ObservableCollection<OrderAlgoDataView>();
+    public class OrderBookVM : BindableBase, IOrdersTabItm {
+        public const string ID = "Order Book";
+        public string Header => ID;
 
         private bool _isCancelEnabled = false;
         public bool IsCancelEnabled {
@@ -26,12 +29,63 @@ namespace ThmTPWin.ViewModels {
             set => SetProperty(ref _isCancelEnabled, value);
         }
 
-        private readonly object _lock = new object();
-        public OrderBookVM() {
-            BindingOperations.EnableCollectionSynchronization(OrderViewList, _lock);
+        public ICommand SelectAllCmd { get; }
+        public ICommand RowSelectedCmd { get; }
+        public ICommand CancelSelectedOrdersCmd { get; }
+        public ICommand CancelBuyOrdersCmd { get; }
+        public ICommand CancelSellOrdersCmd { get; }
+        public ICommand CancelAllOrdersCmd { get; }
+
+        private OrderAlgoDataView _selectedOrder;
+        public OrderAlgoDataView SelectedOrder {
+            get => _selectedOrder;
+            set => SetProperty(ref _selectedOrder, value);
         }
 
-        public void SelectAll(bool isSelected = true) {
+        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; } = new ObservableCollection<OrderAlgoDataView>();
+
+        private readonly TradingPMainWinVM _parent;
+        private readonly object _lock = new object();
+        public OrderBookVM(TradingPMainWinVM parent) {
+            BindingOperations.EnableCollectionSynchronization(OrderViewList, _lock);
+
+            _parent = parent;
+
+            SelectAllCmd = new DelegateCommand(SelectAll);
+            RowSelectedCmd = new DelegateCommand(RowSelected);
+
+            CancelSelectedOrdersCmd = new DelegateCommand(CancelSelectedOrders);
+            CancelBuyOrdersCmd = new DelegateCommand(CancelBuyOrders);
+            CancelSellOrdersCmd = new DelegateCommand(CancelSellOrders);
+            CancelAllOrdersCmd = new DelegateCommand(CancelAllOrders);
+        }
+
+        public void OnOrderDataUpdated(OrderData orderData) {
+            UpdateFields(orderData);
+
+            if (orderData.IsAlgo &&
+                (orderData.Status == EOrderStatus.AlgoFired || orderData.Status == EOrderStatus.Canceled)) {
+                _parent.DecreaseAlgo(orderData.InstrumentID, orderData.EntryPrice);
+            }
+        }
+
+        private void SelectAll() {
+            foreach (var it in OrderViewList) {
+                if (!it.IsChecked) {
+                    it.IsChecked = true;
+                }
+            }
+        }
+
+        private void RowSelected() {
+            SelectAll(false);
+
+            //var orderData = ((DataGridRow)sender).DataContext as Models.OrderAlgoDataView;
+            //orderData.IsChecked = true;
+            //_vm.IsCancelEnabled = true;
+        }
+
+        public void SelectAll(bool isSelected) {
             if (!OrderViewList.Any()) {
                 IsCancelEnabled = false;
                 return;
@@ -43,21 +97,37 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
+        private void CancelSelectedOrders() {
+            _parent.CancelOrders(GetAll(true));
+        }
+
+        private void CancelBuyOrders() {
+            _parent.CancelOrders(GetAll(EBuySell.Buy));
+        }
+
+        private void CancelSellOrders() {
+            _parent.CancelOrders(GetAll(EBuySell.Sell));
+        }
+
+        private void CancelAllOrders() {
+            _parent.CancelOrders(GetAll(false));
+        }
+
         /// <summary>
         /// if isChecked is true, then return all checked rows, else return all rows
         /// </summary>
         /// <param name="isChecked"></param>
         /// <returns></returns>
-        internal IEnumerable<OrderAlgoDataView> GetAll(bool isChecked = false) {
-            return isChecked ? OrderViewList?.Where(x => x.IsChecked) : OrderViewList;
+        private IEnumerable<OrderAlgoDataView> GetAll(bool isChecked = false) {
+            return isChecked ? OrderViewList.Where(x => x.IsChecked) : OrderViewList;
         }
 
         internal IEnumerable<OrderAlgoDataView> GetAll(EBuySell buySell) {
-            return OrderViewList?.Where(x => buySell == x.BuySell);
+            return OrderViewList.Where(x => buySell == x.BuySell);
         }
 
         internal bool UpdateFields(OrderData orderData) {
-            var orderView = OrderViewList?.FirstOrDefault(x => x.ID == orderData.ID);
+            var orderView = OrderViewList.FirstOrDefault(x => x.ID == orderData.ID);
 
             switch (orderData.Status) {
             case EOrderStatus.New:
@@ -68,8 +138,8 @@ namespace ThmTPWin.ViewModels {
                     orderView = new OrderAlgoDataView(orderData, IsCancelEnabled);
                 }
                 else {
-                    orderView.TransactionTime = orderData.DateTime.ToString(TimeUtil.DatetimeMSFormat);
-                    orderView.LocalTime = orderData.LocalDateTime.ToString(TimeUtil.DatetimeMSFormat);
+                    orderView.TransactionTime = orderData.DateTime.ToString(TimeUtil.DatetimeMilliSFormat);
+                    orderView.LocalTime = orderData.LocalDateTime.ToString(TimeUtil.DatetimeMilliSFormat);
 
                     orderView.EntryPrice = orderData.EntryPrice;
                     orderView.OrderQty = orderData.Qty;

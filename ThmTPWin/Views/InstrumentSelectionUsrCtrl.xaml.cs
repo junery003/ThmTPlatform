@@ -7,9 +7,7 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using ThmCommon.Handlers;
 using ThmTPWin.ViewModels;
@@ -25,12 +23,8 @@ namespace ThmTPWin.Views {
         public InstrumentSelectionUsrCtrl() {
             InitializeComponent();
 
-            _vm = new InstrumentSelectionVM(TradingPMainWin.ConnMgr);
+            _vm = new InstrumentSelectionVM();
             DataContext = _vm;
-        }
-
-        private void Win_Loaded(object sender, RoutedEventArgs e) {
-            lstbProvider.Items.SortDescriptions.Add(new SortDescription("", ListSortDirection.Ascending));
         }
 
         public bool Select(out string err) {

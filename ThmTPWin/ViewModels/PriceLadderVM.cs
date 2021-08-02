@@ -79,15 +79,24 @@ namespace ThmTPWin.ViewModels {
         #endregion HLOV
 
         public ObservableCollection<MarketDataView> MarketData { get; } = new ObservableCollection<MarketDataView>();
+        internal decimal TickSize { get; }
 
-        private readonly decimal _tickSize;
+        private readonly ITraderTabItm _parent;
         private readonly decimal _ladderSteps;
+
         private readonly object _lock = new object();
-        public PriceLadderVM(decimal tickSize) {
+        public PriceLadderVM(ITraderTabItm parent) {
             BindingOperations.EnableCollectionSynchronization(MarketData, _lock);
 
-            _tickSize = tickSize;
-            _ladderSteps = 1000 * _tickSize + 100;
+            _parent = parent;
+            TickSize = parent.InstrumentHandler.InstrumentInfo.TickSize;
+            _ladderSteps = 1000 * TickSize + 100;
+        }
+
+        #region Market Data
+        internal void UpdateMarketData(MarketDepthData marketData) {
+            PopulateHLOV(marketData);
+            PopulateMarketData(marketData);
         }
 
         internal void PopulateHLOV(MarketDepthData data) {
@@ -110,7 +119,7 @@ namespace ThmTPWin.ViewModels {
                 _priceLadderDic[0] = new MarketDataView(0);
 
                 decimal low = depthData.BidPrice1 - _ladderSteps;
-                for (decimal price = depthData.AskPrice1 + _ladderSteps; decimal.Compare(price, low) >= 0; price -= _tickSize) {
+                for (decimal price = depthData.AskPrice1 + _ladderSteps; decimal.Compare(price, low) >= 0; price -= TickSize) {
                     var dom = new MarketDataView(price);
                     MarketData.Add(dom);
                     _priceLadderDic[price] = dom;
@@ -119,7 +128,7 @@ namespace ThmTPWin.ViewModels {
             else {
                 decimal high = depthData.AskPrice1 + _ladderSteps;
                 if (decimal.Compare(MarketData[0].Price, high) <= 0) {
-                    for (var price = MarketData[0].Price + _tickSize; decimal.Compare(price, high) <= 0; price += _tickSize) {
+                    for (var price = MarketData[0].Price + TickSize; decimal.Compare(price, high) <= 0; price += TickSize) {
                         var dom = new MarketDataView(price);
                         MarketData.Insert(0, dom);
 
@@ -129,7 +138,7 @@ namespace ThmTPWin.ViewModels {
 
                 decimal low = depthData.BidPrice1 - _ladderSteps;
                 if (decimal.Compare(MarketData[MarketData.Count - 1].Price, low) >= 0) {
-                    for (var price = MarketData[MarketData.Count - 1].Price - _tickSize; decimal.Compare(price, low) >= 0; price -= _tickSize) {
+                    for (var price = MarketData[MarketData.Count - 1].Price - TickSize; decimal.Compare(price, low) >= 0; price -= TickSize) {
                         var dom = new MarketDataView(price);
                         MarketData.Add(dom);
 
@@ -234,6 +243,25 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
+        #endregion Market Data
+
+        #region Algo
+        internal void DeleteAlgosByPrice(decimal price) {
+            _parent.DeleteAlgosByPrice(price);
+        }
+
+        internal void DeleteAllAlgos() {
+            _parent.DeleteAllAlgos();
+        }
+
+        internal void ProcessAlgo(EBuySell dir, decimal price) {
+            if (!_parent.CheckQty(dir)) {
+                return;
+            }
+
+            _parent.ProcessAlgo(dir, price);
+        }
+
         internal void IncreaseAlgo(decimal price) {
             _priceLadderDic[price].IncreaseAlgoCount();
             ++WorkingAlgoCount;
@@ -253,6 +281,8 @@ namespace ThmTPWin.ViewModels {
                 }
             }
         }
+
+        #endregion Algo
 
         internal int GetCenterIndex() {
             return (_bestAskIdx + _bestBidIdx) / 2;

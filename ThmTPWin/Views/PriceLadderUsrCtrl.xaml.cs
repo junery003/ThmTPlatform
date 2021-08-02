@@ -11,9 +11,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using ThmCommon.Models;
-using ThmTPWin.Controllers;
 using ThmTPWin.Models;
 using ThmTPWin.ViewModels;
 
@@ -24,30 +22,12 @@ namespace ThmTPWin.Views {
     public partial class PriceLadderUsrCtrl : UserControl {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private ITrader _parent;
-        private PriceLadderVM _vm;
         public PriceLadderUsrCtrl() {
             InitializeComponent();
         }
 
-        internal void Init(ITrader parent, decimal tickSize) {
-            _parent = parent;
-            _vm = new PriceLadderVM(tickSize);
-            DataContext = _vm;
-        }
-
-        internal void PopulateMarketData(MarketDepthData marketData) {
-            _vm.PopulateHLOV(marketData);
-            _vm.PopulateMarketData(marketData);
-        }
-
         internal void RecenterPriceLadder() {
-            if (_vm == null) {
-                Logger.Error("TickSize not init yet");
-                return;
-            }
-
-            int centerIdx = _vm.GetCenterIndex();
+            int centerIdx = (DataContext as PriceLadderVM).GetCenterIndex();
             Dispatcher.BeginInvoke(new Action(() => {
                 //Task.Delay(500).Wait();
                 if (centerIdx > 0 && centerIdx < DepthDataGrid.Items.Count) {
@@ -57,23 +37,16 @@ namespace ThmTPWin.Views {
             }));
         }
 
-        internal void IncreaseAlgo(decimal price) {
-            _vm.IncreaseAlgo(price);
-        }
-
-        internal void DecreaseAlgo(decimal price) {
-            _vm.DecreaseAlgo(price);
+        private void DeleteAllAlgos_Click(object sender, RoutedEventArgs e) {
+            (DataContext as PriceLadderVM).DeleteAllAlgos();
         }
 
         private void CancelAlgos_Click(object sender, RoutedEventArgs e) {
             var curRow = ((MenuItem)sender).DataContext as MarketDataView;
             if (curRow.AlgoCount >= 1) {
-                _parent.DeleteAlgosByPrice(curRow.Price);
+                var vm = DataContext as PriceLadderVM;
+                vm.DeleteAlgosByPrice(curRow.Price);
             }
-        }
-
-        private void CancelAllAlgos_Click(object sender, RoutedEventArgs e) {
-            _parent.DeleteAllAlgos();
         }
 
         private void DepthDataGrid_Cell_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
@@ -101,12 +74,8 @@ namespace ThmTPWin.Views {
                 return;
             }
 
-            if (!_parent.CheckQty(dir)) {
-                return;
-            }
-
             var curMDView = (MarketDataView)curCellInfo.Item;
-            _parent.ProcessAlgo(dir, curMDView.Price);
+            (DataContext as PriceLadderVM).ProcessAlgo(dir, curMDView.Price);
         }
     }
 }

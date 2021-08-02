@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="ThmTPWin.Views.LoginViews.LoginTTUsrCtrl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ThmTPWin.Views"
+        mc:Ignorable="d"
+        d:DesignWidth="400">
+    <StackPanel Margin="5" IsEnabled="{Binding IsChecked}">
+        <Grid Margin="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="7*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="2" Text="Account:" TextAlignment="Right" Margin="3" />
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding AccountName}" Margin="3" Style="{StaticResource CstTextBox}" />
+        </Grid>
+    </StackPanel>
+</UserControl>

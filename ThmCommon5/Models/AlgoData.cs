@@ -27,7 +27,7 @@ namespace ThmCommon.Models {
         public string Status { get; set; }
         public decimal Price { get; set; }
         public int Qty { get; set; }
-        //public int FillQty { get; set; }
+        public int FillQty { get; set; }
         public DateTime DateTime { get; set; } // TradeDateTime
         public DateTime LocalDateTime { get; set; }
 
@@ -44,12 +44,6 @@ namespace ThmCommon.Models {
         #endregion
 
         public string Tag { get; set; }
-        public string Text { get; set; }
-
-        /// <summary>
-        /// this algo executed already
-        /// </summary>
-        public bool IsExecuted { get; set; } = false;
 
         public AlgoData(EAlgoType type) {
             AlgoID = ThmUtil.GenerateGUID();

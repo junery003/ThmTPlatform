@@ -3,10 +3,22 @@
         "UserID": "Jun",
         "Password": "jun123"
     },
-
-    "Save2DB": false,
-    "Notification": false,
-    "AtpEnabled": false,
-    "TTEnabled": true,
-    "TitanEnabled": true
+    "AtpLogin": {
+        "Enabled": true,
+        "BrokerId": "2SP004",
+        "UserId": "sp2008",
+        "Password": ")LYdA2rS",
+        "AppId": "THEME_ATP64_9",
+        "AuthCode": "64YHLO4C7YBE5NTC",
+        "Auth": true
+    },
+    "TTLogin": {
+        "Enabled": true,
+        "Account": ""
+    },
+    "TitanLogin": {
+        "Enabled": true,
+        "Account": "B000219",
+        "CustomerInfo": "B219A11"
+    }
 }

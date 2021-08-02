@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ThmTPWin.Views.AlgoViews"
         mc:Ignorable="d" Height="165" Width="380" Title="Trigger" ResizeMode="NoResize" 
-        WindowStartupLocation="CenterOwner" Closing="Window_Closing">
+        WindowStartupLocation="CenterOwner"
+        Closing="Window_Closing">
     <StackPanel Margin="5">
         <GroupBox Header="Details" Margin="5">
             <Grid>
@@ -21,19 +22,19 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="PriceType:" Grid.Column="0" Margin="2" TextAlignment="Right"/>
-                <ComboBox ItemsSource="{Binding PriceTypes}" SelectedItem="{Binding SelectedPriceType}" Grid.Column="1" Margin="2" />
+                <ComboBox ItemsSource="{Binding PriceTypes}" SelectedValue="{Binding SelectedPriceType}" Grid.Column="1" Margin="2" />
 
-                <ComboBox ItemsSource="{Binding QtyOrOthers}" SelectedItem="{Binding SelectedQtyOrOther}" Grid.Column="0" Grid.Row="1" Margin="2" />
+                <ComboBox ItemsSource="{Binding QtyOrOthers}" SelectedValue="{Binding SelectedQtyOrOther}" Grid.Column="0" Grid.Row="1" Margin="2" />
 
-                <ComboBox ItemsSource="{Binding Operators}" SelectedItem="{Binding SelectedOperator}" Grid.Column="1" Grid.Row="1" Margin="2" />
+                <ComboBox ItemsSource="{Binding Operators}" SelectedValue="{Binding SelectedOperator}" Grid.Column="1" Grid.Row="1" Margin="2" />
 
-                <TextBox Text="{Binding Path=Qty, FallbackValue=1}" Grid.Column="2" Grid.Row="1" Margin="2" PreviewTextInput="Qty_PreviewTextInput" TextChanged="Qty_TextChanged" TextAlignment="Center" Style="{DynamicResource CstTextBox}" />
-
-                <!--TextBlock Text="On Trigger, submit:" Grid.Column="0" Grid.Row="2" Margin="2" TextAlignment="Right"/>
-                <ComboBox ItemsSource="{Binding BuyOrSell}" SelectedItem="{Binding SelectedBuyOrSell}" Grid.Column="1" Grid.Row="2" Margin="2" / -->
+                <TextBox Text="{Binding Path=Qty, FallbackValue=1}" Grid.Column="2" Grid.Row="1" Margin="2" PreviewTextInput="Qty_PreviewTextInput" TextAlignment="Center" Style="{DynamicResource CstTextBox}" />
             </Grid>
         </GroupBox>
 
-        <Button Content="OK" Width="80" Margin="5 0" Click="OKBtn_Click" Style="{DynamicResource CstButton}" HorizontalAlignment="Right"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Cancel" Width="80" Margin="5 0" Click="CancelBtn_Click" Style="{DynamicResource CstButton}" />
+            <Button Content="OK" Width="80" Margin="5 0" Click="OKBtn_Click" Style="{DynamicResource CstButton}" />
+        </StackPanel>
     </StackPanel>
 </Window>

@@ -8,7 +8,6 @@
 //
 //-----------------------------------------------------------------------------
 using System.Windows;
-using System.Windows.Controls;
 using ThmTPWin.ViewModels.AlgoViewModels;
 
 namespace ThmTPWin.Views.AlgoViews {
@@ -16,12 +15,10 @@ namespace ThmTPWin.Views.AlgoViews {
     /// Interaction logic for TriggerWin.xaml
     /// </summary>
     public partial class TriggerWin : Window {
-        private readonly MDTraderUsrCtrl _parent;
         private readonly TriggerVM _vm;
-        internal TriggerWin(MDTraderUsrCtrl mdTraderUsrCtrl, TriggerVM vm) {
+        internal TriggerWin(TriggerVM vm) {
             InitializeComponent();
 
-            _parent = mdTraderUsrCtrl;
             _vm = vm;
             DataContext = _vm;
         }
@@ -35,17 +32,8 @@ namespace ThmTPWin.Views.AlgoViews {
             Hide();
         }
 
-        private void Qty_TextChanged(object sender, TextChangedEventArgs e) {
-            if (_parent == null) {
-                return;
-            }
-
-            var txtb = (sender as TextBox).Text;
-            if (!int.TryParse(txtb, out var _)) {
-                txtb = "0";
-            }
-
-            _parent.TriggerQtyTxtb.Text = txtb;
+        private void CancelBtn_Click(object sender, RoutedEventArgs e) {
+            Hide();
         }
 
         private void Qty_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e) {

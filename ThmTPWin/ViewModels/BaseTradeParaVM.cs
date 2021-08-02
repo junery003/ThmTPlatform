@@ -10,15 +10,17 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using Prism.Mvvm;
-using ThmCommon.Handlers;
 using ThmCommon.Models;
-using ThmTPWin.Business;
+using ThmTPWin.Controllers;
+using ThmTPWin.ViewModels.AlgoViewModels;
 
 namespace ThmTPWin.ViewModels {
-    internal class BaseTradeParaVM : BindableBase {
+    public class BaseTradeParaVM : BindableBase {
         public List<EAlgoType> AllAlgos { get; }
-
         public List<string> Accounts { get; }
+
+        public TriggerVM TriggerVm { get; }
+        public InterTriggerVM InterTriggerVm { get; }
 
         private string _selectedAccount;
         public string SelectedAccount {
@@ -26,7 +28,7 @@ namespace ThmTPWin.ViewModels {
             set {
                 if (SetProperty(ref _selectedAccount, value)) {
                     if (_selectedAccount != null) {
-                        _instrumentHandler.SetAccount(_selectedAccount);
+                        _parent.InstrumentHandler.SetAccount(_selectedAccount);
                     }
                 }
             }
@@ -35,7 +37,11 @@ namespace ThmTPWin.ViewModels {
         private EAlgoType _selectedAlgoType = EAlgoType.Limit;
         public EAlgoType SelectedAlgoType {
             get => _selectedAlgoType;
-            set => SetProperty(ref _selectedAlgoType, value);
+            set {
+                if (SetProperty(ref _selectedAlgoType, value)) {
+                    //_parent.DispalyAlgoView(_selectedAlgoType);
+                }
+            }
         }
 
         private int _position = 0;
@@ -106,15 +112,22 @@ namespace ThmTPWin.ViewModels {
             set => SetProperty(ref _cancelAlgoBtnContent, value);
         }
 
-        private readonly InstrumentHandlerBase _instrumentHandler;
-        internal BaseTradeParaVM(List<EAlgoType> algos, InstrumentHandlerBase instrumentHandler) {
-            _instrumentHandler = instrumentHandler;
+        private readonly ITraderTabItm _parent;
+        internal BaseTradeParaVM(ITraderTabItm parent, List<EAlgoType> algos) {
+            _parent = parent;
 
-            Accounts = _instrumentHandler.Accounts;
-            SelectedAccount = _instrumentHandler.CurAccount;
+            Accounts = parent.InstrumentHandler.Accounts;
+            SelectedAccount = parent.InstrumentHandler.CurAccount;
+
+            TriggerVm = new TriggerVM();
+            InterTriggerVm = new InterTriggerVM(parent.InstrumentInfo.InstrumentID);
 
             AllAlgos = algos;
             SelectedAlgoType = AllAlgos[0];
+        }
+
+        internal void ResetQuantity() {
+            Quantity = MinQuantity;
         }
     }
 }

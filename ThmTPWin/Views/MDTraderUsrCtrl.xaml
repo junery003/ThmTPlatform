@@ -4,20 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ThmTPWin.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="400" >
+             mc:Ignorable="d"
+             d:DesignWidth="400" >
     <Border BorderThickness="2" BorderBrush="LightGray" CornerRadius="3" >
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="2" >
             <StackPanel Margin="2" Width="120" Background="LightGray">
-                <local:BaseTradeParaUsrCtrl x:Name="BaseTradeParas" Margin="1"/>
-                
+                <local:BaseTradeParaUsrCtrl x:Name="TradeParaUsrCtrl" DataContext="{Binding TradeParaVM}" Margin="1"/>
+
                 <Grid Margin="1 2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Button Content="Trigger" Grid.Column="0" Margin="1 0 0 0" Click="TriggerBtn_Click" ToolTip="Trigger" Style="{StaticResource CstButton}" />
-                    <TextBox x:Name="TriggerQtyTxtb" Grid.Column="1" Margin="0 0 1 0" TextAlignment="Center" MaxLength="5"  TextChanged="TriggerQty_TextChanged" PreviewTextInput="NumberOnlyTxtb_PreviewTextInput" Style="{StaticResource CstTextBox}"/>
+                    <TextBox Text="{Binding TradeParaVM.TriggerVm.Qty}" Grid.Column="1" Margin="0 0 1 0" TextAlignment="Center" MaxLength="5" PreviewTextInput="NumberOnlyTxtb_PreviewTextInput" Style="{StaticResource CstTextBox}"/>
                 </Grid>
 
                 <Grid Margin="1 2">
@@ -31,9 +31,9 @@
                     </Grid.RowDefinitions>
 
                     <Button Content="IntTrig" Margin="1 0 0 0" Click="InterTriggerBtn_Click" ToolTip="Inter-Trigger" Style="{StaticResource CstButton}" />
-                    <ComboBox Name="RefPriceTypeCmb" Grid.Column="1" Margin="0 0 1 0" SelectionChanged="RefPriceTypeCmb_SelectionChanged" />
-                    <ComboBox Name="RefOperatorCmb" Grid.Column="0" Grid.Row="1" Margin="1 0 0 0" SelectionChanged="RefOperatorCmb_SelectionChanged" />
-                    <TextBox x:Name="RefPriceTxt" Grid.Column="1" Grid.Row="1" Margin="0 0 1 0" MaxLength="10" TextChanged="RefPriceTxt_TextChanged" PreviewTextInput="Price_PreviewTextInput" PreviewKeyDown="Price_PreViewKeyDown" TextAlignment="Center" Style="{DynamicResource CstTextBox}" />
+                    <ComboBox ItemsSource="{Binding TradeParaVM.InterTriggerVm.PriceTypes}" SelectedItem="{Binding TradeParaVM.InterTriggerVm.RefPriceType}" Grid.Column="1" Margin="0 0 1 0" />
+                    <ComboBox ItemsSource="{Binding TradeParaVM.InterTriggerVm.Operators}" SelectedItem="{Binding  TradeParaVM.InterTriggerVm.RefOperator}" Grid.Column="0" Grid.Row="1" Margin="1 0 0 0" />
+                    <TextBox Text="{Binding TradeParaVM.InterTriggerVm.RefPrice}" Grid.Column="1" Grid.Row="1" Margin="0 0 1 0" MaxLength="10" PreviewTextInput="Price_PreviewTextInput" PreviewKeyDown="Price_PreViewKeyDown" TextAlignment="Center" Style="{DynamicResource CstTextBox}" />
                 </Grid>
 
                 <StackPanel.ContextMenu>
@@ -45,7 +45,7 @@
                 </StackPanel.ContextMenu>
             </StackPanel>
 
-            <local:PriceLadderUsrCtrl x:Name="PriceLadder" Margin="1" />
+            <local:PriceLadderUsrCtrl x:Name="LadderUsrCtrl" DataContext="{Binding LadderVM}" Margin="1" />
         </StackPanel>
     </Border>
 </UserControl>

@@ -199,13 +199,11 @@ namespace ThmCommon.Models {
             (BidPrice5, BidQty5) = (md.BidPrice5, md.BidQty5);
         }
 
-        private BestQuot _curBestQuot = new BestQuot();
+        private readonly BestQuot _curBestQuot = new BestQuot();
         public BestQuot CurBestQuot {
             get {
-                _curBestQuot.AskPrice1 = AskPrice1;
-                _curBestQuot.AskQty1 = AskQty1;
-                _curBestQuot.BidPrice1 = BidPrice1;
-                _curBestQuot.BidQty1 = BidQty1;
+                (_curBestQuot.AskPrice1, _curBestQuot.AskQty1, _curBestQuot.BidPrice1, _curBestQuot.BidQty1)
+                    = (AskPrice1, AskQty1, BidPrice1, BidQty1);
 
                 return _curBestQuot;
             }
@@ -276,7 +274,7 @@ namespace ThmCommon.Models {
         }
     };
 
-    public struct BestQuot {
+    public class BestQuot {
         public decimal AskPrice1 { get; set; }
         public decimal BidPrice1 { get; set; }
         public int AskQty1 { get; set; }

@@ -8,9 +8,7 @@
 //
 //-----------------------------------------------------------------------------
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using ThmCommon.Handlers;
 using ThmTPWin.ViewModels.AlgoViewModels;
 
 namespace ThmTPWin.Views.AlgoViews {
@@ -18,14 +16,9 @@ namespace ThmTPWin.Views.AlgoViews {
     /// Interaction logic for InterTriggerWin.xaml
     /// </summary>
     public partial class InterTriggerWin : Window {
-        public InstrumentHandlerBase RefInstrumentHandler { get; private set; }
-
-        private readonly MDTraderUsrCtrl _parent;
         private readonly InterTriggerVM _vm;
-        internal InterTriggerWin(MDTraderUsrCtrl mdTraderUsrCtrl, InterTriggerVM vm) {
+        internal InterTriggerWin(InterTriggerVM vm) {
             InitializeComponent();
-
-            _parent = mdTraderUsrCtrl;
 
             _vm = vm;
             DataContext = _vm;
@@ -37,7 +30,7 @@ namespace ThmTPWin.Views.AlgoViews {
         }
 
         private void OKBtn_Click(object sender, RoutedEventArgs e) {
-            if (!Check(out string err)) {
+            if (!_vm.Check(out var err)) {
                 MessageBox.Show(err);
                 return;
             }
@@ -58,9 +51,8 @@ namespace ThmTPWin.Views.AlgoViews {
         }
 
         private void SetAsRef_Click(object sender, RoutedEventArgs e) {
-            if (!instrumentSelectionUsrCtrl.Select(out string err)) {
+            if (!instrumentSelectionUsrCtrl.Select(out var err)) {
                 MessageBox.Show(err);
-
                 return;
             }
 
@@ -70,49 +62,7 @@ namespace ThmTPWin.Views.AlgoViews {
                 return;
             }
 
-            RefInstrumentHandler = tmp;
-        }
-
-        internal bool Check(out string err) {
-            if (RefInstrumentHandler == null) {
-                err = "The reference instrument is not specified";
-                return false;
-            }
-
-            if (!_vm.Check(out err)) {
-                return false;
-            }
-
-            return true;
-        }
-
-        private void PriceTypeCmb_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (_parent == null) {
-                return;
-            }
-
-            _parent.RefPriceTypeCmb.SelectedValue = (sender as ComboBox).SelectedValue;
-        }
-
-        private void OperatorCmb_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (_parent == null) {
-                return;
-            }
-
-            _parent.RefOperatorCmb.SelectedValue = (sender as ComboBox).SelectedValue;
-        }
-
-        private void RefPriceTxt_TextChanged(object sender, TextChangedEventArgs e) {
-            if (_parent == null) {
-                return;
-            }
-
-            var txtb = (sender as TextBox).Text;
-            if (!decimal.TryParse(txtb, out var _)) {
-                txtb = "0";
-            }
-
-            _parent.RefPriceTxt.Text = txtb;
+            _vm.RefInstrumentHandler = tmp;
         }
     }
 }

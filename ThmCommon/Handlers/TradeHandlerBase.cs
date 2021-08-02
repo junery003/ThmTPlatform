@@ -9,13 +9,16 @@
 //-----------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ThmCommon.Models;
 
 namespace ThmCommon.Handlers {
     public abstract class TradeHandlerBase : IDisposable {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public TradeHandlerBase() {
+        public InstrumentHandlerBase InstrumentHandler { get; private set; }
+        public TradeHandlerBase(InstrumentHandlerBase instrumentHandler) {
+            InstrumentHandler = instrumentHandler;
         }
 
         #region Order
@@ -23,7 +26,7 @@ namespace ThmCommon.Handlers {
         public abstract int GetPosition();
 
         //
-        public abstract void SendNewOrder(EBuySell buySell, decimal price, int qty, string tag, string text = null);
+        public abstract void SendNewOrder(EBuySell buySell, decimal price, int qty, string tag, ETIF tif = ETIF.Day);
         public abstract void SendUpdateOrder(string orderID, decimal price, int qty);
         public abstract void SendDeleteOrder(string orderID, bool isBuy);
         #endregion
@@ -62,13 +65,14 @@ namespace ThmCommon.Handlers {
             }
             else {
                 orderData = _algoOrderDic[algo.AlgoID];
-                //orderData.FillQty = algo.FillQty;
+                //orderData.Status = algo.Status;
+                orderData.FillQty = algo.FillQty;
             }
 
             InstrumentHandlerBase.UpdateOrderData(orderData);
         }
 
-        internal void DeleteAlgoOrder(string algoID, EOrderStatus status) {
+        internal void DeleteAlgoOrder(string algoID, EOrderStatus status, int executedQty) {
             if (!_algoOrderDic.ContainsKey(algoID)) {
                 Logger.Error("Cannot delete algo: " + algoID);
                 return;
@@ -76,6 +80,10 @@ namespace ThmCommon.Handlers {
 
             var algoOrder = _algoOrderDic[algoID];
             algoOrder.Status = status;
+            if (executedQty > 0) {
+                algoOrder.FillQty = executedQty;
+            }
+
             InstrumentHandlerBase.UpdateOrderData(algoOrder);
             if (_algoOrderDic.Remove(algoID)) {
                 Logger.Info("Deleted algo: {} - status: {}", algoID, status);
@@ -86,7 +94,7 @@ namespace ThmCommon.Handlers {
         }
 
         internal virtual IEnumerable<string> GetAllAlgoOrderIDs() {
-            return _algoOrderDic.Keys;
+            return _algoOrderDic.Keys.ToList();
         }
         #endregion Algo Orders
 

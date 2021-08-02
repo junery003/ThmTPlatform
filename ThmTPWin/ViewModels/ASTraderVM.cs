@@ -10,34 +10,144 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using Prism.Mvvm;
 using ThmCommon.Handlers;
 using ThmCommon.Models;
 using ThmCommon.Utilities;
 
 namespace ThmTPWin.ViewModels {
-    public class ASTraderVM : BindableBase, IDisposable {
+    public class ASTraderVM : BindableBase, ITraderTabItm {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private readonly string _asName;
+        private static readonly List<EAlgoType> Algos = new List<EAlgoType> { EAlgoType.Limit };
+
+        public ThmInstrumentInfo InstrumentInfo => _syntheticHandler.InstrumentInfo;
+        public InstrumentHandlerBase InstrumentHandler => _syntheticHandler;
+        public BaseTradeParaVM TradeParaVM { get; }
+        public PriceLadderVM LadderVM { get; }
+
         private readonly AutospeaderLeg _asLeg1;
         private readonly AutospeaderLeg _asLeg2;
-        private decimal _tickSize = decimal.Zero;
 
+        private readonly decimal _tickSize = decimal.Zero;
         private readonly MarketDepthData _combinedData = new MarketDepthData();
 
         // first order for each autospreader pair: <tagKey, order>
         private readonly Dictionary<string, AutospreaderOrder> _orderDic = new Dictionary<string, AutospreaderOrder>();
 
-        public ASTraderVM(string name, AutospeaderLeg leg1, AutospeaderLeg leg2) {
-            _asName = name;
-            _asLeg1 = leg1;
-            _asLeg2 = leg2;
+        private readonly AutospeaderParas _asItem;
+        private readonly SytheticInstrumentHandler _syntheticHandler = new SytheticInstrumentHandler();
+        public ASTraderVM(AutospeaderParas asItem) {
+            _asItem = asItem;
+
+            _asLeg1 = asItem.ASLegs[0];
+            _asLeg2 = asItem.ASLegs[1];
+
+            decimal tickSize = decimal.Zero;
+            foreach (var para in asItem.ASLegs) {
+                _syntheticHandler.AddHandler(para.InstrumentHandler);
+
+                para.InstrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
+                //para.InstrumentHandler.OnOrderDataUpdated += InstrumentHandler_OnOrderDataUpdated;
+
+                if (tickSize == decimal.Zero) {
+                    tickSize = para.InstrumentHandler.InstrumentInfo.TickSize;
+                }
+            }
+
+            if (tickSize == decimal.Zero) {
+                Logger.Error("Tick size is 0");
+            }
+            else {
+                TradeParaVM = new BaseTradeParaVM(this, Algos);
+                LadderVM = new PriceLadderVM(this);
+
+                _tickSize = LadderVM.TickSize;
+            }
         }
 
-        internal void Init(decimal tickSize) {
-            _tickSize = tickSize;
+        private readonly object _mdLock = new object();
+        private void InstrumentHandler_OnMarketDataUpdated() {
+            lock (_mdLock) {
+                LadderVM.UpdateMarketData(CombineMarketData());
+            }
         }
+
+        private readonly object _orderLock = new object();
+        private void InstrumentHandler_OnOrderDataUpdated(OrderData ordData) {
+            lock (_orderLock) {
+                OnOrderDataUpdated(ordData);
+            }
+        }
+
+        public bool CheckQty(EBuySell dir) {
+            if (TradeParaVM.Quantity <= 0) {
+                TradeParaVM.QtyBackground = Brushes.Red;
+                return false;
+            }
+
+            return true;
+        }
+
+        public void SetPosition(int position) {
+            TradeParaVM.Position = position;
+        }
+
+        public void ProcessAlgo(EBuySell dir, decimal price) {
+            switch (TradeParaVM.SelectedAlgoType) {
+            case EAlgoType.Limit: {
+                ProcessLimit(new AutospreaderOrder {
+                    BuySell = dir,
+                    ASPrice = price,
+                    Qty = TradeParaVM.Quantity,
+                });
+
+                break;
+            }
+            case EAlgoType.Sniper: {
+                ProcessSniper(dir, price);
+                break;
+            }
+            default: {
+                Logger.Warn($"Algo type not supported: {TradeParaVM.SelectedAlgoType}");
+                break;
+            }
+            }
+
+            TradeParaVM.ResetQuantity();
+        }
+
+        private void ProcessSniper(EBuySell dir, decimal price) {
+            //var algo = new AlgoData(EAlgoType.Sniper) {
+            //    BuyOrSell = dir,
+            //    Price = price,
+            //    Qty = _vm.Quantity
+            //};
+            //var rlt = InstrumentHandler.AddAlgo(algo);
+            //if (rlt == 1) {
+            //    IncreaseAlgo(price);
+            //}
+        }
+
+        public void DeleteOrder(string ordID, bool isBuy) {
+            //_instrumentHandlers.ForEach(x => x.DeleteOrder(ordID));
+        }
+
+        public void DeleteAlgo(string algoID) {
+            //_instrumentHandlers.ForEach(x => x.DeleteAlgo(algoID));            
+        }
+
+        public void IncreaseAlgo(decimal price) {
+            LadderVM.IncreaseAlgo(price);
+        }
+
+        public void DecreaseAlgo(decimal price) {
+            LadderVM.DecreaseAlgo(price);
+        }
+
+        public void DeleteAlgosByPrice(decimal price) { }
+        public void DeleteAllAlgos() { }
 
         #region combined market data
         internal MarketDepthData CombineMarketData() {
@@ -268,8 +378,7 @@ namespace ThmTPWin.ViewModels {
         public void Dispose() {
             _randomG.Dispose();
 
-            _asLeg1.InstrumentHandler.Stop();
-            _asLeg2.InstrumentHandler.Stop();
+            _syntheticHandler.Dispose();
         }
     }
 

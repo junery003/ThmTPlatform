@@ -12,10 +12,15 @@ using System.Globalization;
 
 namespace ThmCommon.Utilities {
     public static class TimeUtil {
-        public const string DatetimeMSFormat = "yyyy-MM-dd HH:mm:ss.fff"; // by millisecond
+        public const string DatetimeMilliSFormat = "yyyy-MM-dd HH:mm:ss.fff";    // by millisecond
+        public const string DatetimeMicroSFormat = "yyyy-MM-dd HH:mm:ss.ffffff"; // by microsecond
 
-        public static string DateTime2MilliSecondsString(DateTime dt) {
-            return dt.ToString(DatetimeMSFormat);
+        public static string DateTime2MilliSecondsStr(DateTime dt, string format = DatetimeMilliSFormat) {
+            return dt.ToString(format);
+        }
+
+        public static string DateTime2MicroSecondsStr(DateTime dt, string format = DatetimeMicroSFormat) {
+            return dt.ToString(format);
         }
 
         public static long CalcRoundTripTime(long timesent, long timerec) {
@@ -73,7 +78,6 @@ namespace ThmCommon.Utilities {
             return (int)(obj.Ticks % TimeSpan.TicksPerMillisecond % 10) * 100;
         }
 
-        // DatetimeMSFormat = "yyyy-MM-dd HH:mm:ss.fff"; 
         public static DateTime String2DateTime(string str, string format = "yyyyMMdd HH:mm:ss.fff") {
             //string iString = "2005-05-05 22:12:20 PM";
             return DateTime.ParseExact(str, format, CultureInfo.InvariantCulture);

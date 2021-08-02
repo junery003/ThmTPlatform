@@ -3,11 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ThmTPWin"
+        xmlns:local="clr-namespace:ThmTPWin.Views"
+        xmlns:vm="clr-namespace:ThmTPWin.ViewModels"
         mc:Ignorable="d" Icon="../Resources/thm.ico"
         Title="Thm Trading Platform" Height="768" Width="1024" 
-        WindowStartupLocation="CenterScreen"
-        Loaded="Window_Loaded" Closed="Window_Closed" Background="GhostWhite">
+        WindowStartupLocation="CenterScreen" Background="GhostWhite"
+        Loaded="Window_Loaded" Closed="Window_Closed" >
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Margin="2">
             <TextBlock Margin="0 0 5 0" DockPanel.Dock="Right" Text="{Binding CurrentTime, StringFormat=HH:mm:ss}" />
@@ -22,9 +23,9 @@
                     <MenuItem Header="MD _Trader" Click="MDTrader_Click" />
                     <MenuItem Header="_Autospreader" Click="Autospreader_Click" />
                     <Separator HorizontalAlignment="Stretch" />
-                    <MenuItem Header="_Order Book" Click="OrderBook_Click" />
-                    <MenuItem Header="Audit _Trail" Click="AuditTrail_Click" />
-                    <MenuItem Header="_Fills" Click="Fills_Click" />
+                    <MenuItem Header="_Order Book"  Command="{Binding OrderBookCmd}" />
+                    <MenuItem Header="Audit _Trail" Command="{Binding AuditTrailCmd}" />
+                    <MenuItem Header="_Fills" Command="{Binding FillsCmd}" />
                     <Separator HorizontalAlignment="Stretch" />
                     <MenuItem Header="_Market Making" IsEnabled="False" />
                 </MenuItem>
@@ -45,20 +46,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TabControl x:Name="tradeTabCtrl" Grid.Row="0" UseLayoutRounding="True" AllowDrop="True" >
-                <TabControl.Resources>
-                    <DataTemplate x:Key="CstTabHeader">
+            <TabControl ItemsSource="{Binding TradeWidgetTabItms}" SelectedItem="{Binding SelectedTradeTabItm}" Grid.Row="0">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <ContentPresenter>
-                                <ContentPresenter.Content>
-                                    <Binding Path="Header">
-                                        <Binding.RelativeSource>
-                                            <RelativeSource Mode="FindAncestor" AncestorType="{x:Type TabItem}"/>
-                                        </Binding.RelativeSource>
-                                    </Binding>
-                                </ContentPresenter.Content>
-                            </ContentPresenter>
-                            <Button Margin="8,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="CloseTabItem_Click" BorderThickness="0" Background="Transparent" >
+                            <TextBlock Text="{Binding InstrumentInfo.InstrumentID}" Margin="2 1"/>
+                            <Button Click="TradeWdigetClose_Click" Margin="2 1"  BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  >
                                 <Grid>
                                     <Canvas Width="8" Height="8">
                                         <Line X1="1" X2="7" Y1="1" Y2="7" Stroke="Black" StrokeThickness="1"/>
@@ -68,17 +61,37 @@
                             </Button>
                         </StackPanel>
                     </DataTemplate>
-                    <Style TargetType="TabItem">
-                        <Style.Setters>
-                            <Setter Property="HeaderTemplate" Value="{StaticResource CstTabHeader}"/>
-                        </Style.Setters>
-                    </Style>
+                </TabControl.ItemTemplate>
+                <TabControl.Resources>
+                    <DataTemplate DataType="{x:Type vm:MDTraderVM}" >
+                        <local:MDTraderUsrCtrl />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ASTraderVM}" >
+                        <local:ASTraderUsrCtrl />
+                    </DataTemplate>
                 </TabControl.Resources>
             </TabControl>
 
             <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"/>
 
-            <TabControl x:Name="statusTabCtrl" Grid.Row="2" UseLayoutRounding="True" TabStripPlacement="Bottom" AllowDrop="True" />
+            <TabControl Grid.Row="2" ItemsSource="{Binding OrdersTabItms}" SelectedItem="{Binding SelectedOrderTabItm}" TabStripPlacement="Bottom">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Header}" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.Resources>
+                    <DataTemplate DataType="{x:Type vm:OrderBookVM}">
+                        <local:OrderBookUsrCtrl />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:FillsVM}" >
+                        <local:FillsUsrCtrl />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:AuditTrailVM}" >
+                        <local:AuditTrailUsrCtrl />
+                    </DataTemplate>
+                </TabControl.Resources>
+            </TabControl>
         </Grid>
     </DockPanel>
 </Window>

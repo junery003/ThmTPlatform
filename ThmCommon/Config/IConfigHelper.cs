@@ -8,6 +8,8 @@
 //
 //-----------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace ThmCommon.Config {
     public enum EProviderType {
         Unknown = 0,
@@ -25,5 +27,12 @@ namespace ThmCommon.Config {
     public interface IConfig {
         bool Enabled { get; set; }
         bool IsValid(ref string err);
+    }
+
+    public class ExchangeCfg {
+        public bool Enabled { get; set; } = true;
+        public string Market { get; set; }
+        public string Type { get; set; } // Future, Option
+        public ISet<string> Contracts { get; } = new HashSet<string>();
     }
 }

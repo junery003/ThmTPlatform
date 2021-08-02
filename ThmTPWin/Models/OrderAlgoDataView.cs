@@ -121,8 +121,8 @@ namespace ThmTPWin.Models {
             Account = orderData.Account;
             OrderRef = orderData.OrderRef;
 
-            TransactionTime = orderData.DateTime.ToString(TimeUtil.DatetimeMSFormat);
-            LocalTime = orderData.LocalDateTime.ToString(TimeUtil.DatetimeMSFormat);
+            TransactionTime = orderData.DateTime.ToString(TimeUtil.DatetimeMilliSFormat);
+            LocalTime = orderData.LocalDateTime.ToString(TimeUtil.DatetimeMilliSFormat);
 
             BuySell = orderData.BuyOrSell;
             EntryPrice = orderData.EntryPrice;

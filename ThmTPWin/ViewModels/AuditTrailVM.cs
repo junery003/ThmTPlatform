@@ -14,16 +14,17 @@ using ThmCommon.Models;
 using ThmTPWin.Models;
 
 namespace ThmTPWin.ViewModels {
-    internal class AuditTrailVM : BindableBase {
-        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; }
+    internal class AuditTrailVM : BindableBase, IOrdersTabItm {
+        public const string ID = "Audit Trail";
+        public string Header => ID;
+        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; } = new ObservableCollection<OrderAlgoDataView>();
 
         private readonly object _lock = new object();
         public AuditTrailVM() {
-            OrderViewList = new ObservableCollection<OrderAlgoDataView>();
             BindingOperations.EnableCollectionSynchronization(OrderViewList, _lock);
         }
 
-        internal void AddRecord(OrderData orderData) {
+        public void OnOrderDataUpdated(OrderData orderData) {
             if (OrderViewList.Count >= 100000) {
                 OrderViewList.RemoveAt(OrderViewList.Count - 1);
             }

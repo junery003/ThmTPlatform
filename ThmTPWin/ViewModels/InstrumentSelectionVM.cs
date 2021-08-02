@@ -13,11 +13,11 @@ using System.Linq;
 using Prism.Mvvm;
 using ThmCommon.Config;
 using ThmCommon.Handlers;
-using ThmTPWin.Controllers;
+using ThmTPWin.ViewModels.LoginViewModels;
 
 namespace ThmTPWin.ViewModels {
     public class InstrumentSelectionVM : BindableBase {
-        public List<EProviderType> Providers { get; private set; }
+        public List<EProviderType> Providers { get; }
 
         private EProviderType _selectedProvider;
         public EProviderType SelectedProvider {
@@ -25,7 +25,7 @@ namespace ThmTPWin.ViewModels {
             set {
                 if (SetProperty(ref _selectedProvider, value)) {
                     Exchanges.Clear();
-                    _connMgr.GetExchanges(_selectedProvider)?.ForEach(x => {
+                    LoginVM.ConnMgr.GetExchanges(_selectedProvider)?.ForEach(x => {
                         if (x.Enabled) {
                             Exchanges.Add(x);
                         }
@@ -34,11 +34,7 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        private ObservableCollection<ExchangeCfg> _exchanges = new ObservableCollection<ExchangeCfg>();
-        public ObservableCollection<ExchangeCfg> Exchanges {
-            get => _exchanges;
-            set => SetProperty(ref _exchanges, value);
-        }
+        public ObservableCollection<ExchangeCfg> Exchanges { get; } = new ObservableCollection<ExchangeCfg>();
 
         private ExchangeCfg _selectedExchange;
         public ExchangeCfg SelectedExchange {
@@ -53,11 +49,7 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        private ObservableCollection<string> _productTypes = new ObservableCollection<string>();
-        public ObservableCollection<string> ProductTypes {
-            get => _productTypes;
-            set => SetProperty(ref _productTypes, value);
-        }
+        public ObservableCollection<string> ProductTypes { get; } = new ObservableCollection<string>();
 
         private string _selectedProductType;
         public string SelectedProductType {
@@ -72,11 +64,7 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        private ObservableCollection<string> _products = new ObservableCollection<string>();
-        public ObservableCollection<string> Products {
-            get => _products;
-            set => SetProperty(ref _products, value);
-        }
+        public ObservableCollection<string> Products { get; } = new ObservableCollection<string>();
 
         private string _selectedProduct;
         public string SelectedProduct {
@@ -85,7 +73,7 @@ namespace ThmTPWin.ViewModels {
                 if (SetProperty(ref _selectedProduct, value)) {
                     Contracts.Clear();
 
-                    _curConn = _connMgr.GetConnector(SelectedProvider);
+                    _curConn = LoginVM.ConnMgr.GetConnector(SelectedProvider);
                     if (_curConn != null && SelectedExchange != null && SelectedProductType != null && _selectedProduct != null) {
                         var instruments = _curConn.GetInstruments(SelectedExchange.Market, SelectedProductType, _selectedProduct);
 
@@ -97,11 +85,7 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        private ObservableCollection<string> _contracts = new ObservableCollection<string>();
-        public ObservableCollection<string> Contracts {
-            get => _contracts;
-            set => SetProperty(ref _contracts, value);
-        }
+        public ObservableCollection<string> Contracts { get; } = new ObservableCollection<string>();
 
         private string _selectedContract;
         public string SelectedContract {
@@ -109,12 +93,9 @@ namespace ThmTPWin.ViewModels {
             set => SetProperty(ref _selectedContract, value);
         }
 
-        private readonly ConnectorManager _connMgr;
         private IConnector _curConn;
-        internal InstrumentSelectionVM(ConnectorManager connMgr) {
-            _connMgr = connMgr;
-
-            Providers = connMgr.GetProviders();
+        internal InstrumentSelectionVM() {
+            Providers = LoginVM.ConnMgr.GetProviders();
         }
 
         internal InstrumentHandlerBase GetInstrumentHandler(out string err) {

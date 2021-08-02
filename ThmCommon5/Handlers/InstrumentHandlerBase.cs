@@ -16,15 +16,13 @@ namespace ThmCommon.Handlers {
     public abstract class InstrumentHandlerBase : IDisposable {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static bool EnableSave2DB { get; set; } = true;
+        public static bool EnableSaveData { get; set; } = true;
 
         public ThmInstrumentInfo InstrumentInfo { get; protected set; }
         public List<string> Accounts { get; protected set; } = new List<string>();
         public string CurAccount { get; protected set; }
 
         public virtual MarketDepthData CurMarketDepthData { get; protected set; }
-        protected abstract AlgoHandlerBase GetAlgoHandler();
-        protected abstract TradeHandlerBase GetTradeHandler();
 
         public abstract bool Start();
         public abstract void Stop();
@@ -33,8 +31,11 @@ namespace ThmCommon.Handlers {
 
         public void SetAccount(string accountInfo) {
             CurAccount = accountInfo;
-            GetTradeHandler().SetAccount(accountInfo);
+            TradeHandler.SetAccount(accountInfo);
         }
+
+        protected abstract AlgoHandlerBase AlgoHandler { get; }
+        protected abstract TradeHandlerBase TradeHandler { get; }
 
         #region data update
         public event Action OnMarketDataUpdated;
@@ -43,7 +44,6 @@ namespace ThmCommon.Handlers {
                 ProcessWorkingAlgos(CurMarketDepthData.CurBestQuot);
             });
             var task2 = Task.Run(async () => {
-                //DataProcessor.RedisNotify(CurMarketDepthData);
                 _ = await SaveDataAsync(CurMarketDepthData);
             });
             var task3 = Task.Run(() => {
@@ -62,16 +62,16 @@ namespace ThmCommon.Handlers {
 
         #region Order
         // return order ID
-        public void SendOrder(EBuySell buySell, decimal price, int qty, string tag, string text = null) {
-            GetTradeHandler().SendNewOrder(buySell, price, qty, tag, text);
+        public void SendOrder(EBuySell buySell, decimal price, int qty, string tag, ETIF tif = ETIF.Day) {
+            TradeHandler.SendNewOrder(buySell, price, qty, tag, tif);
         }
 
         public void UpdateOrder(string orderID, decimal price, int qty) {
-            GetTradeHandler().SendUpdateOrder(orderID, price, qty);
+            TradeHandler.SendUpdateOrder(orderID, price, qty);
         }
 
         public void DeleteOrder(string orderID, bool isBuy) {
-            GetTradeHandler().SendDeleteOrder(orderID, isBuy);
+            TradeHandler.SendDeleteOrder(orderID, isBuy);
         }
         #endregion
 
@@ -93,29 +93,27 @@ namespace ThmCommon.Handlers {
                 return 1;
             }
 
-            return GetAlgoHandler().ProcessAlgo(algo, CurMarketDepthData);
+            return AlgoHandler.ProcessAlgo(algo, CurMarketDepthData.CurBestQuot);
         }
 
-        private readonly object _algoLock = new object();
         public void ProcessWorkingAlgos(BestQuot md) {
-            lock (_algoLock) {
-                for (int i = 0; i < _interTriggers.Count; ++i) {
-                    var tmp = _interTriggers[i];
-                    if (CheckInterTrigger(tmp.Item1, tmp.Item2, md) == 0) {
-                        tmp.Item2.GetTradeHandler().DeleteAlgoOrder(tmp.Item1.AlgoID, EOrderStatus.AlgoFired);
-                        //_interTriggers.Remove(tmp);
-                        _interTriggers.RemoveAt(i--);
+            for (var i = 0; i < _interTriggers.Count; ++i) {
+                var tmp = _interTriggers[i];
+                var qty = CheckInterTrigger(tmp.Item1, tmp.Item2, md);
+                if (qty > 0) {
+                    tmp.Item2.TradeHandler.DeleteAlgoOrder(tmp.Item1.AlgoID, EOrderStatus.AlgoFired, qty);
+                    //_interTriggers.Remove(tmp);
+                    _interTriggers.RemoveAt(i--);
 
-                        Logger.Info("Filled inter-trigger ");
-                    }
+                    Logger.Info("Filled inter-trigger ");
                 }
-
-                GetAlgoHandler().ProcessWorkingAlgos(md);
             }
+
+            AlgoHandler.ProcessWorkingAlgos(md);
         }
 
         public void DeleteAllAlgos() {
-            var ids = GetTradeHandler().GetAllAlgoOrderIDs();
+            var ids = TradeHandler.GetAllAlgoOrderIDs();
             if (ids != null) {
                 foreach (var id in ids) {
                     DeleteAlgo(id);
@@ -126,12 +124,12 @@ namespace ThmCommon.Handlers {
         }
 
         public bool DeleteAlgo(string algoID) {
-            GetTradeHandler().DeleteAlgoOrder(algoID, EOrderStatus.Canceled);
-            return GetAlgoHandler().DeleteAlgo(algoID);
+            TradeHandler.DeleteAlgoOrder(algoID, EOrderStatus.Canceled, 0);
+            return AlgoHandler.DeleteAlgo(algoID);
         }
 
         public void DeleteAlgosByPrice(decimal price) {
-            var orderData = GetAlgoHandler().GetAlgosByPrice(price);
+            var orderData = AlgoHandler.GetAlgosByPrice(price);
             if (orderData.Count < 1) {
                 Logger.Warn($"No algo found at {price} for {InstrumentInfo.InstrumentID}");
                 return;
@@ -154,34 +152,33 @@ namespace ThmCommon.Handlers {
         /// <param name="instrumentHandler">orig</param>
         /// <param name="md">depth data of ref instrument</param>
         /// <returns>
-        /// return 0 if executed; 
-        ///     else return 1 and add for further process
+        /// return qty if executed; 
+        ///     else return 0 and add for further process
         /// </returns>
         public int CheckInterTrigger(AlgoData algo, InstrumentHandlerBase instrumentHandler, BestQuot md) {
             if (algo.TriggerPriceType == EPriceType.Bid) {
                 if ((algo.TriggerOperator == EOperator.LessET && md.BidPrice1 <= algo.TriggerPrice)
                     || (algo.TriggerOperator == EOperator.GreaterET && md.BidPrice1 >= algo.TriggerPrice)) {
-                    instrumentHandler.SendOrder(algo.BuyOrSell, algo.Price, algo.Qty, algo.Type.ToString(), algo.Tag);
-                    return 0;
+                    instrumentHandler.SendOrder(algo.BuyOrSell, algo.Price, algo.Qty, algo.Type.ToString());
+                    return algo.Qty;
                 }
                 else {
-                    return 1;
+                    return 0;
                 }
             }
             else if (algo.TriggerPriceType == EPriceType.Ask) {
                 if ((algo.TriggerOperator == EOperator.LessET && md.AskPrice1 <= algo.TriggerPrice)
                     || (algo.TriggerOperator == EOperator.GreaterET && md.AskPrice1 >= algo.TriggerPrice)) {
-                    instrumentHandler.SendOrder(algo.BuyOrSell, algo.Price, algo.Qty, algo.Type.ToString(), algo.Tag);
-                    return 0;
+                    instrumentHandler.SendOrder(algo.BuyOrSell, algo.Price, algo.Qty, algo.Type.ToString());
+                    return algo.Qty;
                 }
                 else {
-                    return 1;
+                    return 0;
                 }
             }
-            else {
-                Logger.Warn("Inter-trigger algo price type is not supported: " + algo.TriggerPriceType);
-                return -1;
-            }
+
+            Logger.Warn("Inter-trigger algo price type is not supported: " + algo.TriggerPriceType);
+            return -1;
         }
         #endregion
 
@@ -189,7 +186,7 @@ namespace ThmCommon.Handlers {
         private static readonly DataProcessor _dataProcessor = new DataProcessor();
         public async Task<bool> SaveDataAsync(MarketDepthData depthData) {
             try {
-                if (EnableSave2DB) {
+                if (EnableSaveData) {
                     return await _dataProcessor.SaveDataAsync(depthData);
                 }
             }
@@ -202,7 +199,7 @@ namespace ThmCommon.Handlers {
 
         public async Task<bool> SaveDataAsync(TimeSalesData tsData) {
             try {
-                if (EnableSave2DB) {
+                if (EnableSaveData) {
                     return await _dataProcessor.SaveDataAsync(tsData);
                 }
             }

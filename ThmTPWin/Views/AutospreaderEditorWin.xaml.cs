@@ -18,7 +18,7 @@ namespace ThmTPWin.Views {
     public partial class AutospreaderEditorWin : Window {
         private readonly AutospreaderEditorVM _vm;
         private readonly AutospeaderParas _asParas;
-        internal AutospreaderEditorWin( AutospeaderParas asParas) {
+        internal AutospreaderEditorWin(AutospeaderParas asParas) {
             InitializeComponent();
 
             _vm = new AutospreaderEditorVM(asParas.Name, asParas.IsEnabled, asParas.ASLegs);

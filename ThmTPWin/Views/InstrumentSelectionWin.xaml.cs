@@ -24,7 +24,7 @@ namespace ThmTPWin.Views {
         private void SelectButton_Click(object sender, RoutedEventArgs e) {
             Cursor = System.Windows.Input.Cursors.Wait;
 
-            if (!InstrumentSelection.Select(out string err)) {
+            if (!InstrumentSelection.Select(out var err)) {
                 MessageBox.Show(err);
                 return;
             }

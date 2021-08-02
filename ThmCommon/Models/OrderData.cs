@@ -74,6 +74,7 @@ namespace ThmCommon.Models {
             Status = EOrderStatus.New;
             EntryPrice = algo.Price;
             Qty = algo.Qty;
+            FillQty = algo.FillQty;
 
             TriggerPrice = algo?.TriggerPrice;
             TriggerQty = algo?.TriggerQty;

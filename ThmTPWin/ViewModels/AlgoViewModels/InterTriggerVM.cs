@@ -7,12 +7,12 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System.Collections.Generic;
 using Prism.Mvvm;
+using ThmCommon.Handlers;
 using ThmCommon.Models;
 
 namespace ThmTPWin.ViewModels.AlgoViewModels {
-    internal class InterTriggerVM : BindableBase {
+    public class InterTriggerVM : BindableBase {
         private string _refInstrument;
         public string RefInstrument {
             get => _refInstrument;
@@ -44,6 +44,8 @@ namespace ThmTPWin.ViewModels.AlgoViewModels {
             set => SetProperty(ref _refPrice, value);
         }
 
+        public InstrumentHandlerBase RefInstrumentHandler { get; set; }
+
         public InterTriggerVM(string instrument) {
             Instrument = instrument;
         }
@@ -60,6 +62,11 @@ namespace ThmTPWin.ViewModels.AlgoViewModels {
         }
 
         internal bool Check(out string err) {
+            if (RefInstrumentHandler == null) {
+                err = "The reference instrument is not specified";
+                return false;
+            }
+
             err = string.Empty;
             if (decimal.Compare(RefPrice, 0) <= 0) {
                 err = "The ref price is not correct";

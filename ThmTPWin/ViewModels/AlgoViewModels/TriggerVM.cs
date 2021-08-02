@@ -13,7 +13,7 @@ using ThmCommon.Models;
 using ThmCommon.Utilities;
 
 namespace ThmTPWin.ViewModels.AlgoViewModels {
-    internal class TriggerVM : BindableBase {
+    public class TriggerVM : BindableBase {
         public EOperator Operator => SelectedOperator == ">=" ? EOperator.GreaterET : EOperator.LessET;
         //public EOrderDirection BuySell => SelectedBuyOrSell == "Buy" ? EOrderDirection.Buy : EOrderDirection.Sell;
 

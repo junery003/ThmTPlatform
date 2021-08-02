@@ -23,7 +23,7 @@ namespace ThmCommon.Database {
         {
             { "SGX",  0},
             { "HKE",  0},
-            { "HKEX",  0}, // added on Mar. 11, 2020, same as HKE(for ATP)
+            { "HKEX", 0}, // added on Mar. 11, 2020, same as HKE(for ATP)
 
             { "APEX", 1},
             { "CME",  1},
@@ -35,13 +35,14 @@ namespace ThmCommon.Database {
 
             { "CBT", 3},
             { "NYM", 3},
-            { "SH",  3},  // SHFE
+            { "SH",  3},   // SHFE
+            { "EUREX", 3}, // added on Jul, 2021
 
             { "INE", 4},
             { "LME", 4},
             { "ZC",  4},
-            { "TOCOM", 4 }, // added on Mar. 11, 2020
-            { "OSE", 4}, // added on July 28, 2020, meanwhile TOCOM will be invalid
+            { "TOCOM", 4}, // added on Mar. 11, 2020
+            { "OSE", 4},   // added on July 28, 2020, meanwhile TOCOM will be invalid
         };
 
         /// <summary>
@@ -94,26 +95,26 @@ namespace ThmCommon.Database {
 
             string qurt = "0";
             switch (recordDateTime.Month) {
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    qurt = "1";
-                    break;
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                    qurt = "2";
-                    break;
-                case 9:
-                case 10:
-                case 11:
-                case 12:
-                    qurt = "3";
-                    break;
-                default:
-                    break;
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                qurt = "1";
+                break;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                qurt = "2";
+                break;
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+                qurt = "3";
+                break;
+            default:
+                break;
             }
 
             return recordDateTime.ToString("yyyy") + qurt;

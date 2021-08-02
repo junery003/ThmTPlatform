@@ -15,6 +15,12 @@ namespace ThmCommon.Models {
         Sell = 2  // Hit from TT
     }
 
+    public enum ETIF {
+        Day = 0,
+        FAK = 3,
+        FOK = 4,
+    }
+
     public enum EOrderStatus {
         Unknown = 0,
         New = 1,
