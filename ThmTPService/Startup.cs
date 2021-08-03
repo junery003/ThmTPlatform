@@ -7,13 +7,12 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ThmTPService.Services;
 
 namespace ThmTPService {
     public class Startup {
@@ -28,7 +27,7 @@ namespace ThmTPService {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             // for compatibilities only (does not support HTTP/2)
             //AppContext.SetSwitch("Microsoft.AspNetCore.Server.Kestrel.EnableWindows81Http2", true);
 
@@ -36,6 +35,9 @@ namespace ThmTPService {
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<ConnectorService>();
+                endpoints.MapGrpcService<MarketDataService>();
+                endpoints.MapGrpcService<OrderService>();
 
                 endpoints.MapGet("/", async context => {
                     await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
