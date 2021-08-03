@@ -2,7 +2,7 @@
 
 //import "google/protobuf/any.proto";
 
-option csharp_namespace = "ThmServiceAdapter.ServiceAdapter";
+option csharp_namespace = "ThmServiceAdapter.Services";
 package order_data;
 
 service OrderService {

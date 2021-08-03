@@ -11,7 +11,7 @@
 using Grpc.Net.Client;
 using System.Threading.Tasks;
 
-namespace ThmServiceAdapter.ServiceAdapter {
+namespace ThmServiceAdapter.Services {
     public class GreetAdapter {
         public async Task<string> Start() {
             // The port number(5001) must match the port of the gRPC server.

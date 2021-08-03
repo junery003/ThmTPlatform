@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 using System;
 using System.Threading.Tasks;
-using ThmServiceAdapter.ServiceAdapter;
+using ThmServiceAdapter.Services;
 
 namespace ThmServiceAdapter {
     internal class Program {

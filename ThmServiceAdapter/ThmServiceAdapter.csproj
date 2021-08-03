@@ -20,9 +20,5 @@
         <Protobuf Include="protos\depth_data.proto" />
         <Protobuf Include="protos\order_data.proto" />
         <Protobuf Include="protos\login.proto" />
-        <None Update="protos\greet.proto">
-            <GrpcServices>Client</GrpcServices>
-        </None>
     </ItemGroup>
-
 </Project>

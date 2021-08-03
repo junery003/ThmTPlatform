@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "ThmServiceAdapter.ServiceAdapter";
+option csharp_namespace = "ThmServiceAdapter.Services";
 package greet;
 
 // The greeting service definition.
