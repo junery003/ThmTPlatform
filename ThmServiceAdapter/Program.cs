@@ -9,12 +9,13 @@
 //-----------------------------------------------------------------------------
 using System;
 using System.Threading.Tasks;
+using ThmServiceAdapter.ServiceAdapter;
 
 namespace ThmServiceAdapter {
     internal class Program {
-        static async Task Main(string[] args) {
+        internal static async Task Main(string[] args) {
             Console.WriteLine("Hello World!");
-            var client = new GreetClient();
+            var client = new GreetAdapter();
             Console.WriteLine(await client.Start());
         }
     }

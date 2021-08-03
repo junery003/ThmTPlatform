@@ -1,11 +1,11 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "ThmTPClient.ServiceAdapters"
+option csharp_namespace = "ThmServiceAdapter.ServiceAdapter";
 package depth_data;
 
 service DepthDataService {
-    rcp Subscribe(DepthDataSubscribeReq) returns (stream DepthDataSubscribeRsp);
-    rcp Unsubscribe(DepthDataUnscribeReq) returns (DepthDataUnscribeRsp);
+    rpc Subscribe(DepthDataSubscribeReq) returns (stream DepthDataSubscribeRsp);
+    rpc Unsubscribe(DepthDataUnscribeReq) returns (DepthDataUnscribeRsp);
 }
 
 message DepthDataSubscribeReq { // subscirbe
@@ -23,23 +23,23 @@ message DepthDataSubscribeRsp {
     double bid4 = 8;
     double bid5 = 9;
    
-    double bQty1 = 6;
-    double bQty2 = 6;
-    double bQty3 = 6;
-    double bQty4 = 6;
-    double bQty5 = 6;
+    double bQty1 = 11;
+    double bQty2 = 12;
+    double bQty3 = 13;
+    double bQty4 = 14;
+    double bQty5 = 15;
         
-    double ask1 = 6;
-    double ask2 = 6;
-    double ask3 = 6;
-    double ask4 = 6;
-    double ask5 = 6;
+    double ask1 = 21;
+    double ask2 = 22;
+    double ask3 = 23;
+    double ask4 = 24;
+    double ask5 = 25;
    
-    double aQty1 = 6;
-    double aQty2 = 6;
-    double aQty3 = 6;
-    double aQty4 = 6;
-    double aQty5 = 6;
+    double aQty1 = 31;
+    double aQty2 = 32;
+    double aQty3 = 33;
+    double aQty4 = 34;
+    double aQty5 = 35;
 }
 
 message DepthDataUnscribeReq {

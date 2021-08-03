@@ -7,12 +7,12 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System;
-using System.Threading.Tasks;
-using Grpc.Net.Client;
 
-namespace ThmServiceAdapter {
-    public class GreetClient {
+using Grpc.Net.Client;
+using System.Threading.Tasks;
+
+namespace ThmServiceAdapter.ServiceAdapter {
+    public class GreetAdapter {
         public async Task<string> Start() {
             // The port number(5001) must match the port of the gRPC server.
             using var channel = GrpcChannel.ForAddress("https://localhost:5001");
