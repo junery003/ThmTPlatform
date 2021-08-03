@@ -21,13 +21,22 @@ namespace ThmTPWin.Views {
     /// </summary>
     public partial class PriceLadderUsrCtrl : UserControl {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private PriceLadderVM _vm;
+        private PriceLadderVM VM {
+            get {
+                if (_vm == null) {
+                    _vm = (PriceLadderVM)DataContext;
+                }
+                return _vm;
+            }
+        }
 
         public PriceLadderUsrCtrl() {
             InitializeComponent();
         }
 
         internal void RecenterPriceLadder() {
-            int centerIdx = (DataContext as PriceLadderVM).GetCenterIndex();
+            int centerIdx = VM.GetCenterIndex();
             Dispatcher.BeginInvoke(new Action(() => {
                 //Task.Delay(500).Wait();
                 if (centerIdx > 0 && centerIdx < DepthDataGrid.Items.Count) {
@@ -38,7 +47,7 @@ namespace ThmTPWin.Views {
         }
 
         private void DeleteAllAlgos_Click(object sender, RoutedEventArgs e) {
-            (DataContext as PriceLadderVM).DeleteAllAlgos();
+            VM.DeleteAllAlgos();
         }
 
         private void CancelAlgos_Click(object sender, RoutedEventArgs e) {
@@ -63,19 +72,19 @@ namespace ThmTPWin.Views {
 
             EBuySell dir;
             switch (curCol.Header.ToString()) {
-            case "Bids":  // buy
-                dir = EBuySell.Buy;
-                break;
-            case "Asks": // Sell
-                dir = EBuySell.Sell;
-                break;
-            default:
-                Logger.Warn($"Click col: '{curCol.Header}'");
-                return;
+                case "Bids":  // buy
+                    dir = EBuySell.Buy;
+                    break;
+                case "Asks": // Sell
+                    dir = EBuySell.Sell;
+                    break;
+                default:
+                    Logger.Warn($"Click col: '{curCol.Header}'");
+                    return;
             }
 
             var curMDView = (MarketDataView)curCellInfo.Item;
-            (DataContext as PriceLadderVM).ProcessAlgo(dir, curMDView.Price);
+            VM.ProcessAlgo(dir, curMDView.Price);
         }
     }
 }

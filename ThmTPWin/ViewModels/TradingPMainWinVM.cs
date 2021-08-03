@@ -7,14 +7,14 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using Prism.Commands;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Timers;
 using System.Windows.Input;
-using Prism.Commands;
-using Prism.Mvvm;
 using ThmCommon.Handlers;
 using ThmCommon.Models;
 using ThmTPWin.Models;

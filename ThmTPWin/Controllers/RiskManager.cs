@@ -8,8 +8,6 @@
 //
 //-----------------------------------------------------------------------------
 
-using System;
-
 namespace ThmTPWin.Controllers {
     internal class RiskManager {
         public const int MaxPosPerProduct = 500;

@@ -42,20 +42,23 @@ namespace ThmTPWin {
             }
         }
 
+        private static LoginView _loginView = null;
         private bool Login() {
             try {
-                var login = new LoginView() {
-                    Owner = this,
-                };
+                if (_loginView == null) {
+                    _loginView = new LoginView() {
+                        Owner = this,
+                    };
+                }
 
-                if (!login.Init(out var err)) {
+                if (!_loginView.Init(out var err)) {
                     MessageBox.Show("Error: " + err);
                     return false;
                 }
 
-                var rlt = login.ShowDialog().Value;
+                var rlt = _loginView.ShowDialog().Value;
                 if (rlt) {
-                    _vm.IsTitanEnabled = login.IsChecked(ThmCommon.Config.EProviderType.TITAN);
+                    _vm.IsTitanEnabled = _loginView.IsChecked(ThmCommon.Config.EProviderType.TITAN);
                     return true;
                 }
 
@@ -116,6 +119,8 @@ namespace ThmTPWin {
         }
 
         private void Window_Closed(object sender, EventArgs e) {
+            _loginView?.Dispose();
+
             _vm?.Dispose();
         }
     }

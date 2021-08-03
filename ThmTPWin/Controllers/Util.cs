@@ -7,10 +7,10 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using NAudio.Wave;
 using System;
 using System.Media;
 using System.Threading.Tasks;
-using NAudio.Wave;
 
 namespace ThmTPWin.Controllers {
     public static class Util {

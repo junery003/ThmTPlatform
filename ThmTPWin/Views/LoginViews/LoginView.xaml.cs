@@ -51,5 +51,9 @@ namespace ThmTPWin.Views.LoginViews {
         private void BtnCancel_Click(object sender, RoutedEventArgs e) {
             DialogResult = false;
         }
+
+        internal void Dispose() {
+            _vm.Dispose();
+        }
     }
 }

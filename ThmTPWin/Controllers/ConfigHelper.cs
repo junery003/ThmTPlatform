@@ -8,9 +8,9 @@
 //
 //-----------------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using System;
 using System.IO;
-using Newtonsoft.Json;
 using ThmCommon.Config;
 
 namespace ThmTPWin.Controllers {
@@ -72,5 +72,7 @@ namespace ThmTPWin.Controllers {
     public class ThmLogin {
         public string UserID { get; set; }
         public string Password { get; set; }
+        public string Server { get; set; }
+        public int Port { get; set; }
     }
 }

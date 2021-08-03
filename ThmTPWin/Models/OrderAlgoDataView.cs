@@ -7,8 +7,8 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System;
 using Prism.Mvvm;
+using System;
 using ThmCommon.Models;
 using ThmCommon.Utilities;
 

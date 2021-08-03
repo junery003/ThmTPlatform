@@ -2,28 +2,20 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net5.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <AssemblyName>ThmTPWin</AssemblyName>
-    <RootNamespace>ThmTPWin</RootNamespace>
-    <Description>Any issue, please contact jun.lei@themeinternationaltrading.com</Description>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>../x64/Debug</OutputPath>
-      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.13.0" />
     <PackageReference Include="NAudio" Version="2.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.10" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ThmCommon5\ThmCommon.csproj" />
+    <ProjectReference Include="..\ThmCommon\ThmCommon.csproj" />
+    <ProjectReference Include="..\ThmServiceAdapter\ThmServiceAdapter.csproj" />
   </ItemGroup>
 
 </Project>
