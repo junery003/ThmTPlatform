@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ThmTPWin.Views"
         xmlns:vm="clr-namespace:ThmTPWin.ViewModels"
-        mc:Ignorable="d" Icon="../Resources/thm.ico"
+        mc:Ignorable="d"
         Title="Thm Trading Platform" Height="768" Width="1024" 
         WindowStartupLocation="CenterScreen" Background="GhostWhite"
         Loaded="Window_Loaded" Closed="Window_Closed" >

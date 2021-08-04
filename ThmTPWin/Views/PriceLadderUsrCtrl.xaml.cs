@@ -21,6 +21,7 @@ namespace ThmTPWin.Views {
     /// </summary>
     public partial class PriceLadderUsrCtrl : UserControl {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private PriceLadderVM _vm;
         private PriceLadderVM VM {
             get {
@@ -51,10 +52,9 @@ namespace ThmTPWin.Views {
         }
 
         private void CancelAlgos_Click(object sender, RoutedEventArgs e) {
-            var curRow = ((MenuItem)sender).DataContext as MarketDataView;
+            var curRow = (MarketDataView)((MenuItem)sender).DataContext;
             if (curRow.AlgoCount >= 1) {
-                var vm = DataContext as PriceLadderVM;
-                vm.DeleteAlgosByPrice(curRow.Price);
+                VM.DeleteAlgosByPrice(curRow.Price);
             }
         }
 
