@@ -17,8 +17,8 @@
 
     <ItemGroup>
         <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
-        <Protobuf Include="Protos\depth_data.proto" GrpcServices="Client" />
+        <Protobuf Include="Protos\market_data.proto" GrpcServices="Client" />
         <Protobuf Include="Protos\order_data.proto" GrpcServices="Client" />
-        <Protobuf Include="Protos\login.proto" GrpcServices="Client" />
+        <Protobuf Include="Protos\connector.proto" GrpcServices="Client" />
     </ItemGroup>
 </Project>

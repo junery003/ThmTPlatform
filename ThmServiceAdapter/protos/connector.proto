@@ -1,7 +1,9 @@
 ﻿syntax="proto3";
 
-option csharp_namespace = "ThmTPService.Services";
+option csharp_namespace = "ThmServiceAdapter.Services";
+
 package Services;
+
 
 service Connector {
     rpc Login (LoginReq) returns (LoginRsp);

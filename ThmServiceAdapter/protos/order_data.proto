@@ -3,7 +3,8 @@
 //import "google/protobuf/any.proto";
 
 option csharp_namespace = "ThmServiceAdapter.Services";
-package order_data;
+
+package Services;
 
 service OrderService {
     rpc SendOrder(SendOrderReq) returns (SendOrderRsp);

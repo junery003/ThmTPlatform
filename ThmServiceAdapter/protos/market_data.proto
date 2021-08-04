@@ -1,7 +1,7 @@
 ﻿syntax = "proto3";
 
 option csharp_namespace = "ThmServiceAdapter.Services";
-package depth_data;
+package Services;
 
 service DepthDataService {
     rpc Subscribe(DepthDataSubscribeReq) returns (stream DepthDataSubscribeRsp);
@@ -13,9 +13,10 @@ message DepthDataSubscribeReq { // subscirbe
 }
 
 message DepthDataSubscribeRsp {
-    string symbol = 1;
-    string contract = 2;
-    string exchange = 3;
+    string provider = 1;
+    string exchange = 2;
+    string symbol = 3;
+    string contract = 4;
     
     double bid1 = 5;
     double bid2 = 6;

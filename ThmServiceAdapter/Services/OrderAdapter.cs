@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ThmServiceAdapter.Services{
-    class OrderAdapter {
+    public class OrderAdapter {
     }
 }

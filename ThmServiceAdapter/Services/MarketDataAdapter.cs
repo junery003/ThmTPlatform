@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ThmServiceAdapter.Services {
-    class MarketDataAdapter {
+    public class MarketDataAdapter {
     }
 }
