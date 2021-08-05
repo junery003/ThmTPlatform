@@ -7,21 +7,18 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using Prism.Mvvm;
 using ThmCommon.Config;
-using ThmServices;
 using ThmTPWin.Controllers;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
     public class LoginVM : BindableBase {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
-
-        internal static ConnectorManager ConnMgr { get; } = new ConnectorManager();
 
         public ObservableCollection<ILoginTabItm> LoginTabItms { get; } = new ObservableCollection<ILoginTabItm>();
         public ObservableCollection<Status> ProcessLogs { get; } = new ObservableCollection<Status>();
@@ -30,10 +27,6 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
         public ILoginTabItm SelectedItm {
             get => _selectedItm;
             set => SetProperty(ref _selectedItm, value);
-        }
-
-        static LoginVM() {
-            ConnMgr.Load();
         }
 
         private readonly object _lock = new object();
@@ -123,7 +116,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                     }
                 }
                 else {
-                    ConnMgr.Enable(itm.Provider, false);
+                    //ConnMgr.Enable(itm.Provider, false);
                 }
             }
 
@@ -140,20 +133,20 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
 
                 ILoginCfg loginCfg = null;
                 switch (providerType) {
-                case EProviderType.ATP:
-                    loginCfg = ConfigHelper.LoginCfg.AtpLogin;
-                    break;
-                case EProviderType.TT:
-                    loginCfg = ConfigHelper.LoginCfg.TTLogin;
-                    break;
-                case EProviderType.TITAN:
-                    loginCfg = ConfigHelper.LoginCfg.TitanLogin;
-                    break;
-                default: // wrong
-                    break;
+                    case EProviderType.ATP:
+                        loginCfg = ConfigHelper.LoginCfg.AtpLogin;
+                        break;
+                    case EProviderType.TT:
+                        loginCfg = ConfigHelper.LoginCfg.TTLogin;
+                        break;
+                    case EProviderType.TITAN:
+                        loginCfg = ConfigHelper.LoginCfg.TitanLogin;
+                        break;
+                    default: // wrong
+                        return;
                 };
 
-                var conn = ConnectorManager.InitConnection(providerType, loginCfg);
+                var conn = ConnManager.InitConnection(providerType, loginCfg);
                 if (conn == null) {
                     AddProgess($"Failed to init {providerType} connection");
                 }
@@ -173,7 +166,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
         }
 
         internal void Dispose() {
-            ConnMgr.Dispose();
+
         }
     }
 

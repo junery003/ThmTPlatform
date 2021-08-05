@@ -1,7 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "ThmTPService.Services";
-package Services;
+package ThmServices;
 
 service MarketData {
     rpc Subscribe(DepthDataSubscribeReq) returns (stream DepthDataSubscribeRsp);

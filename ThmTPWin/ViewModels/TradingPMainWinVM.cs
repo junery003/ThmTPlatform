@@ -112,9 +112,6 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        internal void IncreaseAlgo(string instrumentID, decimal price) {
-            //TradeWidgetDic[instrumentID].Item1.IncreaseAlgo(price);
-        }
 
         internal void DecreaseAlgo(string instrumentID, decimal price) {
             var trader = TradeWidgetTabItms.FirstOrDefault(x => x.InstrumentInfo.InstrumentID == instrumentID);

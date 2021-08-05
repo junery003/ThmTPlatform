@@ -1,4 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿//-----------------------------------------------------------------------------
+// File Name   : MarketDataService
+// Author      : junlei
+// Date        : 8/5/2021 1:12:16 PM
+// Description : 
+// Version     : 1.0.0      
+// Updated     : 
+//
+//-----------------------------------------------------------------------------
+using Microsoft.Extensions.Logging;
+using ThmServices;
 
 namespace ThmTPService.Services {
     public class MarketDataService : MarketData.MarketDataBase {

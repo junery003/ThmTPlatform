@@ -11,6 +11,7 @@
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using ThmServices;
 
 namespace ThmTPService.Services {
     public class ConnectorService : Connector.ConnectorBase {

@@ -16,7 +16,7 @@ namespace ThmTPWin.Views {
     /// Interaction logic for MDTraderUsrCtrl.xaml
     /// </summary>
     public partial class MDTraderUsrCtrl : UserControl {
-        internal MDTraderUsrCtrl() {
+        public MDTraderUsrCtrl() {
             InitializeComponent();
         }
 

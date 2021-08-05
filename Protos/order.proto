@@ -2,8 +2,7 @@
 
 //import "google/protobuf/any.proto";
 
-option csharp_namespace = "ThmTPService.Services";
-package Services;
+package ThmServices;
 
 service Order {
     rpc SendOrder(SendOrderReq) returns (SendOrderRsp);

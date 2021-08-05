@@ -26,6 +26,7 @@ namespace ThmCommon.Config {
 
     public interface IConfig {
         bool Enabled { get; set; }
+        List<ExchangeCfg> Exchanges { get; }
         bool IsValid(ref string err);
     }
 

@@ -7,10 +7,10 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using Prism.Mvvm;
 using ThmCommon.Handlers;
 using ThmCommon.Models;
 using ThmTPWin.Controllers;
@@ -19,7 +19,7 @@ namespace ThmTPWin.ViewModels {
     public class MDTraderVM : BindableBase, ITraderTabItm {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private static readonly List<EAlgoType> Algos = new List<EAlgoType> {
+        private static readonly List<EAlgoType> Algos = new() {
             EAlgoType.Limit,
             EAlgoType.Trigger,
             EAlgoType.Sniper,
@@ -37,13 +37,12 @@ namespace ThmTPWin.ViewModels {
             TradeParaVM = new BaseTradeParaVM(this, Algos);
             LadderVM = new PriceLadderVM(this);
 
-
             TradeParaVM.Position = instrumentHandler.GetPosition();
 
             instrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
         }
 
-        private readonly object _marketDataUpdatelock = new object();
+        private readonly object _marketDataUpdatelock = new();
         private void InstrumentHandler_OnMarketDataUpdated() {
             lock (_marketDataUpdatelock) {
                 LadderVM.UpdateMarketData(InstrumentHandler.CurMarketDepthData);
@@ -53,65 +52,65 @@ namespace ThmTPWin.ViewModels {
         public void ProcessAlgo(EBuySell dir, decimal price) {
             var qty = TradeParaVM.Quantity;
             switch (TradeParaVM.SelectedAlgoType) {
-            case EAlgoType.Limit: {
-                var rlt = ProcessLimit(dir, price, qty);
-                if (rlt == 0) {
-                    //_ = int.TryParse(row.Cells[3].Value?.ToString(), out int algoCnt);
-                    //row.Cells[3].Value = algoCnt + 1;
-                }
-                break;
-            }
-            case EAlgoType.Trigger: {
-                if (TradeParaVM.TriggerVm.Qty <= 0) {
-                    //TriggerQtyTxtb.Background = Brushes.Red;
-                    return;
-                }
+                case EAlgoType.Limit: {
+                        var rlt = ProcessLimit(dir, price, qty);
+                        if (rlt == 0) {
+                            //_ = int.TryParse(row.Cells[3].Value?.ToString(), out int algoCnt);
+                            //row.Cells[3].Value = algoCnt + 1;
+                        }
+                        break;
+                    }
+                case EAlgoType.Trigger: {
+                        if (TradeParaVM.TriggerVm.Qty <= 0) {
+                            //TriggerQtyTxtb.Background = Brushes.Red;
+                            return;
+                        }
 
-                var rlt = ProcessTrigger(dir, price, qty,
-                    TradeParaVM.TriggerVm.PriceType,
-                    TradeParaVM.TriggerVm.Operator,
-                    TradeParaVM.TriggerVm.Qty);
+                        var rlt = ProcessTrigger(dir, price, qty,
+                            TradeParaVM.TriggerVm.PriceType,
+                            TradeParaVM.TriggerVm.Operator,
+                            TradeParaVM.TriggerVm.Qty);
 
-                if (rlt == 1) {
-                    IncreaseAlgo(price);
-                }
-                break;
-            }
-            case EAlgoType.Sniper: {
-                var rlt = ProcessSniper(dir, price, qty);
-                if (rlt == 1) {
-                    IncreaseAlgo(price);
-                }
-                break;
-            }
-            case EAlgoType.InterTrigger: {
-                if (!TradeParaVM.InterTriggerVm.Check(out var err)) {
-                    Logger.Error($"Inter-Trigger error: {err}");
-                    TradeParaVM.SelectedAlgoType = EAlgoType.Limit;
-                    return;
-                }
+                        if (rlt == 1) {
+                            IncreaseAlgo(price);
+                        }
+                        break;
+                    }
+                case EAlgoType.Sniper: {
+                        var rlt = ProcessSniper(dir, price, qty);
+                        if (rlt == 1) {
+                            IncreaseAlgo(price);
+                        }
+                        break;
+                    }
+                case EAlgoType.InterTrigger: {
+                        if (!TradeParaVM.InterTriggerVm.Check(out var err)) {
+                            Logger.Error($"Inter-Trigger error: {err}");
+                            TradeParaVM.SelectedAlgoType = EAlgoType.Limit;
+                            return;
+                        }
 
-                var rlt = ProcessInterTrigger(dir, price, qty,
-                    TradeParaVM.InterTriggerVm.RefInstrumentHandler,
-                    TradeParaVM.InterTriggerVm.RefPriceType,
-                    TradeParaVM.InterTriggerVm.RefTriggerOp,
-                    TradeParaVM.InterTriggerVm.RefPrice);
+                        var rlt = ProcessInterTrigger(dir, price, qty,
+                            TradeParaVM.InterTriggerVm.RefInstrumentHandler,
+                            TradeParaVM.InterTriggerVm.RefPriceType,
+                            TradeParaVM.InterTriggerVm.RefTriggerOp,
+                            TradeParaVM.InterTriggerVm.RefPrice);
 
-                if (rlt == 1) {
-                    IncreaseAlgo(price);
-                }
-                break;
-            }
-            case EAlgoType.Market: {
-                break;
-            }
-            case EAlgoType.PreOpen: {
-                break;
-            }
-            default: {
-                Logger.Error($"Algo type not supported: {TradeParaVM.SelectedAlgoType}");
-                break;
-            }
+                        if (rlt == 1) {
+                            IncreaseAlgo(price);
+                        }
+                        break;
+                    }
+                case EAlgoType.Market: {
+                        break;
+                    }
+                case EAlgoType.PreOpen: {
+                        break;
+                    }
+                default: {
+                        Logger.Error($"Algo type not supported: {TradeParaVM.SelectedAlgoType}");
+                        break;
+                    }
             }
 
             TradeParaVM.ResetQuantity();

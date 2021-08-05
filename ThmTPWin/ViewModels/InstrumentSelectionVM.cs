@@ -7,13 +7,13 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Prism.Mvvm;
 using ThmCommon.Config;
 using ThmCommon.Handlers;
-using ThmTPWin.ViewModels.LoginViewModels;
+using ThmTPWin.Controllers;
 
 namespace ThmTPWin.ViewModels {
     public class InstrumentSelectionVM : BindableBase {
@@ -25,7 +25,7 @@ namespace ThmTPWin.ViewModels {
             set {
                 if (SetProperty(ref _selectedProvider, value)) {
                     Exchanges.Clear();
-                    LoginVM.ConnMgr.GetExchanges(_selectedProvider)?.ForEach(x => {
+                    ConnManager.GetExchanges(_selectedProvider)?.ForEach(x => {
                         if (x.Enabled) {
                             Exchanges.Add(x);
                         }
@@ -73,7 +73,7 @@ namespace ThmTPWin.ViewModels {
                 if (SetProperty(ref _selectedProduct, value)) {
                     Contracts.Clear();
 
-                    _curConn = LoginVM.ConnMgr.GetConnector(SelectedProvider);
+                    _curConn = ConnManager.GetConnector(SelectedProvider);
                     if (_curConn != null && SelectedExchange != null && SelectedProductType != null && _selectedProduct != null) {
                         var instruments = _curConn.GetInstruments(SelectedExchange.Market, SelectedProductType, _selectedProduct);
 
@@ -95,7 +95,7 @@ namespace ThmTPWin.ViewModels {
 
         private IConnector _curConn;
         internal InstrumentSelectionVM() {
-            Providers = LoginVM.ConnMgr.GetProviders();
+            Providers = ConnManager.GetProviders();
         }
 
         internal InstrumentHandlerBase GetInstrumentHandler(out string err) {

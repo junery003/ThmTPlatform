@@ -1,6 +1,16 @@
-﻿using Grpc.Core;
+﻿//-----------------------------------------------------------------------------
+// File Name   : OrderService
+// Author      : junlei
+// Date        : 8/5/2021 1:23:25 PM
+// Description : 
+// Version     : 1.0.0      
+// Updated     : 
+//
+//-----------------------------------------------------------------------------
+using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using ThmServices;
 
 namespace ThmTPService.Services {
     public class OrderService : Order.OrderBase {

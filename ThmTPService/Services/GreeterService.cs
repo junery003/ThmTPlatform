@@ -11,6 +11,7 @@
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
+using ThmServices;
 
 namespace ThmTPService.Services {
     public class GreeterService : Greeter.GreeterBase {

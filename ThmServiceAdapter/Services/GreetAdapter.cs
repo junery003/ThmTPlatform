@@ -10,22 +10,25 @@
 
 using Grpc.Net.Client;
 using System.Threading.Tasks;
+using ThmServices;
 
 namespace ThmServiceAdapter.Services {
-    public class GreetAdapter {
-        public async Task<string> Start() {
-            // The port number(5001) must match the port of the gRPC server.
-            using var channel = GrpcChannel.ForAddress("https://localhost:5001");
-            var client = new Greeter.GreeterClient(channel);
+    internal class GreetAdapter {
+        private readonly Greeter.GreeterClient _client;
 
+        internal GreetAdapter(GrpcChannel channel) {
+            _client = new Greeter.GreeterClient(channel);
+        }
+
+        public async Task<string> Test() {
             string user = "client1";
-            var reply = await client.SayHelloAsync(new HelloRequest { Name = user });
+            var reply = await _client.SayHelloAsync(new HelloRequest { Name = user });
 
             string rlt;
             rlt = reply.Message;
             //Console.WriteLine("Greeting: " + reply.Message);
 
-            reply = await client.SayHelloAAsync(new HelloRequest { Name = user });
+            reply = await _client.SayHelloAAsync(new HelloRequest { Name = user });
             //Console.WriteLine("Greeting: " + reply.Message);
             rlt += "\r\n" + reply.Message;
 

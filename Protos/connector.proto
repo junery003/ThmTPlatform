@@ -1,7 +1,6 @@
 ﻿syntax="proto3";
 
-option csharp_namespace = "ThmTPService.Services";
-package Services;
+package ThmServices;
 
 service Connector {
     rpc Login (LoginReq) returns (LoginRsp);
@@ -10,9 +9,9 @@ service Connector {
 }
 
 message LoginReq {
-    string user_id =1;
-    string server =3;
-    int32 port =4;
+    string user_id = 1;
+    string server = 3;
+    int32 port = 4;
 }
 
 message LoginRsp {

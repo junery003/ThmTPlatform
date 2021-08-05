@@ -12,12 +12,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\connector.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\market_data.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\order.proto" GrpcServices="Server" />
+        <Protobuf Include="../Protos/greet.proto" GrpcServices="Server" Link="Protos/greet.proto" />
+        <Protobuf Include="../Protos/connector.proto" GrpcServices="Server" Link="Protos/connector.proto" />
+        <Protobuf Include="../Protos/market_data.proto" GrpcServices="Server" Link="Protos/market_data.proto" />
+        <Protobuf Include="../Protos/order.proto" GrpcServices="Server" Link="Protos/order.proto" />
     </ItemGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.38.0" />
         <PackageReference Include="NLog" Version="4.7.10" />
