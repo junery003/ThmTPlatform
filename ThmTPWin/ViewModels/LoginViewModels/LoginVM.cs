@@ -128,7 +128,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
         }
 
         private Task Start(EProviderType providerType) {
-            return Task.Run(() => {
+            return Task.Run(async () => {
                 AddProgess($"Initializing {providerType} connection...");
 
                 ILoginCfg loginCfg = null;
@@ -146,9 +146,10 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                         return;
                 };
 
-                var conn = ConnManager.InitConnection(providerType, loginCfg);
+                var conn = await ConnManager.InitConnection(providerType, loginCfg);
                 if (conn == null) {
                     AddProgess($"Failed to init {providerType} connection");
+                    return;
                 }
 
                 if (!conn.Connect()) {

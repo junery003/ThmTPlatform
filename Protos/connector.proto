@@ -6,6 +6,7 @@ service Connector {
     rpc Login (LoginReq) returns (LoginRsp);
     rpc Logout (LogoutReq) returns (LogoutRsp);
     rpc InitConnection (ConnectReq) returns (ConnectRsp);
+    rpc GetProviders (GetProvidersReq) returns (GetProvidersRsp);
 }
 
 message LoginReq {
@@ -31,5 +32,13 @@ message ConnectReq {
 }
 
 message ConnectRsp {
+
+}
+
+message GetProvidersReq {
+
+}
+
+message GetProvidersRsp {
 
 }

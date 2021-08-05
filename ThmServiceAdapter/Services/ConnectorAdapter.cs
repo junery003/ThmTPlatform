@@ -26,5 +26,9 @@ namespace ThmServiceAdapter.Services {
 
             return await _client.InitConnectionAsync(connectReq);
         }
+
+        internal async Task<GetProvidersRsp> GetProviders() {
+            return await _client.GetProvidersAsync(new GetProvidersReq());
+        }
     }
 }

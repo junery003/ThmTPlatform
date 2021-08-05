@@ -14,6 +14,8 @@ using ThmServices;
 
 namespace ThmServiceAdapter.Services {
     internal class GreetAdapter {
+        private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly Greeter.GreeterClient _client;
 
         internal GreetAdapter(GrpcChannel channel) {
@@ -24,13 +26,13 @@ namespace ThmServiceAdapter.Services {
             string user = "client1";
             var reply = await _client.SayHelloAsync(new HelloRequest { Name = user });
 
-            string rlt;
-            rlt = reply.Message;
-            //Console.WriteLine("Greeting: " + reply.Message);
+            string rlt = reply.Message;
+            _logger.Info("Greeting: " + reply.Message);
 
             reply = await _client.SayHelloAAsync(new HelloRequest { Name = user });
-            //Console.WriteLine("Greeting: " + reply.Message);
+
             rlt += "\r\n" + reply.Message;
+            _logger.Info("Greeting: " + reply.Message);
 
             return rlt;
         }

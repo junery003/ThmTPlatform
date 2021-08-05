@@ -1,34 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <BaseOutputPath>../x64/</BaseOutputPath>
-    <Company>TIT</Company>
-    <Copyright>Jun</Copyright>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net5.0-windows7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <BaseOutputPath>bin/</BaseOutputPath>
+        <Company>TIT</Company>
+        <Copyright>Jun</Copyright>
+        <Description>Any issue, please contact jun.lei@themeinternationaltrading.com</Description>
+        <ApplicationIcon>Resources/thm.ico</ApplicationIcon>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <PlatformTarget>x64</PlatformTarget>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <PlatformTarget>x64</PlatformTarget>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.13.0" />
-    <PackageReference Include="NAudio" Version="2.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NLog" Version="4.7.10" />
-    <PackageReference Include="Prism.Core" Version="8.1.97" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="MongoDB.Driver" Version="2.13.0" />
+        <PackageReference Include="NAudio" Version="2.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="NLog" Version="4.7.10" />
+        <PackageReference Include="Prism.Core" Version="8.1.97" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ThmCommon\ThmCommon.csproj" />
-    <ProjectReference Include="..\ThmServiceAdapter\ThmServiceAdapter.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ThmCommon\ThmCommon.csproj" />
+        <ProjectReference Include="..\ThmServiceAdapter\ThmServiceAdapter.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="config\config.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="NLog.config">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
 </Project>

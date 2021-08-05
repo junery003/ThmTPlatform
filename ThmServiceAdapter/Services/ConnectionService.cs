@@ -9,10 +9,10 @@
 //-----------------------------------------------------------------------------
 using Grpc.Net.Client;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
 using ThmCommon.Handlers;
-using ThmServices;
 
 namespace ThmServiceAdapter.Services {
     public class ConnectionService : IDisposable {
@@ -43,13 +43,24 @@ namespace ThmServiceAdapter.Services {
                 _connectorAdapter = new ConnectorAdapter(_channel);
             }
 
-            ConnectRsp rsp = await _connectorAdapter.InitConnection(providerType, loginCfg);
-            IConnector connector;
-            switch (providerType) {
-                case EProviderType.ATP:
-                    connector = new AtpConnection();
+            var rsp = await _connectorAdapter.InitConnection(providerType, loginCfg);
+            IConnector connector = null;
+
+            return connector;
+        }
+
+        public async Task<List<EProviderType>> GetProviders() {
+            if (_connectorAdapter == null) {
+                _connectorAdapter = new ConnectorAdapter(_channel);
             }
 
+            var rsp = await _connectorAdapter.GetProviders();
+            List<EProviderType> providers = new();
+            //foreach (var provider in rsp) {
+            //    providers.Add(provider);
+            //}
+
+            return providers;
         }
 
         public void Dispose() {
