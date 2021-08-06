@@ -33,8 +33,8 @@ public:
 
     bool ChangePassword(const char* usr, const char* cur_pwd, const char* new_pwd) {
         const auto& omnet = cfg_helper_.config.account.omnet;
-
-        return OMnetClient::Instance().ChangePassword(omnet.server.c_str(), omnet.port, usr, cur_pwd, new_pwd);
+        auto client = std::make_unique<OMnetClient>();
+        return client->ChangePassword(omnet.server.c_str(), omnet.port, usr, cur_pwd, new_pwd);
     }
 
     void SetAccount(const char* account);

@@ -18,7 +18,7 @@
 
     <ItemGroup>
         <Protobuf Include="../Protos/greet.proto" GrpcServices="Client" Link="Protos/greet.proto" />
-        <Protobuf Include="../Protos/connector.proto" GrpcServices="Client" Link="Protos/connector.proto" />
+        <Protobuf Include="../Protos/connection.proto" GrpcServices="Client" Link="Protos/connection.proto" />
         <Protobuf Include="../Protos/market_data.proto" GrpcServices="Client" Link="Protos/market_data.proto" />
         <Protobuf Include="../Protos/order.proto" GrpcServices="Client" Link="Protos/order.proto" />
     </ItemGroup>

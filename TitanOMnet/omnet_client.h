@@ -16,12 +16,6 @@
 
 class DLLEXPORT OMnetClient {
 public:
-    static OMnetClient& Instance() {
-        static OMnetClient client;
-        return client;
-    }
-
-private:
     OMnetClient() {}
 
 public:

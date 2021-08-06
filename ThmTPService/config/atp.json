@@ -1,0 +1,37 @@
+{
+    "Enabled": false,
+    "Provider": "ATP",
+    "StreamDataServer": "tcp://127.0.0.1:9999",
+    "StreamTradeServer": "tcp://127.0.0.1:9998",
+
+    "Account": {
+        "MDServer": "tcp://119.136.26.197:41213",
+        "TradeServer": "tcp://119.136.26.197:40905",
+        "BrokerId": "2SP004",
+        "UserId": "sp2008",
+        "Password": ")LYdA2rS",
+        "AppId": "THEME_ATP64_9",
+        "AuthCode": "64YHLO4C7YBE5NTC",
+        "Auth": true
+    },
+    "Exchanges": [
+        {
+            "Enabled": false,
+            "Market": "SGX",
+            "Type": "Future",
+            "Contracts": [ "FEF2101-SGX", "FEF2102-SGX", "FEF2103-SGX" ]
+        },
+        {
+            "Enabled": false,
+            "Market": "APEX",
+            "Type": "Future",
+            "Contracts": [ "CPF2109-APEX", "CPF2101-APEX" ]
+        },
+        {
+            "Enabled": true,
+            "Market": "DCE",
+            "Type": "Future",
+            "Contracts": [ "PG2102-DC", "C2111-DC" ]
+        }
+    ]
+}

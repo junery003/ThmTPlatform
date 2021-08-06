@@ -35,7 +35,7 @@ namespace ThmTPService {
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapGrpcService<GreeterService>();
-                endpoints.MapGrpcService<ConnectorService>();
+                endpoints.MapGrpcService<ConnectionService>();
                 endpoints.MapGrpcService<MarketDataService>();
                 endpoints.MapGrpcService<OrderService>();
 

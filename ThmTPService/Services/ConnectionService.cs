@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : ConnectorService
+// File Name   : ConnectionService
 // Author      : junlei
 // Date        : 8/1/2021 1:44:24 PM
 // Description : 
@@ -10,14 +10,23 @@
 
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.IO;
 using System.Threading.Tasks;
+using ThmCommon.Handlers;
 using ThmServices;
 
 namespace ThmTPService.Services {
-    public class ConnectorService : Connector.ConnectorBase {
-        private readonly ILogger<ConnectorService> _logger;
-        public ConnectorService(ILogger<ConnectorService> logger) {
+    public class ConnectionService : Connection.ConnectionBase {
+        private readonly ILogger<ConnectionService> _logger;
+
+        private static readonly string ServerConfigPath = Directory.GetCurrentDirectory() + "/config/server_config.json";
+        private static ServerConfig Config;
+
+        public ConnectionService(ILogger<ConnectionService> logger) {
             _logger = logger;
+            Config = JsonConvert.DeserializeObject<ServerConfig>(File.ReadAllText(ServerConfigPath));
+            InstrumentHandlerBase.EnableSaveData = Config.SaveData;
         }
 
         public override Task<LoginRsp> Login(LoginReq req, ServerCallContext context) {
@@ -26,9 +35,10 @@ namespace ThmTPService.Services {
             });
         }
 
-        public override Task<ConnectRsp> InitConnection(ConnectReq req, ServerCallContext context) {
+        public override Task<ConnectRsp> Init(ConnectReq req, ServerCallContext context) {
             return Task.FromResult(new ConnectRsp {
             });
         }
+
     }
 }

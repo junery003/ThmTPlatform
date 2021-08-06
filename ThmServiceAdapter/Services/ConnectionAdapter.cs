@@ -13,10 +13,10 @@ using ThmCommon.Config;
 using ThmServices;
 
 namespace ThmServiceAdapter.Services {
-    internal class ConnectorAdapter {
-        private readonly Connector.ConnectorClient _client;
-        internal ConnectorAdapter(GrpcChannel channel) {
-            _client = new Connector.ConnectorClient(channel);
+    internal class ConnectionAdapter {
+        private readonly Connection.ConnectionClient _client;
+        internal ConnectionAdapter(GrpcChannel channel) {
+            _client = new Connection.ConnectionClient(channel);
         }
 
         internal async Task<LoginRsp> LoginAsync(string userName, string password) {
@@ -26,17 +26,16 @@ namespace ThmServiceAdapter.Services {
             });
         }
 
-        internal async Task<ConnectRsp> InitConnectionAsync(EProviderType providerType, ILoginCfg loginCfg) {
+        internal async Task<ConnectRsp> InitAsync(EProviderType providerType, ILoginCfg loginCfg) {
             ConnectReq connectReq = new() {
 
             };
 
-            return await _client.InitConnectionAsync(connectReq);
+            return await _client.InitAsync(connectReq);
         }
 
         internal async Task<GetProvidersRsp> GetProvidersAsync() {
             return await _client.GetProvidersAsync(new GetProvidersReq());
         }
-
     }
 }

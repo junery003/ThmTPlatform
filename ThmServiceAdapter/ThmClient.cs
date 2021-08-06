@@ -1,7 +1,7 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : ConnectionService
+// File Name   : ThmClient
 // Author      : junlei
-// Date        : 8/5/2021 12:22:35 PM
+// Date        : 6/7/2021 12:32:49 PM
 // Description : 
 // Version     : 1.0.0      
 // Updated     : 
@@ -13,17 +13,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
 using ThmCommon.Handlers;
+using ThmServiceAdapter.Services;
 
-namespace ThmServiceAdapter.Services {
-    public class ConnectionService : IDisposable {
+namespace ThmServiceAdapter {
+    public class ThmClient : IDisposable {
         private readonly string _host;
         private readonly int _port;
 
         private readonly GrpcChannel _channel;
 
         private GreetAdapter _adapter;
-        private ConnectorAdapter _connectorAdapter;
-        public ConnectionService(string host = "localhost", int port = 5001) {
+        private ConnectionAdapter _connAdapter;
+        public ThmClient(string host = "localhost", int port = 5001) {
             _host = host;
             _port = port;
 
@@ -39,11 +40,11 @@ namespace ThmServiceAdapter.Services {
         }
 
         public async Task<string> Login(string userName, string password) {
-            if (_connectorAdapter == null) {
-                _connectorAdapter = new ConnectorAdapter(_channel);
+            if (_connAdapter == null) {
+                _connAdapter = new ConnectionAdapter(_channel);
             }
 
-            var rsp = await _connectorAdapter.LoginAsync(userName, password);
+            var rsp = await _connAdapter.LoginAsync(userName, password);
             if (rsp.Status == 0) {
                 return null;
             }
@@ -51,23 +52,23 @@ namespace ThmServiceAdapter.Services {
             return rsp.Message;
         }
 
-        public async Task<IConnector> InitConnection(EProviderType providerType, ILoginCfg loginCfg) {
-            if (_connectorAdapter == null) {
-                _connectorAdapter = new ConnectorAdapter(_channel);
+        public async Task<IConnector> Init(EProviderType providerType, ILoginCfg loginCfg) {
+            if (_connAdapter == null) {
+                _connAdapter = new ConnectionAdapter(_channel);
             }
 
-            var rsp = await _connectorAdapter.InitConnectionAsync(providerType, loginCfg);
+            var rsp = await _connAdapter.InitAsync(providerType, loginCfg);
             IConnector connector = null;
 
             return connector;
         }
 
         public async Task<List<EProviderType>> GetProviders() {
-            if (_connectorAdapter == null) {
-                _connectorAdapter = new ConnectorAdapter(_channel);
+            if (_connAdapter == null) {
+                _connAdapter = new ConnectionAdapter(_channel);
             }
 
-            var rsp = await _connectorAdapter.GetProvidersAsync();
+            var rsp = await _connAdapter.GetProvidersAsync();
             List<EProviderType> providers = new();
             //foreach (var provider in rsp) {
             //    providers.Add(provider);

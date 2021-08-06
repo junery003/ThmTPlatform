@@ -10,13 +10,12 @@
 
 using System;
 using System.Threading.Tasks;
-using ThmServiceAdapter.Services;
 
 namespace ThmServiceAdapter {
     internal class Program {
         internal static async Task Main(string[] args) {
             Console.WriteLine("Hello World!");
-            var client = new ConnectionService("localhost", 5001);
+            var client = new ThmClient("localhost", 5001);
             Console.WriteLine(await client.Test());
         }
     }

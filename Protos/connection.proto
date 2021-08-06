@@ -2,10 +2,10 @@
 
 package ThmServices;
 
-service Connector {
+service Connection {
     rpc Login (LoginReq) returns (LoginRsp);
     rpc Logout (LogoutReq) returns (LogoutRsp);
-    rpc InitConnection (ConnectReq) returns (ConnectRsp);
+    rpc Init (ConnectReq) returns (ConnectRsp);
     rpc GetProviders (GetProvidersReq) returns (GetProvidersRsp);
 }
 

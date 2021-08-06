@@ -19,7 +19,7 @@
 
     <ItemGroup>
         <Protobuf Include="../Protos/greet.proto" GrpcServices="Server" Link="Protos/greet.proto" />
-        <Protobuf Include="../Protos/connector.proto" GrpcServices="Server" Link="Protos/connector.proto" />
+        <Protobuf Include="../Protos/connection.proto" GrpcServices="Server" Link="Protos/connection.proto" />
         <Protobuf Include="../Protos/market_data.proto" GrpcServices="Server" Link="Protos/market_data.proto" />
         <Protobuf Include="../Protos/order.proto" GrpcServices="Server" Link="Protos/order.proto" />
     </ItemGroup>
@@ -31,6 +31,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ThmCommon\ThmCommon.csproj" />
+        <ProjectReference Include="..\ThmTitanIntegrator\ThmTitanIntegrator.csproj" />
     </ItemGroup>
 
 </Project>
