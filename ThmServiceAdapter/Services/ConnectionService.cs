@@ -26,12 +26,15 @@ namespace ThmServiceAdapter.Services {
             });
         }
 
-        internal async Task<ConnectRsp> InitAsync(EProviderType providerType, ILoginCfg loginCfg) {
+        internal async Task<string> Connect(EProviderType providerType, LoginCfgBase loginCfg) {
             ConnectReq connectReq = new() {
-
+                ProviderType = (PROVIDER_TYPE)providerType,
+                Account = loginCfg.Account,
+                CustomerInfo = loginCfg.CustomerInfo ?? "",
             };
 
-            return await _client.InitAsync(connectReq);
+            var rsp = await _client.ConnectAsync(connectReq);
+            return rsp.Message;
         }
 
         internal async Task<GetProvidersRsp> GetProvidersAsync() {

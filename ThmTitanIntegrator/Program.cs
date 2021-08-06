@@ -19,7 +19,6 @@ namespace ThmTitanIntegrator {
                 Logger.Info("Start to run SGX TITAN...");
                 var titanConn = new TitanConnector();
                 try {
-                    titanConn.Init();
                     titanConn.Connect();
 
                     bool quit = false;

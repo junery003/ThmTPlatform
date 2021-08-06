@@ -41,7 +41,37 @@ namespace ThmAtpIntegrator.AtpHandler {
             _atpConfigHelper = new AtpConfigHelper();
         }
 
-        public bool Init(ILoginCfg loginCfg = null) {
+        public bool Connect(LoginCfgBase loginCfg = null) {
+            if (!Init(loginCfg)) {
+                return false;
+            }
+
+            //var accounts = _atpConfig.AtpLogin.Where(x => x.Enabled).ToArray();
+            var account = AtpConfigHelper.Config.Account;
+            DllHelper.InitConfig(account.MDServer,
+                account.TradeServer,
+                account.BrokerId,
+                account.UserId,
+                account.Password,
+                account.UserId,
+                account.AppId,
+                account.AuthCode,
+                AtpConfigHelper.Config.StreamDataServer,
+                AtpConfigHelper.Config.StreamTradeServer);
+            Task.Delay(200).Wait();
+
+            DllHelper.UpdateTradeClient(account.TradeServer,
+                account.BrokerId,
+                account.UserId,
+                account.Password,
+                account.UserId,
+                account.AppId,
+                account.AuthCode);
+
+            return true;
+        }
+
+        private bool Init(LoginCfgBase loginCfg = null) {
             if (!_atpConfigHelper.LoadConfig()) {
                 Logger.Error("ATP failed to load config.");
                 return false;
@@ -75,32 +105,6 @@ namespace ThmAtpIntegrator.AtpHandler {
             _zmqHelper = new ZmqHelper(this,
                 AtpConfigHelper.Config.StreamDataServer,
                 AtpConfigHelper.Config.StreamTradeServer);
-
-            return true;
-        }
-
-        public bool Connect() {
-            //var accounts = _atpConfig.AtpLogin.Where(x => x.Enabled).ToArray();
-            var account = AtpConfigHelper.Config.Account;
-            DllHelper.InitConfig(account.MDServer,
-                account.TradeServer,
-                account.BrokerId,
-                account.UserId,
-                account.Password,
-                account.UserId,
-                account.AppId,
-                account.AuthCode,
-                AtpConfigHelper.Config.StreamDataServer,
-                AtpConfigHelper.Config.StreamTradeServer);
-            Task.Delay(200).Wait();
-
-            DllHelper.UpdateTradeClient(account.TradeServer,
-                account.BrokerId,
-                account.UserId,
-                account.Password,
-                account.UserId,
-                account.AppId,
-                account.AuthCode);
 
             return true;
         }

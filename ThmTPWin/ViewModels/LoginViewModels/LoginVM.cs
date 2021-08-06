@@ -128,7 +128,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
             return Task.Run(async () => {
                 AddProgess($"Initializing {providerType} connection...");
 
-                ILoginCfg loginCfg;
+                LoginCfgBase loginCfg;
                 switch (providerType) {
                     case EProviderType.ATP:
                         loginCfg = ConfigHelper.LoginCfg.AtpLogin;
@@ -143,14 +143,9 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                         return;
                 };
 
-                var conn = await ConnManager.InitConnection(providerType, loginCfg);
-                if (conn == null) {
-                    AddProgess($"Failed to init {providerType} connection");
-                    return;
-                }
-
-                if (!conn.Connect()) {
-                    AddProgess($"{providerType}: Failed to connect");
+                var rlt = await ConnManager.Connect(providerType, loginCfg);
+                if (!string.IsNullOrEmpty(rlt)) {
+                    AddProgess($"{providerType}: Failed to connect - {rlt}");
                     return;
                 }
 

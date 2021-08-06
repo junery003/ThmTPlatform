@@ -37,7 +37,21 @@ namespace ThmTitanIntegrator.TitanHandler {
             _titanCfgHelper = new TitanConfigHelper();
         }
 
-        public bool Init(ILoginCfg loginCfg = null) {
+        public bool Connect(LoginCfgBase loginCfg = null) {
+            if (!Init(loginCfg)) {
+                return false;
+            }
+
+            if (!DllHelper.Init()) {
+                Logger.Error("Failed to login Titan");
+                return false;
+            }
+
+            _zmqHelper = new ZmqHelper(this, TitanCfg.StreamDataServer, TitanCfg.StreamTradeServer);
+            return true;
+        }
+
+        private bool Init(LoginCfgBase loginCfg = null) {
             if (!_titanCfgHelper.LoadConfig()) {
                 throw new Exception("Titan failed to load config.");
             }
@@ -45,10 +59,10 @@ namespace ThmTitanIntegrator.TitanHandler {
             TitanCfg = _titanCfgHelper.GetConfig() as TitanConfig;
 
             if (loginCfg == null) { // default
-                //_account = TitanCfg.TitanLogin.OuchCfg.Account;
+                _account = TitanCfg.TitanLogin.OuchCfg.Account;
             }
             else {
-                _account = (loginCfg as TitanLoginCfg).Account;
+                _account = loginCfg.Account;
             }
 
             TitanCfg.Exchanges?.ForEach(x => {
@@ -65,15 +79,6 @@ namespace ThmTitanIntegrator.TitanHandler {
             return true;
         }
 
-        public bool Connect() {
-            if (!DllHelper.Init()) {
-                Logger.Error("Failed to login Titan");
-                return false;
-            }
-
-            _zmqHelper = new ZmqHelper(this, TitanCfg.StreamDataServer, TitanCfg.StreamTradeServer);
-            return true;
-        }
 
         // for Titan, not here!
         public void StartContracts() {

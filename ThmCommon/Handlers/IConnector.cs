@@ -14,8 +14,7 @@ using ThmCommon.Config;
 namespace ThmCommon.Handlers {
     public interface IConnector : IDisposable {
         bool IsConnected { get; }
-        bool Init(ILoginCfg loginCfg = null);
-        bool Connect();
+        bool Connect(LoginCfgBase loginCfg = null);
         //IAccount GetAccount();
         bool StartContract(string instrumentID);
         bool StopContract(string instrumentID);

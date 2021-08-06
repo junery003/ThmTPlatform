@@ -20,7 +20,6 @@ namespace ThmAtpIntegrator {
                 Logger.Info("Start to run ATP...");
                 var atpConn = new AtpConnector();
                 try {
-                    atpConn.Init();
                     atpConn.Connect();
 
                     bool quit = false;

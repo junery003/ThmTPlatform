@@ -6,7 +6,7 @@
         "Port": 5001
     },
     "AtpLogin": {
-        "Enabled": true,
+        "Enabled": false,
         "BrokerId": "2SP004",
         "UserId": "sp2008",
         "Password": ")LYdA2rS",

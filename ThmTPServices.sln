@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThmAtpIntegrator", "ThmAtpI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThmTPServer", "ThmTPServer\ThmTPServer.csproj", "{EE906AA8-6C05-41BF-84BD-7DFD05AAE440}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThmTTIntegrator", "ThmTTIntegrator\ThmTTIntegrator.csproj", "{48AC8492-3A86-4F69-B21E-14FE6A35EE39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,18 @@ Global
 		{EE906AA8-6C05-41BF-84BD-7DFD05AAE440}.Release|x64.Build.0 = Release|Any CPU
 		{EE906AA8-6C05-41BF-84BD-7DFD05AAE440}.Release|x86.ActiveCfg = Release|Any CPU
 		{EE906AA8-6C05-41BF-84BD-7DFD05AAE440}.Release|x86.Build.0 = Release|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Debug|x64.Build.0 = Debug|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Debug|x86.Build.0 = Debug|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Release|x64.ActiveCfg = Release|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Release|x64.Build.0 = Release|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Release|x86.ActiveCfg = Release|Any CPU
+		{48AC8492-3A86-4F69-B21E-14FE6A35EE39}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

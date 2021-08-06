@@ -5,7 +5,7 @@ package ThmServices;
 service Connection {
     rpc Login (LoginReq) returns (LoginRsp);
     rpc Logout (LogoutReq) returns (LogoutRsp);
-    rpc Init (ConnectReq) returns (ConnectRsp);
+    rpc Connect (ConnectReq) returns (ConnectRsp);
     rpc GetProviders (GetProvidersReq) returns (GetProvidersRsp);
 }
 
@@ -31,20 +31,23 @@ message GetProvidersReq {
 
 }
 
-message GetProvidersRsp {
-    enum PROVIDER_TYPE {
-        ATP = 0;
-        TT = 1;
-        TITAN = 2;
-    }
+enum PROVIDER_TYPE {
+    Unknown = 0;
+    ATP = 1;
+    TT = 2;
+    TITAN = 3;
+}
 
+message GetProvidersRsp {
     repeated PROVIDER_TYPE provider_type = 1;
 }
 
 message ConnectReq {
-
+    PROVIDER_TYPE provider_type = 1;
+    string account = 2;
+    string customer_info = 3;
 }
 
 message ConnectRsp {
-
+    string message = 1;
 }

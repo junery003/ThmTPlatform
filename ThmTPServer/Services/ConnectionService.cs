@@ -8,13 +8,8 @@
 //
 //-----------------------------------------------------------------------------
 
-using Grpc.Core;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
-using ThmCommon.Handlers;
-using ThmServices;
 
 namespace ThmTPService.Services {
     public class ConnectionService : Connection.ConnectionBase {
@@ -35,10 +30,38 @@ namespace ThmTPService.Services {
             });
         }
 
-        public override Task<ConnectRsp> Init(ConnectReq req, ServerCallContext context) {
+        public override Task<ConnectRsp> Connect(ConnectReq req, ServerCallContext context) {
+            IConnector conn = null;
+            switch (req.ProviderType) {
+                case PROVIDER_TYPE.Atp:
+                    conn = new AtpConnector();
+                    break;
+                case PROVIDER_TYPE.Tt:
+                    conn = new TTConnector();
+                    break;
+                case PROVIDER_TYPE.Titan:
+                    conn = new TitanConnector();
+                    break;
+            }
+
+            if (conn == null) {
+                return Task.FromResult(new ConnectRsp {
+                    Message = conn == null ? "Error" : ""
+                });
+            }
+
+            if (!conn.Connect(new ThmCommon.Config.LoginCfgBase() {
+                Account = req.Account,
+                CustomerInfo = req.CustomerInfo,
+            })) {
+                return Task.FromResult(new ConnectRsp {
+                    Message = conn == null ? "Error" : ""
+                });
+            }
+
             return Task.FromResult(new ConnectRsp {
+                Message = ""
             });
         }
-
     }
 }

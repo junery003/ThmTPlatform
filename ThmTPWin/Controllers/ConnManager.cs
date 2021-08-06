@@ -21,22 +21,19 @@ namespace ThmTPWin.Controllers {
         private static ThmClient Client { get; } = new();
 
         private ConnManager() {
-
         }
 
-        static ConnManager() {
+        internal static async Task<string> Login(string userName, string password) {
             var tmp = Client.Test();
 
             _logger.Info(tmp.Result);
             //ConnMgr.Load();
-        }
 
-        internal static async Task<string> Login(string userName, string password) {
             return await Client.Login(userName, password);
         }
 
-        internal static async Task<IConnector> InitConnection(EProviderType providerType, ILoginCfg loginCfg) {
-            return await Client.Init(providerType, loginCfg);
+        internal static async Task<string> Connect(EProviderType providerType, LoginCfgBase loginCfg) {
+            return await Client.Connect(providerType, loginCfg);
         }
 
         internal static IConnector GetConnector(EProviderType providerType) {

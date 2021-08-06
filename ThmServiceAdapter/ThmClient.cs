@@ -52,15 +52,12 @@ namespace ThmServiceAdapter {
             return rsp.Message;
         }
 
-        public async Task<IConnector> Init(EProviderType providerType, ILoginCfg loginCfg) {
+        public async Task<string> Connect(EProviderType providerType, LoginCfgBase loginCfg) {
             if (_connAdapter == null) {
                 _connAdapter = new ConnectionService(_channel);
             }
 
-            var rsp = await _connAdapter.InitAsync(providerType, loginCfg);
-            IConnector connector = null;
-
-            return connector;
+            return await _connAdapter.Connect(providerType, loginCfg);
         }
 
         public async Task<List<EProviderType>> GetProviders() {
