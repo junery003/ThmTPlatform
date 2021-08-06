@@ -24,10 +24,10 @@ public:
 private:
     OMnetClient() {}
 
-    ~OMnetClient() {}
-
 public:
-    bool ChangePassword(const char* host, uint32_t port, const char* usr, const char* cur_pwd,
+    bool ChangePassword(const char* host, uint32_t port,
+        const char* usr,
+        const char* cur_pwd,
         const char* new_pwd);
 
 private:
@@ -45,7 +45,6 @@ private:
     char pwd_[32]{ 0 };
 
     void* session_{ nullptr };  // omniapi_session_handle session_{ nullptr };
-    int64_t download_ref_num_{ 0 };
 };
 
 #endif // !__OMNET_CLIENT_H__

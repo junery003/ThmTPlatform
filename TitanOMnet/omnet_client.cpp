@@ -72,8 +72,10 @@ void OMnetClient::Logout() {
     omniapi_close_session(session_);
 }
 
-bool OMnetClient::ChangePassword(const char* host, uint32_t port, const char* usr,
-    const char* cur_pwd, const char* new_pwd) {
+bool OMnetClient::ChangePassword(const char* host, uint32_t port,
+    const char* usr,
+    const char* cur_pwd,
+    const char* new_pwd) {
 
     memcpy(server_, host, strlen(host));
     port_ = port;
