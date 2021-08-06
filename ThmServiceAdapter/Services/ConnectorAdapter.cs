@@ -19,7 +19,14 @@ namespace ThmServiceAdapter.Services {
             _client = new Connector.ConnectorClient(channel);
         }
 
-        internal async Task<ConnectRsp> InitConnection(EProviderType providerType, ILoginCfg loginCfg) {
+        internal async Task<LoginRsp> LoginAsync(string userName, string password) {
+            return await _client.LoginAsync(new LoginReq() {
+                UserId = userName,
+                Password = password
+            });
+        }
+
+        internal async Task<ConnectRsp> InitConnectionAsync(EProviderType providerType, ILoginCfg loginCfg) {
             ConnectReq connectReq = new() {
 
             };
@@ -27,8 +34,9 @@ namespace ThmServiceAdapter.Services {
             return await _client.InitConnectionAsync(connectReq);
         }
 
-        internal async Task<GetProvidersRsp> GetProviders() {
+        internal async Task<GetProvidersRsp> GetProvidersAsync() {
             return await _client.GetProvidersAsync(new GetProvidersReq());
         }
+
     }
 }

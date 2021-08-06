@@ -16,9 +16,10 @@ namespace ThmTPWin.Views.LoginViews {
     /// Interaction logic for LoginView.xaml
     /// </summary>
     public partial class LoginView : Window {
-        private readonly LoginVM _vm = new LoginVM();
+        private readonly LoginVM _vm;
         public LoginView() {
             InitializeComponent();
+            _vm = new LoginVM();
             DataContext = _vm;
         }
 

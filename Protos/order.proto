@@ -19,7 +19,7 @@ message SendOrderReq {
 }
 
 message SendOrderRsp {
-
+    string message = 1;
 }
 
 message UpdateOrderReq {
@@ -36,9 +36,8 @@ message UpdateOrderRsp {
 
 message DeleteOrderReq {
     string orderID = 1;
-    string tag = 7;
 }
 
 message DeleteOrderRsp {
-
+    string message = 1;
 }

@@ -24,14 +24,8 @@ namespace ThmTPWin {
         public TradingPMainWin() {
             InitializeComponent();
 
-            try {
-                _vm = new TradingPMainWinVM();
-                DataContext = _vm;
-            }
-            catch (Exception ex) {
-                MessageBox.Show("Error: " + ex.Message);
-                Close();
-            }
+            _vm = new TradingPMainWinVM();
+            DataContext = _vm;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e) {
@@ -42,7 +36,7 @@ namespace ThmTPWin {
             }
         }
 
-        private static LoginView _loginView = null;
+        private static LoginView _loginView;
         private bool Login() {
             try {
                 if (_loginView == null) {
@@ -56,8 +50,8 @@ namespace ThmTPWin {
                     return false;
                 }
 
-                var rlt = _loginView.ShowDialog().Value;
-                if (rlt) {
+                var rlt = _loginView.ShowDialog();
+                if (rlt.Value) {
                     _vm.IsTitanEnabled = _loginView.IsChecked(ThmCommon.Config.EProviderType.TITAN);
                     return true;
                 }

@@ -29,7 +29,7 @@ namespace ThmTPWin.ViewModels {
             set => SetProperty(ref _currentTime, value);
         }
 
-        private bool _isTitanEnabled = false;
+        private bool _isTitanEnabled;
         public bool IsTitanEnabled {
             get => _isTitanEnabled;
             set => SetProperty(ref _isTitanEnabled, value);

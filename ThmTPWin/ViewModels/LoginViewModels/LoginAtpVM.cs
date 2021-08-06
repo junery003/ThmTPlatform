@@ -7,8 +7,8 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System.Collections.ObjectModel;
 using Prism.Mvvm;
+using System.Collections.ObjectModel;
 using ThmCommon.Config;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
@@ -65,9 +65,12 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
             }
         }
 
-        public ObservableCollection<AtpLoginCfg> AllAccounts { get; } = new ObservableCollection<AtpLoginCfg>();
+        public ObservableCollection<AtpLoginCfg> AllAccounts { get; }
         public LoginAtpVM(AtpLoginCfg atpLogin) {
-            AllAccounts.Add(atpLogin);
+            AllAccounts = new ObservableCollection<AtpLoginCfg> {
+                atpLogin
+            };
+
             SelectedAccount = atpLogin;
         }
 

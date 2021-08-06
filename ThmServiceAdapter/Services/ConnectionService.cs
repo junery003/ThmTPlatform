@@ -38,12 +38,25 @@ namespace ThmServiceAdapter.Services {
             return await _adapter.Test();
         }
 
+        public async Task<string> Login(string userName, string password) {
+            if (_connectorAdapter == null) {
+                _connectorAdapter = new ConnectorAdapter(_channel);
+            }
+
+            var rsp = await _connectorAdapter.LoginAsync(userName, password);
+            if (rsp.Status == 0) {
+                return null;
+            }
+
+            return rsp.Message;
+        }
+
         public async Task<IConnector> InitConnection(EProviderType providerType, ILoginCfg loginCfg) {
             if (_connectorAdapter == null) {
                 _connectorAdapter = new ConnectorAdapter(_channel);
             }
 
-            var rsp = await _connectorAdapter.InitConnection(providerType, loginCfg);
+            var rsp = await _connectorAdapter.InitConnectionAsync(providerType, loginCfg);
             IConnector connector = null;
 
             return connector;
@@ -54,7 +67,7 @@ namespace ThmServiceAdapter.Services {
                 _connectorAdapter = new ConnectorAdapter(_channel);
             }
 
-            var rsp = await _connectorAdapter.GetProviders();
+            var rsp = await _connectorAdapter.GetProvidersAsync();
             List<EProviderType> providers = new();
             //foreach (var provider in rsp) {
             //    providers.Add(provider);

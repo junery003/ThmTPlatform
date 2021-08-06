@@ -15,10 +15,14 @@ using ThmCommon.Handlers;
 using ThmServiceAdapter.Services;
 
 namespace ThmTPWin.Controllers {
-    internal static class ConnManager {
+    internal class ConnManager {
         private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         private static ConnectionService ConnMgr { get; } = new();
+
+        private ConnManager() {
+
+        }
 
         static ConnManager() {
             var tmp = ConnMgr.Test();
@@ -27,13 +31,17 @@ namespace ThmTPWin.Controllers {
             //ConnMgr.Load();
         }
 
+        internal static async Task<string> Login(string userName, string password) {
+            return await ConnMgr.Login(userName, password);
+        }
+
         internal static async Task<IConnector> InitConnection(EProviderType providerType, ILoginCfg loginCfg) {
             return await ConnMgr.InitConnection(providerType, loginCfg);
         }
 
         internal static IConnector GetConnector(EProviderType providerType) {
             //return ConnMgr.GetConnector(providerType);
-            
+
             return null;
         }
 

@@ -8,7 +8,9 @@ service MarketData {
 }
 
 message DepthDataSubscribeReq { // subscirbe
-    string symbol = 1;
+    string provider = 1;
+    string exchange = 2;
+    string symbol = 3;
 }
 
 message DepthDataSubscribeRsp {
@@ -43,9 +45,11 @@ message DepthDataSubscribeRsp {
 }
 
 message DepthDataUnscribeReq {
-    string symbol = 1;
+    string provider = 1;
+    string exchange = 2;
+    string symbol = 3;
 }
 
 message DepthDataUnscribeRsp {
-
+    string message = 1;
 }

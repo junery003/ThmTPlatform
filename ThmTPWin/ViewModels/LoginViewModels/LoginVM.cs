@@ -23,13 +23,13 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
         public ObservableCollection<ILoginTabItm> LoginTabItms { get; } = new ObservableCollection<ILoginTabItm>();
         public ObservableCollection<Status> ProcessLogs { get; } = new ObservableCollection<Status>();
 
-        private ILoginTabItm _selectedItm;
+        private ILoginTabItm _selectedItm = null!;
         public ILoginTabItm SelectedItm {
             get => _selectedItm;
             set => SetProperty(ref _selectedItm, value);
         }
 
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
         internal LoginVM() {
             BindingOperations.EnableCollectionSynchronization(ProcessLogs, _lock);
         }
@@ -115,9 +115,6 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                         tasks.Add(tsk);
                     }
                 }
-                else {
-                    //ConnMgr.Enable(itm.Provider, false);
-                }
             }
 
             await Task.WhenAll(tasks);
@@ -131,7 +128,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
             return Task.Run(async () => {
                 AddProgess($"Initializing {providerType} connection...");
 
-                ILoginCfg loginCfg = null;
+                ILoginCfg loginCfg;
                 switch (providerType) {
                     case EProviderType.ATP:
                         loginCfg = ConfigHelper.LoginCfg.AtpLogin;

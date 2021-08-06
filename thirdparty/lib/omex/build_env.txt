@@ -1,0 +1,25 @@
+This software has been built on a machine configured as revealed below, 
+it will operate on a machine at the same level, 
+if a later level of OS, Compiler or Compiler run time library is used, 
+it must be 100 percent backwards compatible. 
+_ 
+Build date:  
+2018-07-20 
+09:04
+_ 
+On: 
+_ 
+With: 
+Microsoft (R) C/C++ Optimizing Compiler Version 19.11.25547 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+cl : Command line warning D9024 : unrecognized source file type 'Win32', object file assumed
+hello.c
+Microsoft (R) Incremental Linker Version 14.11.25547.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:hello.exe 
+hello.obj 
+Win32 
+LINK : fatal error LNK1181: cannot open input file 'Win32.obj'
+_ 

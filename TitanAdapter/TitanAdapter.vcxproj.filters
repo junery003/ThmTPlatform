@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="utils">
+      <UniqueIdentifier>{1f1e1e90-8a5e-4c5c-a611-76a87afa3ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="protocol_parser">
+      <UniqueIdentifier>{36eb63fe-e31b-401b-aa74-f814a22f48a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="msg_struct">
+      <UniqueIdentifier>{12c9aa22-5702-48f0-b60b-5a1cffc3a0da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="order_manager">
+      <UniqueIdentifier>{9b480241-a468-4dc1-87d0-b4616eb83714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="titan_handlers">
+      <UniqueIdentifier>{5162fa10-1bd7-46fb-a5b2-6292456b4632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="titan_apis">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>titan_apis</Filter>
+    </ClCompile>
+    <ClCompile Include="mold_udp64_parser.cpp">
+      <Filter>protocol_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="ouch_parser.cpp">
+      <Filter>protocol_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="soup_bin_tcp_parser.cpp">
+      <Filter>protocol_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="logger.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="itch_glimpse_parser.cpp">
+      <Filter>protocol_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>titan_apis</Filter>
+    </ClCompile>
+    <ClCompile Include="udp_connection.cpp">
+      <Filter>protocol_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="tcp_connection.cpp">
+      <Filter>protocol_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="zmq_helper.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="trade_handler.cpp">
+      <Filter>titan_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="market_data_handler.cpp">
+      <Filter>titan_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="itch_client.cpp">
+      <Filter>titan_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="glimpse_client.cpp">
+      <Filter>titan_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ouch_client.cpp">
+      <Filter>titan_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="config_helper.cpp">
+      <Filter>titan_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="order.cpp">
+      <Filter>order_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="order_book.cpp">
+      <Filter>order_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="order_book_manager.cpp">
+      <Filter>order_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="combination_order_book.cpp">
+      <Filter>order_manager</Filter>
+    </ClCompile>
+    <ClCompile Include="titan_export.cpp">
+      <Filter>titan_apis</Filter>
+    </ClCompile>
+    <ClCompile Include="titan_client.cpp">
+      <Filter>titan_handlers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>titan_apis</Filter>
+    </ClInclude>
+    <ClInclude Include="mold_udp64_parser.h">
+      <Filter>protocol_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="ouch_parser.h">
+      <Filter>protocol_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="soup_bin_tcp_parser.h">
+      <Filter>protocol_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="itch_glimpse_msgs.h">
+      <Filter>msg_struct</Filter>
+    </ClInclude>
+    <ClInclude Include="mold_udp64_msgs.h">
+      <Filter>msg_struct</Filter>
+    </ClInclude>
+    <ClInclude Include="soup_bin_tcp_msgs.h">
+      <Filter>msg_struct</Filter>
+    </ClInclude>
+    <ClInclude Include="ouch_msgs.h">
+      <Filter>msg_struct</Filter>
+    </ClInclude>
+    <ClInclude Include="logger.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="zmq_helper.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="itch_glimpse_parser.h">
+      <Filter>protocol_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="dt_utils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="json_test.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="udp_connection.h">
+      <Filter>protocol_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="tcp_connection.h">
+      <Filter>protocol_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="trade_handler.h">
+      <Filter>titan_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="market_data_handler.h">
+      <Filter>titan_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="itch_client.h">
+      <Filter>titan_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="glimpse_client.h">
+      <Filter>titan_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="ouch_client.h">
+      <Filter>titan_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="config_helper.h">
+      <Filter>titan_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="order.h">
+      <Filter>order_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="order_book.h">
+      <Filter>order_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="order_book_manager.h">
+      <Filter>order_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="symbol.h">
+      <Filter>order_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="account.h">
+      <Filter>titan_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol_base.h">
+      <Filter>protocol_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="combination_order_book.h">
+      <Filter>order_manager</Filter>
+    </ClInclude>
+    <ClInclude Include="client_base.h">
+      <Filter>protocol_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="titan_export.h">
+      <Filter>titan_apis</Filter>
+    </ClInclude>
+    <ClInclude Include="titan_client.h">
+      <Filter>titan_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="time_utils.hpp">
+      <Filter>utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TitanAdapter.rc" />
+  </ItemGroup>
+</Project>
