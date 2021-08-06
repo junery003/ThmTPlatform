@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using ThmServices;
 
 namespace ThmTPService.Services {
+    /// <summary>
+    /// OrderService
+    /// </summary>
     public class OrderService : Order.OrderBase {
         private readonly ILogger<OrderService> _logger;
         public OrderService(ILogger<OrderService> logger) {

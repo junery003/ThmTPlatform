@@ -8,6 +8,8 @@ service Order {
     rpc SendOrder(SendOrderReq) returns (SendOrderRsp);
     rpc UpdateOrder(UpdateOrderReq) returns (UpdateOrderRsp);
     rpc DeleteOrder(DeleteOrderReq) returns (DeleteOrderRsp);
+
+    rpc SubscribeOrder(SubscribeOrderReq) returns (stream SubscribeOrderRsp);
 }
 
 message SendOrderReq {
@@ -41,3 +43,12 @@ message DeleteOrderReq {
 message DeleteOrderRsp {
     string message = 1;
 }
+
+message SubscribeOrderReq {
+
+}
+
+message SubscribeOrderRsp {
+
+}
+

@@ -33,7 +33,6 @@
         <ProjectReference Include="..\ThmAtpIntegrator\ThmAtpIntegrator.csproj" />
         <ProjectReference Include="..\ThmCommon\ThmCommon.csproj" />
         <ProjectReference Include="..\ThmTitanIntegrator\ThmTitanIntegrator.csproj" />
-        <ProjectReference Include="..\ThmTTIntegrator\ThmTTIntegrator.csproj" />
     </ItemGroup>
 
 </Project>

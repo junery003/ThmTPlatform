@@ -11,6 +11,9 @@ using Microsoft.Extensions.Logging;
 using ThmServices;
 
 namespace ThmTPService.Services {
+    /// <summary>
+    /// MarketDataService
+    /// </summary>
     public class MarketDataService : MarketData.MarketDataBase {
         private readonly ILogger<MarketDataService> _logger;
         public MarketDataService(ILogger<MarketDataService> logger) {

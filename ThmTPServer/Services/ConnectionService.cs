@@ -8,10 +8,20 @@
 //
 //-----------------------------------------------------------------------------
 
+using Grpc.Core;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
+using ThmAtpIntegrator.AtpHandler;
+using ThmCommon.Handlers;
+using ThmServices;
+using ThmTitanIntegrator.TitanHandler;
 
 namespace ThmTPService.Services {
+    /// <summary>
+    /// ConnectionService
+    /// </summary>
     public class ConnectionService : Connection.ConnectionBase {
         private readonly ILogger<ConnectionService> _logger;
 
@@ -37,7 +47,7 @@ namespace ThmTPService.Services {
                     conn = new AtpConnector();
                     break;
                 case PROVIDER_TYPE.Tt:
-                    conn = new TTConnector();
+                    //conn = new TTConnector();
                     break;
                 case PROVIDER_TYPE.Titan:
                     conn = new TitanConnector();
