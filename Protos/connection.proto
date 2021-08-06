@@ -27,15 +27,15 @@ message LogoutRsp {
 
 }
 
-message GetProvidersReq {
-
-}
-
 enum PROVIDER_TYPE {
     Unknown = 0;
     ATP = 1;
     TT = 2;
     TITAN = 3;
+}
+
+message GetProvidersReq {
+
 }
 
 message GetProvidersRsp {

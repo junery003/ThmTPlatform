@@ -17,6 +17,8 @@ namespace ThmCommon.Config {
 
     public class AtpLoginCfg : LoginCfgBase {
         public override bool Enabled { get; set; }
+        public override string Account { get => UserId; set { UserId = value; } }
+        public override string CustomerInfo { get; set; }
 
         public string BrokerId { get; set; }
         public string UserId { get; set; }
@@ -25,9 +27,6 @@ namespace ThmCommon.Config {
         public string AppId { get; set; }
         public string AuthCode { get; set; }
         public bool IsAuth { get; set; } = true;
-
-        public override string Account { get => UserId; set { UserId = value; } }
-        public override string CustomerInfo { get; set; }
     }
 
     public class TTLoginCfg : LoginCfgBase {
