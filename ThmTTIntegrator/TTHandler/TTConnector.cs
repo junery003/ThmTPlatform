@@ -131,7 +131,6 @@ namespace ThmTTIntegrator.TTHandler {
             return true;
         }
 
-
         public bool StartContract(string instrumentID) {
             if (!IsConnected) {
                 Logger.Warn("Not connected to market yet.");

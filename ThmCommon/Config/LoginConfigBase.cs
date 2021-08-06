@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : LoginConfig
+// File Name   : LoginConfigBase
 // Author      : junlei
 // Date        : 7/30/2021 6:08:07 PM
 // Description : 
