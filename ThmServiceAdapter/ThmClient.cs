@@ -22,8 +22,8 @@ namespace ThmServiceAdapter {
 
         private readonly GrpcChannel _channel;
 
-        private GreetAdapter _adapter;
-        private ConnectionAdapter _connAdapter;
+        private GreetService _adapter;
+        private ConnectionService _connAdapter;
         public ThmClient(string host = "localhost", int port = 5001) {
             _host = host;
             _port = port;
@@ -33,7 +33,7 @@ namespace ThmServiceAdapter {
 
         public async Task<string> Test() {
             if (_adapter == null) {
-                _adapter = new GreetAdapter(_channel);
+                _adapter = new GreetService(_channel);
             }
 
             return await _adapter.Test();
@@ -41,7 +41,7 @@ namespace ThmServiceAdapter {
 
         public async Task<string> Login(string userName, string password) {
             if (_connAdapter == null) {
-                _connAdapter = new ConnectionAdapter(_channel);
+                _connAdapter = new ConnectionService(_channel);
             }
 
             var rsp = await _connAdapter.LoginAsync(userName, password);
@@ -54,7 +54,7 @@ namespace ThmServiceAdapter {
 
         public async Task<IConnector> Init(EProviderType providerType, ILoginCfg loginCfg) {
             if (_connAdapter == null) {
-                _connAdapter = new ConnectionAdapter(_channel);
+                _connAdapter = new ConnectionService(_channel);
             }
 
             var rsp = await _connAdapter.InitAsync(providerType, loginCfg);
@@ -65,7 +65,7 @@ namespace ThmServiceAdapter {
 
         public async Task<List<EProviderType>> GetProviders() {
             if (_connAdapter == null) {
-                _connAdapter = new ConnectionAdapter(_channel);
+                _connAdapter = new ConnectionService(_channel);
             }
 
             var rsp = await _connAdapter.GetProvidersAsync();

@@ -13,9 +13,9 @@ using ThmCommon.Config;
 using ThmServices;
 
 namespace ThmServiceAdapter.Services {
-    internal class ConnectionAdapter {
+    internal class ConnectionService {
         private readonly Connection.ConnectionClient _client;
-        internal ConnectionAdapter(GrpcChannel channel) {
+        internal ConnectionService(GrpcChannel channel) {
             _client = new Connection.ConnectionClient(channel);
         }
 

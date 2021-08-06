@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : ConnectionService
+// File Name   : OrderService
 // Author      : junlei
 // Date        : 8/5/2021 12:22:35 PM
 // Description : 
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ThmServiceAdapter.Services {
-    internal class MarketDataAdapter {
+namespace ThmServiceAdapter.Services{
+    internal class OrderService {
     }
 }

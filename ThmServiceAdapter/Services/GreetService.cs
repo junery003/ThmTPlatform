@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : GreetClient
+// File Name   : GreetService
 // Author      : junlei
 // Date        : 6/1/2021 1:44:24 PM
 // Description : 
@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 using ThmServices;
 
 namespace ThmServiceAdapter.Services {
-    internal class GreetAdapter {
+    internal class GreetService {
         private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly Greeter.GreeterClient _client;
 
-        internal GreetAdapter(GrpcChannel channel) {
+        internal GreetService(GrpcChannel channel) {
             _client = new Greeter.GreeterClient(channel);
         }
 
