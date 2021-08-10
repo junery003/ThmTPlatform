@@ -3,7 +3,7 @@
         "UserID": "Jun",
         "Password": "jun123",
         "Server": "103.100.74.61",
-        "Port": 15001
+        "Port": 10090
     },
     "AtpLogin": {
         "Enabled": false,

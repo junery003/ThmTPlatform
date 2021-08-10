@@ -5,7 +5,7 @@
             "dotnetRunMessages": "true",
             "externalUrlConfiguration": true,
             "nativeDebugging": true,
-            "applicationUrl": "http://localhost:15000;https://localhost:15001",
+            "applicationUrl": "http://localhost:10050;https://localhost:10051",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }

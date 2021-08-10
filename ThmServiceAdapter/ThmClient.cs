@@ -27,7 +27,7 @@ namespace ThmServiceAdapter {
             _host = host;
             _port = port;
 
-            _channel = GrpcChannel.ForAddress($"https://{host}:{port}");
+            _channel = GrpcChannel.ForAddress($"http://{host}:{port}");
         }
 
         public async Task<string> Test() {
