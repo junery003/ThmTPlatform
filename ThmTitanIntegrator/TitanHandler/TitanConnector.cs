@@ -59,7 +59,7 @@ namespace ThmTitanIntegrator.TitanHandler {
             TitanCfg = _titanCfgHelper.GetConfig() as TitanConfig;
 
             if (loginCfg == null) { // default
-                _account = TitanCfg.TitanLogin.OuchCfg.Account;
+                _account = TitanCfg.Account.OuchCfg.Account;
             }
             else {
                 _account = loginCfg.Account;
@@ -182,7 +182,7 @@ namespace ThmTitanIntegrator.TitanHandler {
         }
 
         public bool ChangePassword(string curPwd, string newPwd) {
-            return DllHelper.ChangePassword(TitanCfg.TitanLogin.OuchCfg.UserID, curPwd, newPwd);
+            return DllHelper.ChangePassword(TitanCfg.Account.OuchCfg.UserID, curPwd, newPwd);
         }
 
         public void Dispose() {

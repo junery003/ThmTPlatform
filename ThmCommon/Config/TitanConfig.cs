@@ -17,7 +17,7 @@ namespace ThmCommon.Config {
         public string StreamDataServer { get; set; }
         public string StreamTradeServer { get; set; }
 
-        public TitanAcount TitanLogin { get; set; }
+        public TitanAcount Account { get; set; }
         public List<ExchangeCfg> Exchanges { get; } = new List<ExchangeCfg>();
 
         public bool IsValid(ref string err) {

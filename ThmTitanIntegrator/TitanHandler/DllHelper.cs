@@ -69,10 +69,9 @@ namespace ThmTitanIntegrator.TitanHandler {
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall), SuppressUnmanagedCodeSecurity]
         private static extern void ReplaceOrderExport([MarshalAs(UnmanagedType.LPStr)] string symbol,
             [MarshalAs(UnmanagedType.LPStr)] string orderToken,
-            double price, int qty,
-            [MarshalAs(UnmanagedType.LPStr)] string account = null);
-        internal static void UpdateOrder(string symbol, string orderToken, double price, int qty, string account = null) {
-            ReplaceOrderExport(symbol, orderToken, price, qty, account);
+            double price, int qty);
+        internal static void UpdateOrder(string symbol, string orderToken, double price, int qty) {
+            ReplaceOrderExport(symbol, orderToken, price, qty);
         }
 
         [DllImport(DLL, CallingConvention = CallingConvention.StdCall), SuppressUnmanagedCodeSecurity]

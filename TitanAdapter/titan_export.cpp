@@ -52,7 +52,7 @@ void AddOrderExport(const char* symbol, bool is_buy, double price, int qty, int 
 
 // -----------------------------------------------------------------------------------------------;
 // replace order
-void ReplaceOrderExport(const char* symbol, const char* ori_order_token, int qty, double price) {
+void ReplaceOrderExport(const char* symbol, const char* ori_order_token, double price, int qty) {
     kClient->ReplaceOrder(symbol, ori_order_token, price, qty);
 }
 

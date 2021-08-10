@@ -9,7 +9,10 @@
         <Company>TIT</Company>
         <Copyright>Jun</Copyright>
         <ApplicationIcon>Resources/thm.ico</ApplicationIcon>
-        <Description>Any issue, please contact jun.lei@themeinternationaltrading.com</Description>
+        <Description>Any feedback, please contact leijun@themeinternationaltrading.com</Description>
+        <AssemblyVersion>2.0.10.0</AssemblyVersion>
+        <Version>2.0.10</Version>
+        <Copyright>TTP</Copyright>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 

@@ -28,7 +28,7 @@ extern "C" {
     DLLEXPORT void SetAccountExport(const char* account);
 
     DLLEXPORT void AddOrderExport(const char* symbol, bool is_buy, double price, int qty, int tif);
-    DLLEXPORT void ReplaceOrderExport(const char* symbol, const char* ori_order_token, int qty, double price);
+    DLLEXPORT void ReplaceOrderExport(const char* symbol, const char* ori_order_token, double price, int qty);
     DLLEXPORT void CancelOrderExport(const char* order_token);
     DLLEXPORT void CancelOrderByIDExport(const char* symbol, bool is_buy, uint64_t order_id);
 };
