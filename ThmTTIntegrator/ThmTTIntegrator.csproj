@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>net48</TargetFramework>
-        <BaseOutputPath>../x64/</BaseOutputPath>
+        <BaseOutputPath>bin/</BaseOutputPath>
         <Description>Any feedback, please contact: leijun@themeinternationaltrading.com.</Description>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
