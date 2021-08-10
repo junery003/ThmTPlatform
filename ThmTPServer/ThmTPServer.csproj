@@ -5,7 +5,7 @@
         <StartupObject></StartupObject>
         <BaseOutputPath>bin/</BaseOutputPath>
         <Copyright>Jun</Copyright>
-        <Description>Any issue, please contact jun.lei@themeinternationaltrading.com</Description>
+        <Description>Any feedback, please contact leijun@themeinternationaltrading.com</Description>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 

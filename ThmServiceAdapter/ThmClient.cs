@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
-using ThmCommon.Handlers;
 using ThmServiceAdapter.Services;
 
 namespace ThmServiceAdapter {

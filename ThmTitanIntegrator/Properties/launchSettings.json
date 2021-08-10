@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ThmTitanIntegrator": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

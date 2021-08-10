@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ThmAtpIntegrator": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
