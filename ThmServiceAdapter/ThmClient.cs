@@ -23,7 +23,7 @@ namespace ThmServiceAdapter {
 
         private GreetService _adapter;
         private ConnectionService _connAdapter;
-        public ThmClient(string host = "localhost", int port = 5001) {
+        public ThmClient(string host = "localhost", int port = 15001) {
             _host = host;
             _port = port;
 

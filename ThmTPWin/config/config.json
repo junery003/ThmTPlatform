@@ -2,8 +2,8 @@
     "Login": {
         "UserID": "Jun",
         "Password": "jun123",
-        "Server": "127.0.0.1",
-        "Port": 5001
+        "Server": "103.100.74.61",
+        "Port": 15001
     },
     "AtpLogin": {
         "Enabled": false,
