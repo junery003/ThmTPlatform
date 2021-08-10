@@ -15,25 +15,23 @@ using ThmCommon.Handlers;
 using ThmServiceAdapter;
 
 namespace ThmTPWin.Controllers {
-    internal class ConnManager {
+    internal static class ConnManager {
         private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private static ThmClient Client { get; } = new();
+        private static ThmClient _client;
 
-        private ConnManager() {
-        }
+        internal static async Task<string> Login(string server, int port, string userName, string password) {
+            _client = new ThmClient(server, port);
+            var tmp = await _client.Test();
 
-        internal static async Task<string> Login(string userName, string password) {
-            var tmp = Client.Test();
-
-            _logger.Info(tmp.Result);
+            _logger.Info(tmp);
             //ConnMgr.Load();
 
-            return await Client.Login(userName, password);
+            return await _client.Login(userName, password);
         }
 
         internal static async Task<string> Connect(EProviderType providerType, LoginCfgBase loginCfg) {
-            return await Client.Connect(providerType, loginCfg);
+            return await _client.Connect(providerType, loginCfg);
         }
 
         internal static IConnector GetConnector(EProviderType providerType) {
@@ -43,7 +41,7 @@ namespace ThmTPWin.Controllers {
         }
 
         internal static List<EProviderType> GetProviders() {
-            return Client.GetProviders().Result;
+            return _client.GetProviders().Result;
         }
 
         internal static List<ExchangeCfg> GetExchanges(EProviderType providerType) {
@@ -52,7 +50,7 @@ namespace ThmTPWin.Controllers {
         }
 
         public static void Close() {
-            Client.Dispose();
+            _client.Dispose();
         }
     }
 }

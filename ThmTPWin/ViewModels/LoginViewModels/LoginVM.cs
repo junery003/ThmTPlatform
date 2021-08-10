@@ -143,7 +143,14 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                         return;
                 };
 
-                var rlt = await ConnManager.Connect(providerType, loginCfg);
+                var login = ConfigHelper.LoginCfg.Login;
+                var rlt = await ConnManager.Login(login.Server, login.Port, login.UserID, login.Password);
+                if (!string.IsNullOrEmpty(rlt)) {
+                    AddProgess($"{providerType}: Failed to login - {rlt}");
+                    return;
+                }
+
+                rlt = await ConnManager.Connect(providerType, loginCfg);
                 if (!string.IsNullOrEmpty(rlt)) {
                     AddProgess($"{providerType}: Failed to connect - {rlt}");
                     return;
