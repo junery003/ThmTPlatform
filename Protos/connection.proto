@@ -34,14 +34,6 @@ enum PROVIDER_TYPE {
     TITAN = 3;
 }
 
-message GetProvidersReq {
-
-}
-
-message GetProvidersRsp {
-    repeated PROVIDER_TYPE provider_type = 1;
-}
-
 message ConnectReq {
     PROVIDER_TYPE provider_type = 1;
     string account = 2;
@@ -50,4 +42,12 @@ message ConnectReq {
 
 message ConnectRsp {
     string message = 1;
+}
+
+message GetProvidersReq {
+
+}
+
+message GetProvidersRsp {
+    repeated PROVIDER_TYPE provider_types = 1;
 }

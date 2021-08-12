@@ -11,9 +11,11 @@
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using ThmAtpIntegrator.AtpHandler;
+using ThmCommon.Config;
 using ThmCommon.Handlers;
 using ThmServices;
 using ThmTitanIntegrator.TitanHandler;
@@ -27,6 +29,8 @@ namespace ThmTPService.Services {
 
         private static readonly string ServerConfigPath = Directory.GetCurrentDirectory() + "/config/server_config.json";
         private static ServerConfig Config;
+
+        private static readonly Dictionary<EProviderType, IConnector> _connectors = new();
 
         public ConnectionService(ILogger<ConnectionService> logger) {
             _logger = logger;
@@ -42,14 +46,18 @@ namespace ThmTPService.Services {
 
         public override Task<ConnectRsp> Connect(ConnectReq req, ServerCallContext context) {
             IConnector conn = null;
+            EProviderType providerType = EProviderType.Unknown;
             switch (req.ProviderType) {
                 case PROVIDER_TYPE.Atp:
+                    providerType = EProviderType.ATP;
                     conn = new AtpConnector();
                     break;
                 case PROVIDER_TYPE.Tt:
+                    providerType = EProviderType.TT;
                     //conn = new TTConnector();
                     break;
                 case PROVIDER_TYPE.Titan:
+                    providerType = EProviderType.TITAN;
                     conn = new TitanConnector();
                     break;
             }
@@ -69,9 +77,38 @@ namespace ThmTPService.Services {
                 });
             }
 
+            if (!_connectors.ContainsKey(providerType)) {
+                _connectors[providerType] = conn;  // one provide should have one connection
+            }
+
             return Task.FromResult(new ConnectRsp {
                 Message = ""
             });
+        }
+
+        public override Task<GetProvidersRsp> GetProviders(GetProvidersReq req, ServerCallContext context) {
+            List<PROVIDER_TYPE> providers = new();
+
+            if (IsEnabled(EProviderType.ATP)) {
+                providers.Add(PROVIDER_TYPE.Atp);
+            }
+
+            if (IsEnabled(EProviderType.TT)) {
+                providers.Add(PROVIDER_TYPE.Tt);
+            }
+
+            if (IsEnabled(EProviderType.TITAN)) {
+                providers.Add(PROVIDER_TYPE.Titan);
+            }
+
+            GetProvidersRsp rsp = new();
+            rsp.ProviderTypes.AddRange(providers);
+            return Task.FromResult(rsp);
+        }
+
+        private static bool IsEnabled(EProviderType provider) {
+            return _connectors.ContainsKey(provider)
+                 && _connectors[provider].GetConfigHelper().GetConfig().Enabled;
         }
     }
 }

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
 using ThmServiceAdapter.Services;
+using ThmServices;
 
 namespace ThmServiceAdapter {
     public class ThmClient : IDisposable {
@@ -66,9 +67,25 @@ namespace ThmServiceAdapter {
 
             var rsp = await _connAdapter.GetProvidersAsync();
             List<EProviderType> providers = new();
-            //foreach (var provider in rsp) {
-            //    providers.Add(provider);
-            //}
+            foreach (var type in rsp.ProviderTypes) {
+                switch (type) {
+                    case PROVIDER_TYPE.Atp: {
+                            providers.Add(EProviderType.ATP);
+                            break;
+                        }
+                    case PROVIDER_TYPE.Tt: {
+                            providers.Add(EProviderType.TT);
+                            break;
+                        }
+                    case PROVIDER_TYPE.Titan: {
+                            providers.Add(EProviderType.TITAN);
+                            break;
+                        }
+                    default: {
+                            break;
+                        }
+                }
+            }
 
             return providers;
         }
