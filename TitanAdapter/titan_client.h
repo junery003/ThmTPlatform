@@ -11,7 +11,7 @@
 #define __TITAN_APIS_H__
 
 #include "config_helper.h"
-#include "../TitanOMnet/omnet_client.h"
+#include "omnet_client.h"
 #include "market_data_handler.h"
 #include "trade_handler.h"
 

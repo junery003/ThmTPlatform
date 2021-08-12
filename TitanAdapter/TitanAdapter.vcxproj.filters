@@ -20,6 +20,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="omnet_apis">
+      <UniqueIdentifier>{a8244d40-0be6-4532-9305-8021e594d388}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -87,6 +90,9 @@
     </ClCompile>
     <ClCompile Include="titan_client.cpp">
       <Filter>titan_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="omnet_client.cpp">
+      <Filter>omnet_apis</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="time_utils.hpp">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="omnet_client.h">
+      <Filter>omnet_apis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

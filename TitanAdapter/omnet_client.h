@@ -12,9 +12,7 @@
 
 #include <string>
 
-#define DLLEXPORT __declspec(dllexport)
-
-class DLLEXPORT OMnetClient {
+class OMnetClient {
 public:
     OMnetClient() {}
 
