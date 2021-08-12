@@ -17,7 +17,7 @@ Logger::Logger() {
     spdlog::level::level_enum lvl{ spdlog::level::info };
 
     auto console_sink{ std::make_shared<spdlog::sinks::stdout_color_sink_mt>() };  // normal log
-    console_sink->set_level(lvl);  //console_sink->set_pattern("[atp] [%^%l%$] %v");
+    console_sink->set_level(spdlog::level::level_enum::err);  //console_sink->set_pattern("[atp] [%^%l%$] %v");
 
     auto file_sink{ std::make_shared<spdlog::sinks::rotating_file_sink_mt>("logs/titan.log", 1048576 * 30, 10) };
     file_sink->set_level(lvl);
