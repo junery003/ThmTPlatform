@@ -40,13 +40,8 @@ namespace ThmTPWin.Controllers {
             return null;
         }
 
-        internal static List<EProviderType> GetProviders() {
-            return _client.GetProviders().Result;
-        }
-
-        internal static List<ExchangeCfg> GetExchanges(EProviderType providerType) {
-            //return ConnMgr.GetExchanges(providerType);
-            return null;
+        internal static Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
+            return _client.GetProviders();
         }
 
         public static void Close() {

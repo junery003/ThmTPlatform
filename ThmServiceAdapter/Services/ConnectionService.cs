@@ -8,6 +8,7 @@
 //
 //-----------------------------------------------------------------------------
 using Grpc.Net.Client;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
 using ThmServices;
@@ -39,6 +40,34 @@ namespace ThmServiceAdapter.Services {
 
         internal async Task<GetProvidersRsp> GetProvidersAsync() {
             return await _client.GetProvidersAsync(new GetProvidersReq());
+        }
+
+        internal Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
+            var rsp = _client.GetProviders(new GetProvidersReq());
+
+            Dictionary<EProviderType, List<ExchangeCfg>> providers = new();
+
+            //foreach (var type in rsp.ProviderTypes) {
+            //    switch (type) {
+            //        case PROVIDER_TYPE.Atp: {
+            //                providers.Add(EProviderType.ATP);
+            //                break;
+            //            }
+            //        case PROVIDER_TYPE.Tt: {
+            //                providers.Add(EProviderType.TT);
+            //                break;
+            //            }
+            //        case PROVIDER_TYPE.Titan: {
+            //                providers.Add(EProviderType.TITAN);
+            //                break;
+            //            }
+            //        default: {
+            //                break;
+            //            }
+            //    }
+            //}
+
+            return providers;
         }
     }
 }

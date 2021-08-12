@@ -17,7 +17,7 @@ using ThmTPWin.Controllers;
 
 namespace ThmTPWin.ViewModels {
     public class InstrumentSelectionVM : BindableBase {
-        public List<EProviderType> Providers { get; }
+        public List<EProviderType> Providers { get; } = new();
 
         private EProviderType _selectedProvider;
         public EProviderType SelectedProvider {
@@ -25,7 +25,7 @@ namespace ThmTPWin.ViewModels {
             set {
                 if (SetProperty(ref _selectedProvider, value)) {
                     Exchanges.Clear();
-                    ConnManager.GetExchanges(_selectedProvider)?.ForEach(x => {
+                    _providers[_selectedProvider]?.ForEach(x => {
                         if (x.Enabled) {
                             Exchanges.Add(x);
                         }
@@ -94,8 +94,12 @@ namespace ThmTPWin.ViewModels {
         }
 
         private IConnector _curConn;
+        private readonly Dictionary<EProviderType, List<ExchangeCfg>> _providers;
         internal InstrumentSelectionVM() {
-            Providers = ConnManager.GetProviders();
+            _providers = ConnManager.GetProviders();
+            foreach (var p in _providers) {
+                Providers.Add(p.Key);
+            }
         }
 
         internal InstrumentHandlerBase GetInstrumentHandler(out string err) {

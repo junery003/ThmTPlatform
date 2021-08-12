@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
 using ThmServiceAdapter.Services;
-using ThmServices;
 
 namespace ThmServiceAdapter {
     public class ThmClient : IDisposable {
@@ -60,34 +59,12 @@ namespace ThmServiceAdapter {
             return await _connAdapter.Connect(providerType, loginCfg);
         }
 
-        public async Task<List<EProviderType>> GetProviders() {
+        public Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
             if (_connAdapter == null) {
                 _connAdapter = new ConnectionService(_channel);
             }
 
-            var rsp = await _connAdapter.GetProvidersAsync();
-            List<EProviderType> providers = new();
-            foreach (var type in rsp.ProviderTypes) {
-                switch (type) {
-                    case PROVIDER_TYPE.Atp: {
-                            providers.Add(EProviderType.ATP);
-                            break;
-                        }
-                    case PROVIDER_TYPE.Tt: {
-                            providers.Add(EProviderType.TT);
-                            break;
-                        }
-                    case PROVIDER_TYPE.Titan: {
-                            providers.Add(EProviderType.TITAN);
-                            break;
-                        }
-                    default: {
-                            break;
-                        }
-                }
-            }
-
-            return providers;
+            return _connAdapter.GetProviders();
         }
 
         public void Dispose() {

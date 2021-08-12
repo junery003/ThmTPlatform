@@ -5,6 +5,7 @@ package ThmServices;
 service Connection {
     rpc Login (LoginReq) returns (LoginRsp);
     rpc Logout (LogoutReq) returns (LogoutRsp);
+
     rpc Connect (ConnectReq) returns (ConnectRsp);
     rpc GetProviders (GetProvidersReq) returns (GetProvidersRsp);
 }
@@ -45,9 +46,19 @@ message ConnectRsp {
 }
 
 message GetProvidersReq {
-
 }
 
 message GetProvidersRsp {
-    repeated PROVIDER_TYPE provider_types = 1;
+    repeated Provider providers = 1;
+}
+
+message Provider {
+    PROVIDER_TYPE provider_types = 1;
+    repeated Exchange exchanges = 2;
+}
+
+message Exchange {
+    string market = 1;
+    string type = 2;
+    repeated string contracts = 3;
 }

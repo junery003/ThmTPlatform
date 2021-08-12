@@ -45,19 +45,34 @@ namespace ThmTPService.Services {
         }
 
         public override Task<ConnectRsp> Connect(ConnectReq req, ServerCallContext context) {
-            IConnector conn = null;
             EProviderType providerType = EProviderType.Unknown;
             switch (req.ProviderType) {
                 case PROVIDER_TYPE.Atp:
                     providerType = EProviderType.ATP;
-                    conn = new AtpConnector();
                     break;
                 case PROVIDER_TYPE.Tt:
                     providerType = EProviderType.TT;
-                    //conn = new TTConnector();
                     break;
                 case PROVIDER_TYPE.Titan:
                     providerType = EProviderType.TITAN;
+                    break;
+            }
+
+            if (_connectors.ContainsKey(providerType)) {
+                return Task.FromResult(new ConnectRsp {
+                    Message = "" //
+                });
+            }
+
+            IConnector conn = null;
+            switch (req.ProviderType) {
+                case PROVIDER_TYPE.Atp:
+                    conn = new AtpConnector();
+                    break;
+                case PROVIDER_TYPE.Tt:
+                    //conn = new TTConnector();
+                    break;
+                case PROVIDER_TYPE.Titan:
                     conn = new TitanConnector();
                     break;
             }
@@ -68,7 +83,7 @@ namespace ThmTPService.Services {
                 });
             }
 
-            if (!conn.Connect(new ThmCommon.Config.LoginCfgBase() {
+            if (!conn.Connect(new LoginCfgBase() {
                 Account = req.Account,
                 CustomerInfo = req.CustomerInfo,
             })) {
@@ -77,9 +92,7 @@ namespace ThmTPService.Services {
                 });
             }
 
-            if (!_connectors.ContainsKey(providerType)) {
-                _connectors[providerType] = conn;  // one provide should have one connection
-            }
+            _connectors[providerType] = conn;  // one provide should have one connection
 
             return Task.FromResult(new ConnectRsp {
                 Message = ""
@@ -102,7 +115,7 @@ namespace ThmTPService.Services {
             }
 
             GetProvidersRsp rsp = new();
-            rsp.ProviderTypes.AddRange(providers);
+            //rsp.Providers.AddRange(providers);
             return Task.FromResult(rsp);
         }
 
