@@ -65,14 +65,14 @@ namespace ThmTitanIntegrator.TitanHandler {
                 _account = loginCfg.Account;
             }
 
-            TitanCfg.Exchanges?.ForEach(x => {
-                if (x.Enabled) {
-                    _exchanges.Add(x);
+            TitanCfg.Exchanges?.ForEach(exch => {
+                if (exch.Enabled) {
+                    _exchanges.Add(exch);
 
-                    x.Contracts?.ToList().ForEach(c => { // instrumentID: "FEFH21";
+                    exch.Products.ForEach(prod => prod.Contracts.ToList().ForEach(c => { // instrumentID: "FEFH21";
                         Logger.Info("Add contract: " + c);
                         InstrumentHandlerDic.Add(c, new TitanInstrumentHandler(c, _account));
-                    });
+                    }));
                 }
             });
 
@@ -144,7 +144,11 @@ namespace ThmTitanIntegrator.TitanHandler {
         public List<string> GetInstruments(string market, string productType, string product) {
             foreach (var ex in _exchanges) {
                 if (ex.Market == market && ex.Type == productType) {
-                    return ex.Contracts.ToList();
+                    foreach (var prod in ex.Products) {
+                        if (prod.Name == product) {
+                            return prod.Contracts.ToList();
+                        }
+                    }
                 }
             }
 

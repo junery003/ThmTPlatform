@@ -63,7 +63,7 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        public ObservableCollection<Product> Products { get; } = new();
+        public ObservableCollection<ProductCfg> Products { get; } = new();
 
         private string _selectedProduct;
         public string SelectedProduct {

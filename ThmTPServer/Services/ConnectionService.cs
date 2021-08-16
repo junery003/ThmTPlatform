@@ -103,62 +103,47 @@ namespace ThmTPService.Services {
             List<Provider> providers = new();
 
             if (IsEnabled(EProviderType.ATP)) {
-                Provider atp = new() {
-                    ProviderType = (PROVIDER_TYPE)EProviderType.ATP,
-                };
-
-                var exchanges = _connectors[EProviderType.ATP].GetConfigHelper().GetConfig().Exchanges;
-                foreach (var exch in exchanges) {
-                    var rspExchange = new Exchange {
-                        Type = exch.Type,
-                        Market = exch.Market,
-                    };
-                    rspExchange.Contracts.AddRange(exch.Contracts);
-                    atp.Exchanges.Add(rspExchange);
-                }
-
-                providers.Add(atp);
+                providers.Add(BuildProvider(EProviderType.ATP));
             }
 
             if (IsEnabled(EProviderType.TT)) {
-                Provider tt = new() {
-                    ProviderType = (PROVIDER_TYPE)EProviderType.TT,
-                };
-
-                var exchanges = _connectors[EProviderType.TT].GetConfigHelper().GetConfig().Exchanges;
-                foreach (var exch in exchanges) {
-                    var rspExchange = new Exchange {
-                        Type = exch.Type,
-                        Market = exch.Market,
-                    };
-                    rspExchange.Contracts.AddRange(exch.Contracts);
-                    tt.Exchanges.Add(rspExchange);
-                }
-
-                providers.Add(tt);
+                providers.Add(BuildProvider(EProviderType.TT));
             }
 
             if (IsEnabled(EProviderType.TITAN)) {
-                Provider titan = new() {
-                    ProviderType = (PROVIDER_TYPE)EProviderType.TITAN,
-                };
-
-                var exchanges = _connectors[EProviderType.TITAN].GetConfigHelper().GetConfig().Exchanges;
-                foreach (var exch in exchanges) {
-                    var rspExchange = new Exchange {
-                        Type = exch.Type,
-                        Market = exch.Market,
-                    };
-                    rspExchange.Contracts.AddRange(exch.Contracts);
-                    titan.Exchanges.Add(rspExchange);
-                }
-
-                providers.Add(titan);
+                providers.Add(BuildProvider(EProviderType.TITAN));
             }
 
             GetProvidersRsp rsp = new();
             rsp.Providers.AddRange(providers);
             return Task.FromResult(rsp);
+        }
+
+        private Provider BuildProvider(EProviderType providerType) {
+            Provider provider = new() {
+                ProviderType = (PROVIDER_TYPE)providerType,
+            };
+
+            var exchanges = _connectors[providerType].GetConfigHelper().GetConfig().Exchanges;
+            foreach (var exch in exchanges) {
+                var rspExchange = new Exchange {
+                    Type = exch.Type,
+                    Market = exch.Market,
+                };
+
+                foreach (var prod in exch.Products) {
+                    var rspProd = new Product {
+                        Name = prod.Name,
+                    };
+                    foreach (var c in prod.Contracts) {
+                        rspProd.Contracts.Add(c);
+                    }
+                }
+
+                provider.Exchanges.Add(rspExchange);
+            }
+
+            return provider;
         }
 
         private static bool IsEnabled(EProviderType provider) {

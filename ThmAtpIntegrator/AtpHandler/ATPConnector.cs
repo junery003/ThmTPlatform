@@ -93,9 +93,11 @@ namespace ThmAtpIntegrator.AtpHandler {
                 if (x.Enabled) {
                     _exchanges.Add(x);
 
-                    x.Contracts?.ToList().ForEach(c => { // instrumentID: ("CPF2006-APEX");
-                        Logger.Info("Add contract: " + c);
-                        InstrumentHandlerDic.Add(c, new AtpInstrumentHandler(c));
+                    x.Products.ForEach(x => {
+                        x.Contracts.ToList().ForEach(c => { // instrumentID: ("CPF2006-APEX");
+                            Logger.Info("Add contract: " + c);
+                            InstrumentHandlerDic.Add(c, new AtpInstrumentHandler(c));
+                        });
                     });
                 }
             });
@@ -168,7 +170,11 @@ namespace ThmAtpIntegrator.AtpHandler {
         public List<string> GetInstruments(string market, string productType, string product) {
             foreach (var ex in _exchanges) {
                 if (ex.Market == market && ex.Type == productType) {
-                    return ex.Contracts.ToList();
+                    foreach (var p in ex.Products) {
+                        if (p.Name == product) {
+                            return p.Contracts.ToList();
+                        }
+                    }
                 }
             }
 

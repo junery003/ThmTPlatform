@@ -55,7 +55,7 @@ namespace ThmServiceAdapter.Services {
                     };
 
                     foreach (var prod in exch.Products) {
-                        var rspProd = new ThmCommon.Config.Product() {
+                        var rspProd = new ProductCfg() {
                             Name = prod.Name
                         };
 
