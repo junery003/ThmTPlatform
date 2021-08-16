@@ -39,8 +39,10 @@ void TitanClient::StartMarket() {
         const auto& contracts = cfg_helper_.config.exchanges;
         for (const auto& it : contracts) {
             if (it.is_enabled) {
-                for (const auto& contract : it.contracts) {
-                    Subscribe(contract.c_str());
+                for (const auto& prod : it.products) {
+                    for (const auto& contract : prod.contracts) {
+                        Subscribe(contract.c_str());
+                    }
                 }
             }
         }

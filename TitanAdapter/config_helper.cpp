@@ -63,11 +63,16 @@ void from_json(const json& j, TitanAccount& cfg) {
     j.at("OMnetCfg").get_to(cfg.omnet);
 }
 
+void from_json(const json& j, ProductConfig& cfg) {
+    j.at("Name").get_to(cfg.name);
+    j.at("Contracts").get_to<std::set<std::string>>(cfg.contracts);
+}
+
 void from_json(const json& j, ExchangeConfig& cfg) {
     j.at("Enabled").get_to(cfg.is_enabled);
     j.at("Market").get_to(cfg.market);
     j.at("Type").get_to(cfg.type);
-    j.at("Contracts").get_to<std::set<std::string>>(cfg.contracts);
+    j.at("Products").get_to<std::vector<ProductConfig>>(cfg.products);
 }
 
 void from_json(const json& j, TitanConfig& cfg) {

@@ -15,11 +15,16 @@
 #include <set>
 #include <vector>
 
+struct ProductConfig {
+    std::string name;
+    std::set<std::string> contracts;
+};
+
 struct ExchangeConfig {
     bool is_enabled{ true };
     std::string market{ "SGX" };
     std::string type{ "Future" };
-    std::set<std::string> contracts;
+    std::vector<ProductConfig> products;
 };
 
 struct TitanConfig {
