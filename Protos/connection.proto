@@ -60,5 +60,10 @@ message Provider {
 message Exchange {
     string market = 1;
     string type = 2;
-    repeated string contracts = 3;
+    repeated Product products = 3;
+}
+
+message Product {
+    string name = 1;
+    repeated string contracts = 2;
 }

@@ -19,19 +19,23 @@
             "Enabled": false,
             "Market": "SGX",
             "Type": "Future",
-            "Contracts": [ "FEF2101-SGX", "FEF2102-SGX", "FEF2103-SGX" ]
+            "Products": [
+                {
+                    "Name": "FEF",
+                    "Contracts": [ "FEF2101-SGX", "FEF2102-SGX", "FEF2103-SGX" ]
+                }
+            ]
         },
         {
             "Enabled": false,
             "Market": "APEX",
             "Type": "Future",
-            "Contracts": [ "CPF2109-APEX", "CPF2101-APEX" ]
-        },
-        {
-            "Enabled": true,
-            "Market": "DCE",
-            "Type": "Future",
-            "Contracts": [ "PG2102-DC", "C2111-DC" ]
+            "Products": [
+                {
+                    "Name": "CPF",
+                    "Contracts": [ "CPF2109-APEX", "CPF2101-APEX" ]
+                }
+            ]
         }
     ]
 }

@@ -54,8 +54,16 @@ namespace ThmServiceAdapter.Services {
                         Type = exch.Type
                     };
 
-                    foreach (var contrct in exch.Contracts) {
-                        exchangeCfg.Contracts.Add(contrct);
+                    foreach (var prod in exch.Products) {
+                        var rspProd = new ThmCommon.Config.Product() {
+                            Name = prod.Name
+                        };
+
+                        foreach (var contract in prod.Contracts) {
+                            rspProd.Contracts.Add(contract);
+                        };
+
+                        exchangeCfg.Products.Add(rspProd);
                     }
 
                     providers[providerType].Add(exchangeCfg);

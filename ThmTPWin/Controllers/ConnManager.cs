@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
-using ThmCommon.Handlers;
 using ThmServiceAdapter;
 
 namespace ThmTPWin.Controllers {
@@ -34,14 +33,12 @@ namespace ThmTPWin.Controllers {
             return await _client.ConnectAsync(providerType, loginCfg);
         }
 
-        internal static IConnector GetConnector(EProviderType providerType) {
-            //return ConnMgr.GetConnector(providerType);
-
-            return null;
-        }
-
         internal static Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
             return _client.GetProviders();
+        }
+
+        internal static bool ChangePassword(EProviderType tITAN, string curPwd, string newPwd) {
+            throw new System.NotImplementedException();
         }
 
         public static void Close() {

@@ -37,14 +37,15 @@
             "Market": "SGX",
             "Enabled": true,
             "Type": "Future",
-            "Contracts": [
-                "FEFQ21",
-                "FEFU21",
-                "FEFV21",
-                "FEFX21",
-                "FEFZ21",
-                "TFU21",
-                "TFV21"
+            "Products": [
+                {
+                    "Name": "FEF",
+                    "Contracts": [ "FEFQ21", "FEFU21", "FEFV21", "FEFX21", "FEFZ21" ]
+                },
+                {
+                    "Name": "TF",
+                    "Contracts": [ "TFU21", "TFV21" ]
+                }
             ]
         }
     ]

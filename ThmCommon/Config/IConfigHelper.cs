@@ -34,6 +34,11 @@ namespace ThmCommon.Config {
         public bool Enabled { get; set; } = true;
         public string Market { get; set; }
         public string Type { get; set; } // Future, Option
+        public List<Product> Products { get; } = new List<Product>();
+    }
+
+    public class Product {
+        public string Name { get; set; }
         public ISet<string> Contracts { get; } = new HashSet<string>();
     }
 }

@@ -10,7 +10,6 @@
 using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using ThmCommon.Config;
 using ThmCommon.Handlers;
 using ThmTPWin.Controllers;
@@ -57,14 +56,14 @@ namespace ThmTPWin.ViewModels {
             set {
                 if (SetProperty(ref _selectedProductType, value)) {
                     Products.Clear();
-                    SelectedExchange?.Contracts.ToList().ForEach(x => {
+                    SelectedExchange?.Products.ForEach(x => {
                         Products.Add(x);
                     });
                 }
             }
         }
 
-        public ObservableCollection<string> Products { get; } = new ObservableCollection<string>();
+        public ObservableCollection<Product> Products { get; } = new();
 
         private string _selectedProduct;
         public string SelectedProduct {
@@ -73,13 +72,13 @@ namespace ThmTPWin.ViewModels {
                 if (SetProperty(ref _selectedProduct, value)) {
                     Contracts.Clear();
 
-                    _curConn = ConnManager.GetConnector(SelectedProvider);
-                    if (_curConn != null && SelectedExchange != null && SelectedProductType != null && _selectedProduct != null) {
-                        var instruments = _curConn.GetInstruments(SelectedExchange.Market, SelectedProductType, _selectedProduct);
-
-                        instruments?.ForEach(x => {
-                            Contracts.Add(x);
-                        });
+                    foreach (var prod in Products) {
+                        if (prod.Name == SelectedProduct) {
+                            foreach (var cntrct in prod.Contracts) {
+                                Contracts.Add(cntrct);
+                            }
+                            break;
+                        }
                     }
                 }
             }

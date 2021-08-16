@@ -12,13 +12,27 @@
             "Enabled": false,
             "Market": "CME",
             "Type": "Future",
-            "Contracts": [ "OQB" ]
+            "Products": [
+                {
+                    "Name": "OQB",
+                    "Contracts": []
+                }
+            ]
         },
         {
             "Enabled": true,
             "Market": "SGX",
             "Type": "Future",
-            "Contracts": [ "FEF", "TF" ]
+            "Products": [
+                {
+                    "Name": "TF",
+                    "Contracts": []
+                },
+                {
+                    "Name": "FEF",
+                    "Contracts": []
+                }
+            ]
         }
     ]
 }

@@ -69,13 +69,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
         }
 
         public bool ChangePassword(ref string err) {
-            var conn = ConnManager.GetConnector(EProviderType.TITAN);
-            if (conn == null || !conn.IsConnected) {
-                err = "Titan not connected.";
-                return false;
-            }
-
-            return conn.ChangePassword(_curPwd, _newPwd);
+            return ConnManager.ChangePassword(EProviderType.TITAN, _curPwd, _newPwd);
         }
     }
 }
