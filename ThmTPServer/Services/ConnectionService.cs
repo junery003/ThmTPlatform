@@ -138,6 +138,8 @@ namespace ThmTPService.Services {
                     foreach (var c in prod.Contracts) {
                         rspProd.Contracts.Add(c);
                     }
+
+                    rspExchange.Products.Add(rspProd);
                 }
 
                 provider.Exchanges.Add(rspExchange);

@@ -33,7 +33,7 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        public ObservableCollection<ExchangeCfg> Exchanges { get; } = new ObservableCollection<ExchangeCfg>();
+        public ObservableCollection<ExchangeCfg> Exchanges { get; } = new();
 
         private ExchangeCfg _selectedExchange;
         public ExchangeCfg SelectedExchange {
@@ -48,7 +48,7 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        public ObservableCollection<string> ProductTypes { get; } = new ObservableCollection<string>();
+        public ObservableCollection<string> ProductTypes { get; } = new();
 
         private string _selectedProductType;
         public string SelectedProductType {
@@ -57,7 +57,9 @@ namespace ThmTPWin.ViewModels {
                 if (SetProperty(ref _selectedProductType, value)) {
                     Products.Clear();
                     SelectedExchange?.Products.ForEach(x => {
-                        Products.Add(x);
+                        if (SelectedExchange.Type == SelectedProductType) {
+                            Products.Add(x);
+                        }
                     });
                 }
             }
@@ -65,26 +67,21 @@ namespace ThmTPWin.ViewModels {
 
         public ObservableCollection<ProductCfg> Products { get; } = new();
 
-        private string _selectedProduct;
-        public string SelectedProduct {
+        private ProductCfg _selectedProduct;
+        public ProductCfg SelectedProduct {
             get => _selectedProduct;
             set {
                 if (SetProperty(ref _selectedProduct, value)) {
                     Contracts.Clear();
 
-                    foreach (var prod in Products) {
-                        if (prod.Name == SelectedProduct) {
-                            foreach (var cntrct in prod.Contracts) {
-                                Contracts.Add(cntrct);
-                            }
-                            break;
-                        }
+                    foreach (var cntrct in SelectedProduct.Contracts) {
+                        Contracts.Add(cntrct);
                     }
                 }
             }
         }
 
-        public ObservableCollection<string> Contracts { get; } = new ObservableCollection<string>();
+        public ObservableCollection<string> Contracts { get; } = new();
 
         private string _selectedContract;
         public string SelectedContract {
@@ -92,7 +89,6 @@ namespace ThmTPWin.ViewModels {
             set => SetProperty(ref _selectedContract, value);
         }
 
-        private IConnector _curConn;
         private readonly Dictionary<EProviderType, List<ExchangeCfg>> _providers;
         internal InstrumentSelectionVM() {
             _providers = ConnManager.GetProviders();
@@ -107,14 +103,9 @@ namespace ThmTPWin.ViewModels {
                 return null;
             }
 
-            if (_curConn != null && SelectedExchange != null) {
-                err = string.Empty;
-                return _curConn.GetInstrumentHandler(SelectedExchange.Market, SelectedProductType,
-                    SelectedProduct, SelectedContract);
-            }
-
-            err = "No instruement handler found.";
-            return null;
+            err = string.Empty;
+            return ConnManager.GetInstrumentHandler(SelectedExchange.Market, SelectedProductType,
+                SelectedProduct.Name, SelectedContract);
         }
     }
 }

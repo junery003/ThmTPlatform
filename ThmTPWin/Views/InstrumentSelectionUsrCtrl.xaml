@@ -23,13 +23,13 @@
         <ListBox ItemsSource="{Binding Providers, Mode=OneWay}" SelectedValue="{Binding SelectedProvider}"  Grid.Column="0" Grid.Row="1" Margin="1 0 1 1" />
 
         <TextBlock Text="Exchange" Grid.Column="1" Grid.Row="0" Margin="1 0" />
-        <ListBox ItemsSource="{Binding Exchanges}" SelectedValue="{Binding SelectedExchange}" DisplayMemberPath="Market" Grid.Column="1" Grid.Row="1" Margin="1 0 1 1" />
+        <ListBox ItemsSource="{Binding Exchanges}" DisplayMemberPath="Market" SelectedValue="{Binding SelectedExchange}" Grid.Column="1" Grid.Row="1" Margin="1 0 1 1" />
 
         <TextBlock Text="Type" Grid.Column="2" Grid.Row="0" Margin="1 0" />
         <ListBox ItemsSource="{Binding ProductTypes}" SelectedValue="{Binding SelectedProductType}" Grid.Column="2" Grid.Row="1" Margin="1 0 1 1" />
 
         <TextBlock Text="Product" Grid.Column="3" Grid.Row="0" Margin="1 0" />
-        <ListBox ItemsSource="{Binding Products.Name}" SelectedValue="{Binding SelectedProduct}" Grid.Column="3" Grid.Row="1" Margin="1 0 1 1" />
+        <ListBox ItemsSource="{Binding Products}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedProduct}" Grid.Column="3" Grid.Row="1" Margin="1 0 1 1" />
 
         <TextBlock Text="Instrument" Grid.Column="4" Grid.Row="0" Margin="1 0"  />
         <ListBox ItemsSource="{Binding Contracts}" SelectedValue="{Binding SelectedContract}" Grid.Column="4" Grid.Row="1" Margin="1 0 1 1" />

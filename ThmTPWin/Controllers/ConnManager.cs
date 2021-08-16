@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
+using ThmCommon.Handlers;
 using ThmServiceAdapter;
 
 namespace ThmTPWin.Controllers {
@@ -35,6 +36,10 @@ namespace ThmTPWin.Controllers {
 
         internal static Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
             return _client.GetProviders();
+        }
+
+        internal static InstrumentHandlerBase GetInstrumentHandler(string market, string selectedProductType, string name, string selectedContract) {
+            throw new System.NotImplementedException();
         }
 
         internal static bool ChangePassword(EProviderType tITAN, string curPwd, string newPwd) {
