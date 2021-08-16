@@ -38,7 +38,7 @@ namespace ThmServiceAdapter {
             return await _adapter.Test();
         }
 
-        public async Task<string> Login(string userName, string password) {
+        public async Task<string> LoginAsync(string userName, string password) {
             if (_connAdapter == null) {
                 _connAdapter = new ConnectionService(_channel);
             }
@@ -51,12 +51,12 @@ namespace ThmServiceAdapter {
             return rsp.Message;
         }
 
-        public async Task<string> Connect(EProviderType providerType, LoginCfgBase loginCfg) {
+        public async Task<string> ConnectAsync(EProviderType providerType, LoginCfgBase loginCfg) {
             if (_connAdapter == null) {
                 _connAdapter = new ConnectionService(_channel);
             }
 
-            return await _connAdapter.Connect(providerType, loginCfg);
+            return await _connAdapter.ConnectAsync(providerType, loginCfg);
         }
 
         public Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {

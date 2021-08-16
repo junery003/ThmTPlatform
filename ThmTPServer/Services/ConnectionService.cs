@@ -100,22 +100,64 @@ namespace ThmTPService.Services {
         }
 
         public override Task<GetProvidersRsp> GetProviders(GetProvidersReq req, ServerCallContext context) {
-            List<PROVIDER_TYPE> providers = new();
+            List<Provider> providers = new();
 
             if (IsEnabled(EProviderType.ATP)) {
-                providers.Add(PROVIDER_TYPE.Atp);
+                Provider atp = new() {
+                    ProviderType = (PROVIDER_TYPE)EProviderType.ATP,
+                };
+
+                var exchanges = _connectors[EProviderType.ATP].GetConfigHelper().GetConfig().Exchanges;
+                foreach (var exch in exchanges) {
+                    var rspExchange = new Exchange {
+                        Type = exch.Type,
+                        Market = exch.Market,
+                    };
+                    rspExchange.Contracts.AddRange(exch.Contracts);
+                    atp.Exchanges.Add(rspExchange);
+                }
+
+                providers.Add(atp);
             }
 
             if (IsEnabled(EProviderType.TT)) {
-                providers.Add(PROVIDER_TYPE.Tt);
+                Provider tt = new() {
+                    ProviderType = (PROVIDER_TYPE)EProviderType.TT,
+                };
+
+                var exchanges = _connectors[EProviderType.TT].GetConfigHelper().GetConfig().Exchanges;
+                foreach (var exch in exchanges) {
+                    var rspExchange = new Exchange {
+                        Type = exch.Type,
+                        Market = exch.Market,
+                    };
+                    rspExchange.Contracts.AddRange(exch.Contracts);
+                    tt.Exchanges.Add(rspExchange);
+                }
+
+                providers.Add(tt);
             }
 
             if (IsEnabled(EProviderType.TITAN)) {
-                providers.Add(PROVIDER_TYPE.Titan);
+                Provider titan = new() {
+                    ProviderType = (PROVIDER_TYPE)EProviderType.TITAN,
+                };
+
+                var exchanges = _connectors[EProviderType.TITAN].GetConfigHelper().GetConfig().Exchanges;
+                foreach (var exch in exchanges) {
+                    var rspExchange = new Exchange {
+                        Type = exch.Type,
+                        Market = exch.Market,
+                    };
+                    rspExchange.Contracts.AddRange(exch.Contracts);
+                    titan.Exchanges.Add(rspExchange);
+                }
+
+                providers.Add(titan);
             }
 
             GetProvidersRsp rsp = new();
-            //rsp.Providers.AddRange(providers);
+            rsp.Providers.AddRange(providers);
             return Task.FromResult(rsp);
         }
 

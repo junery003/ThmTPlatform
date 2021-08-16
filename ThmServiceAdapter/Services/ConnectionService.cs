@@ -27,7 +27,7 @@ namespace ThmServiceAdapter.Services {
             });
         }
 
-        internal async Task<string> Connect(EProviderType providerType, LoginCfgBase loginCfg) {
+        internal async Task<string> ConnectAsync(EProviderType providerType, LoginCfgBase loginCfg) {
             ConnectReq connectReq = new() {
                 ProviderType = (PROVIDER_TYPE)providerType,
                 Account = loginCfg.Account,
@@ -38,34 +38,29 @@ namespace ThmServiceAdapter.Services {
             return rsp.Message;
         }
 
-        internal async Task<GetProvidersRsp> GetProvidersAsync() {
-            return await _client.GetProvidersAsync(new GetProvidersReq());
-        }
-
         internal Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
-            var rsp = _client.GetProviders(new GetProvidersReq());
-
             Dictionary<EProviderType, List<ExchangeCfg>> providers = new();
 
-            //foreach (var type in rsp.ProviderTypes) {
-            //    switch (type) {
-            //        case PROVIDER_TYPE.Atp: {
-            //                providers.Add(EProviderType.ATP);
-            //                break;
-            //            }
-            //        case PROVIDER_TYPE.Tt: {
-            //                providers.Add(EProviderType.TT);
-            //                break;
-            //            }
-            //        case PROVIDER_TYPE.Titan: {
-            //                providers.Add(EProviderType.TITAN);
-            //                break;
-            //            }
-            //        default: {
-            //                break;
-            //            }
-            //    }
-            //}
+            var rsp = _client.GetProviders(new GetProvidersReq());
+            foreach (var provider in rsp.Providers) {
+                var providerType = (EProviderType)provider.ProviderType;
+                if (!providers.ContainsKey(providerType)) {
+                    providers[providerType] = new List<ExchangeCfg>();
+                }
+
+                foreach (var exch in provider.Exchanges) {
+                    ExchangeCfg exchangeCfg = new() {
+                        Market = exch.Market,
+                        Type = exch.Type
+                    };
+
+                    foreach (var contrct in exch.Contracts) {
+                        exchangeCfg.Contracts.Add(contrct);
+                    }
+
+                    providers[providerType].Add(exchangeCfg);
+                }
+            }
 
             return providers;
         }

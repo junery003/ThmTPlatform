@@ -53,7 +53,7 @@ message GetProvidersRsp {
 }
 
 message Provider {
-    PROVIDER_TYPE provider_types = 1;
+    PROVIDER_TYPE provider_type = 1;
     repeated Exchange exchanges = 2;
 }
 
