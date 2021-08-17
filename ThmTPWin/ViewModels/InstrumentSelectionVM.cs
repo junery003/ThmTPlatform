@@ -10,6 +10,7 @@
 using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using ThmCommon.Config;
 using ThmCommon.Handlers;
 using ThmTPWin.Controllers;
@@ -24,10 +25,8 @@ namespace ThmTPWin.ViewModels {
             set {
                 if (SetProperty(ref _selectedProvider, value)) {
                     Exchanges.Clear();
-                    _providers[_selectedProvider]?.ForEach(x => {
-                        if (x.Enabled) {
-                            Exchanges.Add(x);
-                        }
+                    ConnManager.GetExchanges(_selectedProvider)?.ForEach(exch => {
+                        Exchanges.Add(exch);
                     });
                 }
             }
@@ -57,7 +56,7 @@ namespace ThmTPWin.ViewModels {
                 if (SetProperty(ref _selectedProductType, value)) {
                     Products.Clear();
                     SelectedExchange?.Products.ForEach(x => {
-                        if (SelectedExchange.Type == SelectedProductType) {
+                        if (SelectedExchange.Type == _selectedProductType) {
                             Products.Add(x);
                         }
                     });
@@ -74,7 +73,7 @@ namespace ThmTPWin.ViewModels {
                 if (SetProperty(ref _selectedProduct, value)) {
                     Contracts.Clear();
 
-                    foreach (var cntrct in SelectedProduct.Contracts) {
+                    foreach (var cntrct in _selectedProduct.Contracts) {
                         Contracts.Add(cntrct);
                     }
                 }
@@ -89,12 +88,8 @@ namespace ThmTPWin.ViewModels {
             set => SetProperty(ref _selectedContract, value);
         }
 
-        private readonly Dictionary<EProviderType, List<ExchangeCfg>> _providers;
         internal InstrumentSelectionVM() {
-            _providers = ConnManager.GetProviders();
-            foreach (var p in _providers) {
-                Providers.Add(p.Key);
-            }
+            ConnManager.GetProviders()?.Keys?.ToList().ForEach(x => Providers.Add(x));
         }
 
         internal InstrumentHandlerBase GetInstrumentHandler(out string err) {
@@ -104,8 +99,10 @@ namespace ThmTPWin.ViewModels {
             }
 
             err = string.Empty;
-            return ConnManager.GetInstrumentHandler(SelectedExchange.Market, SelectedProductType,
-                SelectedProduct.Name, SelectedContract);
+            return ConnManager.GetInstrumentHandler(SelectedExchange.Market,
+                SelectedProductType,
+                SelectedProduct.Name,
+                SelectedContract);
         }
     }
 }

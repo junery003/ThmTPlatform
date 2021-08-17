@@ -34,15 +34,21 @@ namespace ThmTPWin.Controllers {
             return await _client.ConnectAsync(providerType, loginCfg);
         }
 
+        private static Dictionary<EProviderType, List<ExchangeCfg>> _providers;
         internal static Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
-            return _client.GetProviders();
+            _providers = _client.GetProviders();
+            return _providers;
+        }
+
+        internal static List<ExchangeCfg> GetExchanges(EProviderType providerType) {
+            return _providers[providerType];
         }
 
         internal static InstrumentHandlerBase GetInstrumentHandler(string market, string selectedProductType, string name, string selectedContract) {
             throw new System.NotImplementedException();
         }
 
-        internal static bool ChangePassword(EProviderType tITAN, string curPwd, string newPwd) {
+        internal static bool ChangePassword(EProviderType providerType, string curPwd, string newPwd) {
             throw new System.NotImplementedException();
         }
 

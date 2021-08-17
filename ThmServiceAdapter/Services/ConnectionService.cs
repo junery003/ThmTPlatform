@@ -55,7 +55,7 @@ namespace ThmServiceAdapter.Services {
                     };
 
                     foreach (var prod in exch.Products) {
-                        var rspProd = new ProductCfg() {
+                        ProductCfg rspProd = new() {
                             Name = prod.Name
                         };
 
