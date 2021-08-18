@@ -28,8 +28,8 @@ namespace ThmTitanIntegrator.TitanHandler {
         private const string DT_FORMAT = "yyyy-MM-dd HH:mm:ss.fffffff";
         public TitanInstrumentHandler(string instrumentID, string acount) {
             InstrumentInfo = new ThmInstrumentInfo {
+                Provider = EProviderType.TITAN, // "Titan",
                 Exchange = "SGX",
-                Provider = "Titan",
                 Type = "Future",
                 Product = instrumentID.Substring(0, instrumentID.Length - 3),
                 //Product = instrumentID,

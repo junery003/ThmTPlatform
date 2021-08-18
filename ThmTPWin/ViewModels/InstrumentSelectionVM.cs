@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ThmCommon.Config;
-using ThmCommon.Handlers;
+using ThmCommon.Models;
 using ThmTPWin.Controllers;
 
 namespace ThmTPWin.ViewModels {
@@ -92,17 +92,20 @@ namespace ThmTPWin.ViewModels {
             ConnManager.GetProviders()?.Keys?.ToList().ForEach(x => Providers.Add(x));
         }
 
-        internal InstrumentHandlerBase GetInstrumentHandler(out string err) {
+        internal ThmInstrumentInfo GetInstrument(out string err) {
             if (SelectedExchange == null || SelectedProduct == null || SelectedContract == null) {
                 err = "No contract was selected.";
                 return null;
             }
 
             err = string.Empty;
-            return ConnManager.GetInstrumentHandler(SelectedExchange.Market,
-                SelectedProductType,
-                SelectedProduct.Name,
-                SelectedContract);
+            return new ThmInstrumentInfo() {
+                Provider = SelectedProvider,
+                Exchange = SelectedExchange.Market,
+                Product = SelectedProduct.Name,
+                InstrumentID = SelectedContract,
+                Contract = SelectedContract
+            };
         }
     }
 }

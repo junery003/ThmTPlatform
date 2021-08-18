@@ -28,7 +28,7 @@ namespace ThmTPWin.ViewModels {
             set {
                 if (SetProperty(ref _selectedAccount, value)) {
                     if (_selectedAccount != null) {
-                        _parent.InstrumentHandler.SetAccount(_selectedAccount);
+                        //_parent.InstrumentHandler.SetAccount(_selectedAccount);
                     }
                 }
             }
@@ -116,8 +116,8 @@ namespace ThmTPWin.ViewModels {
         internal BaseTradeParaVM(ITraderTabItm parent, List<EAlgoType> algos) {
             _parent = parent;
 
-            Accounts = parent.InstrumentHandler.Accounts;
-            SelectedAccount = parent.InstrumentHandler.CurAccount;
+            Accounts = parent.InstrumentInfo.Accounts;
+            SelectedAccount = parent.InstrumentInfo.CurAccount;
 
             TriggerVm = new TriggerVM();
             InterTriggerVm = new InterTriggerVM(parent.InstrumentInfo.InstrumentID);

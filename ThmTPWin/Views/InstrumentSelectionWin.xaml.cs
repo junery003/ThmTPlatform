@@ -8,14 +8,14 @@
 //
 //-----------------------------------------------------------------------------
 using System.Windows;
-using ThmCommon.Handlers;
+using ThmCommon.Models;
 
 namespace ThmTPWin.Views {
     /// <summary>
     /// Interaction logic for InstrumentSelectionWin.xaml
     /// </summary>
     public partial class InstrumentSelectionWin : Window {
-        internal InstrumentHandlerBase SelectedInstrumentHandler => InstrumentSelection.InstrumentHandler;
+        internal ThmInstrumentInfo SelectedInstrumentHandler => InstrumentSelection.InstrumentInfo;
 
         internal InstrumentSelectionWin() {
             InitializeComponent();

@@ -1,5 +1,7 @@
 ﻿syntax = "proto3";
 
+import "connection.proto";
+
 package ThmServices;
 
 service MarketData {
@@ -7,17 +9,17 @@ service MarketData {
     rpc Unsubscribe(DepthDataUnscribeReq) returns (DepthDataUnscribeRsp);
 }
 
-message DepthDataSubscribeReq { // subscirbe
-    string provider = 1;
+message DepthDataSubscribeReq {
+    PROVIDER_TYPE provider = 1;
     string exchange = 2;
     string symbol = 3;
 }
 
 message DepthDataSubscribeRsp {
-    string provider = 1;
+    PROVIDER_TYPE provider = 1;
     string exchange = 2;
     string symbol = 3;
-    string contract = 4;    
+    string contract = 4;
     
     double bid1 = 5;
     double bid2 = 6;
@@ -45,7 +47,7 @@ message DepthDataSubscribeRsp {
 }
 
 message DepthDataUnscribeReq {
-    string provider = 1;
+    PROVIDER_TYPE provider = 1;
     string exchange = 2;
     string symbol = 3;
 }

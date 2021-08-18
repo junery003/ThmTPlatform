@@ -16,7 +16,7 @@ namespace ThmAtpIntegrator.Models {
     public sealed class AtpOrderData {
         public string ID => $"{Exchange}|{OrderID}|{OrderRef}";
 
-        public string Provider { get; } = "ATP";
+        public EProviderType Provider { get; } = EProviderType.ATP; //"ATP";
         public AtpOrderData(string instrumentID) {
             InstrumentID = instrumentID;
             (Exchange, Product, Contract) = AtpFunctions.AtpUtil.ExtractContract(instrumentID);

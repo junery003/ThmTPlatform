@@ -69,7 +69,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
         }
 
         public bool ChangePassword(ref string err) {
-            return ConnManager.ChangePassword(EProviderType.TITAN, _curPwd, _newPwd);
+            return ConnManager.ChangePassword(ThmCommon.Models.EProviderType.TITAN, _curPwd, _newPwd);
         }
     }
 }

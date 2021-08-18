@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
-using ThmCommon.Handlers;
+using ThmCommon.Models;
 
 namespace ThmTPWin.ViewModels {
     internal class AutospreaderEditorVM : BindableBase {
@@ -41,8 +41,8 @@ namespace ThmTPWin.ViewModels {
             set => SetProperty(ref _name, value);
         }
 
-        private InstrumentHandlerBase _instrumentHandler;  // contract
-        public InstrumentHandlerBase InstrumentHandler {
+        private ThmInstrumentInfo _instrumentHandler;  // contract
+        public ThmInstrumentInfo InstrumentHandler {
             get => _instrumentHandler;
             set { SetProperty(ref _instrumentHandler, value); }
         }

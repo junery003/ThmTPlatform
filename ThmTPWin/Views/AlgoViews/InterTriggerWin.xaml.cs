@@ -56,8 +56,8 @@ namespace ThmTPWin.Views.AlgoViews {
                 return;
             }
 
-            var tmp = instrumentSelectionUsrCtrl.InstrumentHandler;
-            if (!_vm.UpdateRefInstrument(tmp.InstrumentInfo.InstrumentID, out err)) {
+            var tmp = instrumentSelectionUsrCtrl.InstrumentInfo;
+            if (!_vm.UpdateRefInstrument(tmp.InstrumentID, out err)) {
                 MessageBox.Show("Failed to set reference instrument: " + err);
                 return;
             }

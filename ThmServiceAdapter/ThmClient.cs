@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
+using ThmCommon.Models;
 using ThmServiceAdapter.Services;
 
 namespace ThmServiceAdapter {
@@ -21,8 +22,11 @@ namespace ThmServiceAdapter {
 
         private readonly GrpcChannel _channel;
 
-        private GreetService _adapter;
-        private ConnectionService _connAdapter;
+        private GreetService _greetService;
+        private ConnectionService _connService;
+        private MarketDataService _marketService;
+        private OrderService _orderService;
+
         public ThmClient(string host = "localhost", int port = 15001) {
             _host = host;
             _port = port;
@@ -31,19 +35,19 @@ namespace ThmServiceAdapter {
         }
 
         public async Task<string> Test() {
-            if (_adapter == null) {
-                _adapter = new GreetService(_channel);
+            if (_greetService == null) {
+                _greetService = new GreetService(_channel);
             }
 
-            return await _adapter.Test();
+            return await _greetService.Test();
         }
 
         public async Task<string> LoginAsync(string userName, string password) {
-            if (_connAdapter == null) {
-                _connAdapter = new ConnectionService(_channel);
+            if (_connService == null) {
+                _connService = new ConnectionService(_channel);
             }
 
-            var rsp = await _connAdapter.LoginAsync(userName, password);
+            var rsp = await _connService.LoginAsync(userName, password);
             if (rsp.Status == 0) {
                 return null;
             }
@@ -52,20 +56,35 @@ namespace ThmServiceAdapter {
         }
 
         public async Task<string> ConnectAsync(EProviderType providerType, LoginCfgBase loginCfg) {
-            if (_connAdapter == null) {
-                _connAdapter = new ConnectionService(_channel);
+            if (_connService == null) {
+                _connService = new ConnectionService(_channel);
             }
 
-            return await _connAdapter.ConnectAsync(providerType, loginCfg);
+            return await _connService.ConnectAsync(providerType, loginCfg);
         }
 
         public Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
-            if (_connAdapter == null) {
-                _connAdapter = new ConnectionService(_channel);
+            if (_connService == null) {
+                _connService = new ConnectionService(_channel);
             }
 
-            return _connAdapter.GetProviders();
+            return _connService.GetProviders();
         }
+
+        public void SubscibeInstrument(ThmInstrumentInfo instrument) {
+            if (_marketService == null) {
+                _marketService = new MarketDataService(_channel);
+            }
+
+            _marketService.Subscribe(instrument);
+        }
+
+        #region Order 
+        public void SendOrder() {
+            _orderService.SendOrder();
+        }
+
+        #endregion // Order
 
         public void Dispose() {
             _channel.Dispose();

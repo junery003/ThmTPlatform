@@ -85,11 +85,11 @@ namespace ThmCommon.Handlers {
         ///         -1 if not added</returns>
         public int ProcessAlgo(AlgoData algo) {
             if (algo.Type == EAlgoType.InterTrigger) {
-                if (0 == algo.RefInstrumentHandler.CheckInterTrigger(algo, this, algo.RefInstrumentHandler.CurMarketDepthData.CurBestQuot)) {
-                    return 0;
-                }
+                //if (0 == algo.RefInstrument.CheckInterTrigger(algo, this, algo.RefInstrument.CurMarketDepthData.CurBestQuot)) {
+                //    return 0;
+                //}
 
-                algo.RefInstrumentHandler._interTriggers.Add(new Tuple<AlgoData, InstrumentHandlerBase>(algo, this));
+                //algo.RefInstrument._interTriggers.Add(new Tuple<AlgoData, InstrumentHandlerBase>(algo, this));
                 return 1;
             }
 

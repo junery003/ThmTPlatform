@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 using Prism.Mvvm;
 using ThmCommon.Config;
+using ThmCommon.Models;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
     public class LoginTitanVM : BindableBase, ILoginTabItm {

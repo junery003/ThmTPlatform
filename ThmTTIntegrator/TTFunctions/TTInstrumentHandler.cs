@@ -38,7 +38,7 @@ namespace ThmTTIntegrator.TTFunctions {
             _dispatcher = current;
 
             InstrumentInfo = new ThmInstrumentInfo {
-                Provider = "TT",
+                Provider = EProviderType.TT, // "TT",
                 Exchange = _ttInstrument.Key.MarketId.ToString(),
                 //Type = TTInstrument.Key.ProductKey.Type.ToString(),
 

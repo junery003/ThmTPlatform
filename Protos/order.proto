@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-//import "google/protobuf/any.proto";
+import "connection.proto";
 
 package ThmServices;
 
@@ -13,11 +13,13 @@ service Order {
 }
 
 message SendOrderReq {
-    string symbol = 1;
-    double price = 2;
-    double qty = 3;
-    bool isBuy = 4;
-    string tag = 7;
+    PROVIDER_TYPE provider = 1;
+    string symbol = 2;
+
+    double price = 5;
+    double qty = 6;
+    bool isBuy = 7;
+    string tag = 8;
 }
 
 message SendOrderRsp {
@@ -25,11 +27,13 @@ message SendOrderRsp {
 }
 
 message UpdateOrderReq {
-    string symbol = 1;
-    double price = 2;
-    double qty = 3;
-    bool isBuy = 4;
-    string tag = 7;
+    PROVIDER_TYPE provider = 1;
+    string symbol = 2;
+
+    double price = 5;
+    double qty = 6;
+    bool isBuy = 7;
+    string tag = 8;
 }
 
 message UpdateOrderRsp {

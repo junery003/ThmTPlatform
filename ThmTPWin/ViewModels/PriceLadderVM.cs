@@ -89,7 +89,7 @@ namespace ThmTPWin.ViewModels {
             BindingOperations.EnableCollectionSynchronization(MarketData, _lock);
 
             _parent = parent;
-            TickSize = parent.InstrumentHandler.InstrumentInfo.TickSize;
+            TickSize = parent.InstrumentInfo.TickSize;
             _ladderSteps = 1000 * TickSize + 100;
         }
 

@@ -11,13 +11,6 @@
 using System.Collections.Generic;
 
 namespace ThmCommon.Config {
-    public enum EProviderType {
-        Unknown = 0,
-        ATP = 1,
-        TT = 2,
-        TITAN = 3,
-    };
-
     public interface IConfigHelper {
         bool LoadConfig();
         IConfig GetConfig();

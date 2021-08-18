@@ -10,6 +10,7 @@
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using ThmCommon.Config;
+using ThmCommon.Models;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
     public class LoginAtpVM : BindableBase, ILoginTabItm {

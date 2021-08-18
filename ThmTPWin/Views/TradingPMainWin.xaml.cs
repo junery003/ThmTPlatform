@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 using System;
 using System.Windows;
+using ThmCommon.Models;
 using ThmTPWin.ViewModels;
 using ThmTPWin.Views;
 using ThmTPWin.Views.LoginViews;
@@ -52,7 +53,7 @@ namespace ThmTPWin {
 
                 var rlt = _loginView.ShowDialog();
                 if (rlt.Value) {
-                    _vm.IsTitanEnabled = _loginView.IsChecked(ThmCommon.Config.EProviderType.TITAN);
+                    _vm.IsTitanEnabled = _loginView.IsChecked(EProviderType.TITAN);
                     return true;
                 }
 

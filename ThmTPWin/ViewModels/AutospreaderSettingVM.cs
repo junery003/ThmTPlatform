@@ -7,10 +7,10 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System;
-using System.Collections.ObjectModel;
 using Prism.Commands;
 using Prism.Mvvm;
+using System;
+using System.Collections.ObjectModel;
 using ThmCommon.Models;
 using ThmCommon.Utilities;
 
@@ -96,10 +96,10 @@ namespace ThmTPWin.ViewModels {
                 }
 
                 if (leg.IsActiveQuoting) {
-                    id += $"{leg.Multiplier}x{leg.InstrumentHandler.InstrumentInfo.InstrumentID}v ";
+                    id += $"{leg.Multiplier}x{leg.InstrumentHandler.InstrumentID}v ";
                 }
                 else {
-                    id += $"{leg.Multiplier}x{leg.InstrumentHandler.InstrumentInfo.InstrumentID} ";
+                    id += $"{leg.Multiplier}x{leg.InstrumentHandler.InstrumentID} ";
                 }
             }
 
@@ -108,7 +108,7 @@ namespace ThmTPWin.ViewModels {
 
         public AutospeaderParas() {
             _instrumentInfo = new ThmInstrumentInfo {
-                Provider = "TTP",
+                Provider = EProviderType.TITAN,
                 Exchange = "TTP",
                 Type = "Synthetic",
                 InstrumentID = ThmUtil.GenerateGUID()
@@ -146,7 +146,7 @@ namespace ThmTPWin.ViewModels {
                 return false;
             }
 
-            if (para1.InstrumentHandler.InstrumentInfo.InstrumentID == para2.InstrumentHandler.InstrumentInfo.InstrumentID) {
+            if (para1.InstrumentHandler.InstrumentID == para2.InstrumentHandler.InstrumentID) {
                 err = "Please specify different contracts.";
                 return false;
             }

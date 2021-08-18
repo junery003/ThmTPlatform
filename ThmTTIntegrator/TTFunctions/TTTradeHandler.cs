@@ -160,7 +160,7 @@ namespace ThmTTIntegrator.TTFunctions {
             var orderData = GetOrder(ttOrder.SiteOrderKey);
             if (orderData == null) {
                 orderData = new OrderData(ttOrder.SiteOrderKey) {
-                    Provider = "TT",
+                    Provider = EProviderType.TT, // "TT",
                     //OrderID = ttOrder.OrderId.ToString(), //SiteOrderKey = ttOrder.SiteOrderKey,
                     OrderID = ttOrder.SiteOrderKey,
                     Product = _ttInstrument.Product.Name,
@@ -203,39 +203,39 @@ namespace ThmTTIntegrator.TTFunctions {
         // (EOrderStatus)Enum.Parse(typeof(EOrderStatus), ttOrder.OrdStatus.ToString(), true);
         private EOrderStatus FormatOrderStatus(tt_net_sdk.OrdStatus ordStatus) {
             switch (ordStatus) {
-            case OrdStatus.New: // = 1,                
-            case OrdStatus.PendingNew: // = 10,
-                return EOrderStatus.New;
+                case OrdStatus.New: // = 1,                
+                case OrdStatus.PendingNew: // = 10,
+                    return EOrderStatus.New;
 
-            case OrdStatus.PartiallyFilled: // = 2,
-                return EOrderStatus.PartiallyFilled;
+                case OrdStatus.PartiallyFilled: // = 2,
+                    return EOrderStatus.PartiallyFilled;
 
-            case OrdStatus.Filled: //= 3,
-                return EOrderStatus.Filled;
+                case OrdStatus.Filled: //= 3,
+                    return EOrderStatus.Filled;
 
-            case OrdStatus.Canceled: // = 5,
-            case OrdStatus.PendingCancel: //= 6,
-                return EOrderStatus.Canceled;
+                case OrdStatus.Canceled: // = 5,
+                case OrdStatus.PendingCancel: //= 6,
+                    return EOrderStatus.Canceled;
 
-            case OrdStatus.Stopped: // = 7,
-            case OrdStatus.Rejected: // = 8,
-                return EOrderStatus.Rejected;
+                case OrdStatus.Stopped: // = 7,
+                case OrdStatus.Rejected: // = 8,
+                    return EOrderStatus.Rejected;
 
-            case OrdStatus.Expired: // = 12,
-                return EOrderStatus.Expired;
+                case OrdStatus.Expired: // = 12,
+                    return EOrderStatus.Expired;
 
-            case OrdStatus.Suspended: // = 9,
-            case OrdStatus.Calculated: // = 11,
+                case OrdStatus.Suspended: // = 9,
+                case OrdStatus.Calculated: // = 11,
 
-            case OrdStatus.AcceptedForBidding: // = 13,
-            case OrdStatus.PendingReplace: // = 14,
-            case OrdStatus.Unknown: // = 16,
-            case OrdStatus.Inactive: // = 17,
-            case OrdStatus.Planned: // = 18
-            case OrdStatus.NotSet: // = 0,
-            case OrdStatus.DoneForDay: // = 4,
-            default:
-                return EOrderStatus.Unknown;
+                case OrdStatus.AcceptedForBidding: // = 13,
+                case OrdStatus.PendingReplace: // = 14,
+                case OrdStatus.Unknown: // = 16,
+                case OrdStatus.Inactive: // = 17,
+                case OrdStatus.Planned: // = 18
+                case OrdStatus.NotSet: // = 0,
+                case OrdStatus.DoneForDay: // = 4,
+                default:
+                    return EOrderStatus.Unknown;
             }
         }
 
@@ -272,14 +272,14 @@ namespace ThmTTIntegrator.TTFunctions {
 
         private static TimeInForce FormatTIF(ETIF tif) {
             switch (tif) {
-            case ETIF.Day:
-                return TimeInForce.Day;
-            case ETIF.FAK:
-                return TimeInForce.ImmediateOrCancel;
-            case ETIF.FOK:
-                return TimeInForce.FillOrKill;
-            default:
-                return TimeInForce.Day;
+                case ETIF.Day:
+                    return TimeInForce.Day;
+                case ETIF.FAK:
+                    return TimeInForce.ImmediateOrCancel;
+                case ETIF.FOK:
+                    return TimeInForce.FillOrKill;
+                default:
+                    return TimeInForce.Day;
             }
         }
 

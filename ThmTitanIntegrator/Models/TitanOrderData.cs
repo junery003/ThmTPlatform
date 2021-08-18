@@ -18,7 +18,7 @@ namespace ThmTitanIntegrator.Models {
             InstrumentID = symbol;  // "FEFH21"            
         }
 
-        public string Provider { get; } = "Titan";
+        public EProviderType Provider { get; } = EProviderType.TITAN; // "Titan";
         public string Exchange { get; } = "SGX";
         public string ProductType { get; private set; } = "Future";
         public string Product { get; private set; }

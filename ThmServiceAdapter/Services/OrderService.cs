@@ -7,13 +7,23 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Grpc.Net.Client;
+using ThmServices;
 
-namespace ThmServiceAdapter.Services{
+namespace ThmServiceAdapter.Services {
     internal class OrderService {
+        private readonly Order.OrderClient _client;
+
+        internal OrderService(GrpcChannel channel) {
+            _client = new Order.OrderClient(channel);
+        }
+
+        internal void SendOrder() {
+        }
+
+        internal void Cancel() {
+
+        }
+
     }
 }

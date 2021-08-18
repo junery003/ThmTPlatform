@@ -8,15 +8,20 @@
 //
 //-----------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace ThmCommon.Models {
     public sealed class ThmInstrumentInfo {
-        public string Provider { get; set; } = "TTP"; // Provider;
-        public string Exchange { get; set; } = "TTP"; // market
+        public EProviderType Provider { get; set; } = EProviderType.TITAN; // Provider;
+        public string Exchange { get; set; } = "SGX"; // market
         public string Type { get; set; } = "Future"; // "Option",  "Future", ..., "Synthetic"
         public string Product { get; set; }  // FEF
         public string Contract { get; set; } // Jan21
         public string InstrumentID { get; set; } // symbol: eg. "FEF Jan21", "FEFH21"
         public decimal TickSize { get; set; } = decimal.Zero;
+
+        public List<string> Accounts { get; set; } = new List<string>();
+        public string CurAccount { get; set; }
 
         public override bool Equals(object obj) {
             if (obj == null || !GetType().Equals(obj.GetType())) {
@@ -31,4 +36,11 @@ namespace ThmCommon.Models {
             return (Exchange.GetHashCode() << 2) ^ (InstrumentID.GetHashCode());
         }
     }
+
+    public enum EProviderType {
+        Unknown = 0,
+        ATP = 1,
+        TT = 2,
+        TITAN = 3,
+    };
 }

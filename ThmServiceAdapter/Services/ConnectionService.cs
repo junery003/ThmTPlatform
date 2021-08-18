@@ -11,6 +11,7 @@ using Grpc.Net.Client;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
+using ThmCommon.Models;
 using ThmServices;
 
 namespace ThmServiceAdapter.Services {

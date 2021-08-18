@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
-using ThmCommon.Handlers;
+using ThmCommon.Models;
 using ThmServiceAdapter;
 
 namespace ThmTPWin.Controllers {
@@ -19,6 +19,8 @@ namespace ThmTPWin.Controllers {
         private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         private static ThmClient _client;
+        private static Dictionary<EProviderType, List<ExchangeCfg>> _providers;
+        private static ISet<ThmInstrumentInfo> _instruments = new HashSet<ThmInstrumentInfo>();
 
         internal static async Task<string> LoginAsync(string server, int port, string userName, string password) {
             _client = new ThmClient(server, port);
@@ -34,7 +36,6 @@ namespace ThmTPWin.Controllers {
             return await _client.ConnectAsync(providerType, loginCfg);
         }
 
-        private static Dictionary<EProviderType, List<ExchangeCfg>> _providers;
         internal static Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
             _providers = _client.GetProviders();
             return _providers;
@@ -44,9 +45,18 @@ namespace ThmTPWin.Controllers {
             return _providers[providerType];
         }
 
-        internal static InstrumentHandlerBase GetInstrumentHandler(string market, string selectedProductType, string name, string selectedContract) {
-            throw new System.NotImplementedException();
+        internal static void SubscribeInstrument(ThmInstrumentInfo instrument) {
+            _instruments.Add(instrument);
+
+            _client.SubscibeInstrument(instrument);
         }
+
+        #region order
+        internal static void SendOrder() {
+            _client.SendOrder();
+        }
+
+        #endregion //order
 
         internal static bool ChangePassword(EProviderType providerType, string curPwd, string newPwd) {
             throw new System.NotImplementedException();

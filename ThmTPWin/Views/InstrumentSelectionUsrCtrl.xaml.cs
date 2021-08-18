@@ -7,9 +7,8 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using ThmCommon.Handlers;
+using ThmCommon.Models;
 using ThmTPWin.ViewModels;
 
 namespace ThmTPWin.Views {
@@ -17,7 +16,7 @@ namespace ThmTPWin.Views {
     /// Interaction logic for InstrumentSelection.xaml
     /// </summary>
     public partial class InstrumentSelectionUsrCtrl : UserControl {
-        internal InstrumentHandlerBase InstrumentHandler { get; private set; }
+        internal ThmInstrumentInfo InstrumentInfo { get; private set; }
 
         private readonly InstrumentSelectionVM _vm;
         public InstrumentSelectionUsrCtrl() {
@@ -28,14 +27,14 @@ namespace ThmTPWin.Views {
         }
 
         public bool Select(out string err) {
-            InstrumentHandler = _vm.GetInstrumentHandler(out err);
-            if (InstrumentHandler == null) {
+            InstrumentInfo = _vm.GetInstrument(out err);
+            if (InstrumentInfo == null) {
                 err = "Instrument not initialized: " + err;
                 return false;
             }
 
-            InstrumentHandler.Start();
-            Task.Delay(500).Wait();
+            //InstrumentHandler.Start();
+            //Task.Delay(500).Wait();
 
             return true;
         }

@@ -15,7 +15,7 @@ namespace ThmCommon.Models {
         //eg. for ATP: $"{Exchange}|{OrderID}|{OrderRef}";
         public string ID { get; private set; }
 
-        public string Provider { get; set; } //ATP, TT, etc.
+        public EProviderType Provider { get; set; } //ATP, TT, etc.
         public string Exchange { get; set; } //CME, SGX, etc.
         public string ProductType { get; set; } //FUT etc
         public string Product { get; set; } //        

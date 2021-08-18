@@ -50,13 +50,13 @@ namespace ThmTPWin.ViewModels {
             FillsCmd = new DelegateCommand(OpenFills);
         }
 
-        internal void AddMDTrader(InstrumentHandlerBase instrumentHandler) {
-            if (decimal.Compare(instrumentHandler.InstrumentInfo.TickSize, decimal.Zero) == 0) {
-                Logger.Error(instrumentHandler.InstrumentInfo.InstrumentID + ": Tick size not initialised");
+        internal void AddMDTrader(ThmInstrumentInfo instrumentHandler) {
+            if (decimal.Compare(instrumentHandler.TickSize, decimal.Zero) == 0) {
+                Logger.Error(instrumentHandler.InstrumentID + ": Tick size not initialised");
                 return;
             }
 
-            var mdTrader = TradeWidgetTabItms.FirstOrDefault(x => x.InstrumentInfo.Equals(instrumentHandler.InstrumentInfo));
+            var mdTrader = TradeWidgetTabItms.FirstOrDefault(x => x.InstrumentInfo.Equals(instrumentHandler));
             if (mdTrader == null) {
                 mdTrader = new MDTraderVM(instrumentHandler);
                 TradeWidgetTabItms.Add(mdTrader);
@@ -64,7 +64,7 @@ namespace ThmTPWin.ViewModels {
 
             SelectedTradeTabItm = mdTrader;
 
-            Logger.Info("MDTrader opened for {}", instrumentHandler.InstrumentInfo.InstrumentID);
+            Logger.Info("MDTrader opened for {}", instrumentHandler.InstrumentID);
         }
 
         internal void AddASTrader(AutospeaderParas asItem, bool openWithLegs) {
@@ -129,7 +129,7 @@ namespace ThmTPWin.ViewModels {
                 Logger.Error("No instrument handler found for " + instrumentID);
                 return;
             }
-            trader.SetPosition(trader.InstrumentHandler.GetPosition());
+            //trader.SetPosition(trader.InstrumentHandler.GetPosition());
         }
 
         internal static int GetProductPosition(string product) {
@@ -141,7 +141,7 @@ namespace ThmTPWin.ViewModels {
 
             var pos = 0;
             foreach (var pair in traders) {
-                pos += pair.InstrumentHandler.GetPosition();
+                //pos += pair.InstrumentHandler.GetPosition();
             }
 
             return pos;
@@ -232,8 +232,6 @@ namespace ThmTPWin.ViewModels {
 
     public interface ITraderTabItm : IDisposable {
         ThmInstrumentInfo InstrumentInfo { get; } // redundant
-
-        InstrumentHandlerBase InstrumentHandler { get; }
 
         bool CheckQty(EBuySell dir);
         void SetPosition(int position);

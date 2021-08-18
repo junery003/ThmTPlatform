@@ -7,11 +7,11 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Media;
-using Prism.Mvvm;
 using ThmCommon.Handlers;
 using ThmCommon.Models;
 using ThmCommon.Utilities;
@@ -23,7 +23,6 @@ namespace ThmTPWin.ViewModels {
         private static readonly List<EAlgoType> Algos = new List<EAlgoType> { EAlgoType.Limit };
 
         public ThmInstrumentInfo InstrumentInfo => _syntheticHandler.InstrumentInfo;
-        public InstrumentHandlerBase InstrumentHandler => _syntheticHandler;
         public BaseTradeParaVM TradeParaVM { get; }
         public PriceLadderVM LadderVM { get; }
 
@@ -31,13 +30,13 @@ namespace ThmTPWin.ViewModels {
         private readonly AutospeaderLeg _asLeg2;
 
         private readonly decimal _tickSize = decimal.Zero;
-        private readonly MarketDepthData _combinedData = new MarketDepthData();
+        private readonly MarketDepthData _combinedData = new();
 
         // first order for each autospreader pair: <tagKey, order>
-        private readonly Dictionary<string, AutospreaderOrder> _orderDic = new Dictionary<string, AutospreaderOrder>();
+        private readonly Dictionary<string, AutospreaderOrder> _orderDic = new();
 
         private readonly AutospeaderParas _asItem;
-        private readonly SytheticInstrumentHandler _syntheticHandler = new SytheticInstrumentHandler();
+        private readonly SytheticInstrumentHandler _syntheticHandler = new();
         public ASTraderVM(AutospeaderParas asItem) {
             _asItem = asItem;
 
@@ -46,13 +45,13 @@ namespace ThmTPWin.ViewModels {
 
             decimal tickSize = decimal.Zero;
             foreach (var para in asItem.ASLegs) {
-                _syntheticHandler.AddHandler(para.InstrumentHandler);
+                //_syntheticHandler.AddHandler(para.InstrumentHandler);
 
-                para.InstrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
+                //para.InstrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
                 //para.InstrumentHandler.OnOrderDataUpdated += InstrumentHandler_OnOrderDataUpdated;
 
                 if (tickSize == decimal.Zero) {
-                    tickSize = para.InstrumentHandler.InstrumentInfo.TickSize;
+                    tickSize = para.InstrumentHandler.TickSize;
                 }
             }
 
@@ -96,23 +95,23 @@ namespace ThmTPWin.ViewModels {
 
         public void ProcessAlgo(EBuySell dir, decimal price) {
             switch (TradeParaVM.SelectedAlgoType) {
-            case EAlgoType.Limit: {
-                ProcessLimit(new AutospreaderOrder {
-                    BuySell = dir,
-                    ASPrice = price,
-                    Qty = TradeParaVM.Quantity,
-                });
+                case EAlgoType.Limit: {
+                        ProcessLimit(new AutospreaderOrder {
+                            BuySell = dir,
+                            ASPrice = price,
+                            Qty = TradeParaVM.Quantity,
+                        });
 
-                break;
-            }
-            case EAlgoType.Sniper: {
-                ProcessSniper(dir, price);
-                break;
-            }
-            default: {
-                Logger.Warn($"Algo type not supported: {TradeParaVM.SelectedAlgoType}");
-                break;
-            }
+                        break;
+                    }
+                case EAlgoType.Sniper: {
+                        ProcessSniper(dir, price);
+                        break;
+                    }
+                default: {
+                        Logger.Warn($"Algo type not supported: {TradeParaVM.SelectedAlgoType}");
+                        break;
+                    }
             }
 
             TradeParaVM.ResetQuantity();
@@ -151,11 +150,11 @@ namespace ThmTPWin.ViewModels {
 
         #region combined market data
         internal MarketDepthData CombineMarketData() {
-            var depthData1 = _asLeg1.InstrumentHandler.CurMarketDepthData;
-            var depthData2 = _asLeg2.InstrumentHandler.CurMarketDepthData;
+            //var depthData1 = _asLeg1.InstrumentHandler.CurMarketDepthData;
+            //var depthData2 = _asLeg2.InstrumentHandler.CurMarketDepthData;
 
-            GenerateBids(depthData1, depthData2);
-            GenerateOffers(depthData1, depthData2);
+            //GenerateBids(depthData1, depthData2);
+            //GenerateOffers(depthData1, depthData2);
 
             // update price accrodingly
             Task.Run(() => {
@@ -260,46 +259,46 @@ namespace ThmTPWin.ViewModels {
             }
 
             switch (ordData.Status) {
-            case EOrderStatus.New:
-            case EOrderStatus.Pending: {
-                break;
-            }
-            //case EOrderStatus.PartiallyFilled: // avoid partially filled
-            case EOrderStatus.Filled: {
-                // first order filled, send the second order
-                var qty = ordData.FillQty;
-                var buySell = asOrder.BuySell == EBuySell.Buy ? EBuySell.Sell : EBuySell.Buy;
-                var tag = "as" + (int)(asOrder.ASPrice * 100);
+                case EOrderStatus.New:
+                case EOrderStatus.Pending: {
+                        break;
+                    }
+                //case EOrderStatus.PartiallyFilled: // avoid partially filled
+                case EOrderStatus.Filled: {
+                        // first order filled, send the second order
+                        var qty = ordData.FillQty;
+                        var buySell = asOrder.BuySell == EBuySell.Buy ? EBuySell.Sell : EBuySell.Buy;
+                        var tag = "as" + (int)(asOrder.ASPrice * 100);
 
-                if (_asLeg1.IsActiveQuoting) {
-                    decimal payup = _asLeg2.PayupTicks * (buySell == EBuySell.Buy ? _tickSize : -_tickSize);
-                    var price = asOrder.Price - asOrder.ASPrice + payup;
-                    _asLeg2.InstrumentHandler.SendOrder(buySell, price, qty, tag);
-                }
-                else if (_asLeg2.IsActiveQuoting) {
-                    decimal payup = _asLeg1.PayupTicks * (buySell == EBuySell.Buy ? _tickSize : -_tickSize);
-                    var price = asOrder.Price + asOrder.ASPrice + payup;
-                    _asLeg1.InstrumentHandler.SendOrder(buySell, price, qty, tag);
-                }
+                        if (_asLeg1.IsActiveQuoting) {
+                            decimal payup = _asLeg2.PayupTicks * (buySell == EBuySell.Buy ? _tickSize : -_tickSize);
+                            var price = asOrder.Price - asOrder.ASPrice + payup;
+                            //_asLeg2.InstrumentHandler.SendOrder(buySell, price, qty, tag);
+                        }
+                        else if (_asLeg2.IsActiveQuoting) {
+                            decimal payup = _asLeg1.PayupTicks * (buySell == EBuySell.Buy ? _tickSize : -_tickSize);
+                            var price = asOrder.Price + asOrder.ASPrice + payup;
+                            //_asLeg1.InstrumentHandler.SendOrder(buySell, price, qty, tag);
+                        }
 
-                asOrder.WorkingQty -= qty;  // order.FilledQty >= order.Qty
-                if (asOrder.WorkingQty <= 0) {
-                    _orderDic.Remove(ordData.Tag);
-                }
+                        asOrder.WorkingQty -= qty;  // order.FilledQty >= order.Qty
+                        if (asOrder.WorkingQty <= 0) {
+                            _orderDic.Remove(ordData.Tag);
+                        }
 
-                break;
-            }
-            case EOrderStatus.Canceled: {
-                asOrder.WorkingQty -= ordData.Qty;
+                        break;
+                    }
+                case EOrderStatus.Canceled: {
+                        asOrder.WorkingQty -= ordData.Qty;
 
-                if (asOrder.WorkingQty <= 0) {
-                    _orderDic.Remove(ordData.Tag);
-                }
-                break;
-            }
-            default: {
-                break;
-            }
+                        if (asOrder.WorkingQty <= 0) {
+                            _orderDic.Remove(ordData.Tag);
+                        }
+                        break;
+                    }
+                default: {
+                        break;
+                    }
             }
 
             Logger.Info($"OnOrderDataUpdated: Order status {ordData.ID} - {ordData.Status}");
@@ -309,8 +308,9 @@ namespace ThmTPWin.ViewModels {
         #region algo
         internal void ProcessLimit(AutospreaderOrder asOrder) {
             if (_asLeg1.IsActiveQuoting) {
-                var price = GetValidPrice(asOrder.Qty, asOrder.BuySell, _asLeg2.InstrumentHandler.CurMarketDepthData)
-                    + asOrder.ASPrice;
+                var price = asOrder.ASPrice
+                    //+ GetValidPrice(asOrder.Qty, asOrder.BuySell, _asLeg2.InstrumentHandler.CurMarketDepthData)
+                    ;
 
                 if (asOrder.TagKey == null || !_orderDic.ContainsKey(asOrder.TagKey)) {
                     asOrder.InstrumentHandler = _asLeg1.InstrumentHandler;
@@ -323,7 +323,7 @@ namespace ThmTPWin.ViewModels {
                 else { // udpate price according to best price
                     if (price.CompareTo(asOrder.Price) != 0) {
                         asOrder.Price = price;
-                        asOrder.InstrumentHandler.UpdateOrder(asOrder.OrderID, price, asOrder.WorkingQty);
+                        //asOrder.InstrumentHandler.UpdateOrder(asOrder.OrderID, price, asOrder.WorkingQty);
                     }
                 }
             }
@@ -331,8 +331,8 @@ namespace ThmTPWin.ViewModels {
                 if (asOrder.TagKey == null || !_orderDic.ContainsKey(asOrder.TagKey)) {
                     asOrder.BuySell = asOrder.BuySell == EBuySell.Buy ? EBuySell.Sell : EBuySell.Buy;
 
-                    asOrder.Price = GetValidPrice(asOrder.Qty, asOrder.BuySell, _asLeg1.InstrumentHandler.CurMarketDepthData)
-                        - asOrder.ASPrice;
+                    //asOrder.Price = GetValidPrice(asOrder.Qty, asOrder.BuySell, _asLeg1.InstrumentHandler.CurMarketDepthData)
+                    //    - asOrder.ASPrice;
                     asOrder.InstrumentHandler = _asLeg2.InstrumentHandler;
                     asOrder.WorkingQty = asOrder.Qty;
 
@@ -340,12 +340,12 @@ namespace ThmTPWin.ViewModels {
                     _orderDic[tagKey] = asOrder;
                 }
                 else {
-                    var price = GetValidPrice(asOrder.Qty, asOrder.BuySell, _asLeg1.InstrumentHandler.CurMarketDepthData)
-                        - asOrder.ASPrice;
-                    if (price.CompareTo(asOrder.Price) != 0) {
-                        asOrder.Price = price;
-                        asOrder.InstrumentHandler.UpdateOrder(asOrder.OrderID, price, asOrder.WorkingQty);
-                    }
+                    //var price = GetValidPrice(asOrder.Qty, asOrder.BuySell, _asLeg1.InstrumentHandler.CurMarketDepthData)
+                    //    - asOrder.ASPrice;
+                    //if (price.CompareTo(asOrder.Price) != 0) {
+                    //    asOrder.Price = price;
+                    //    asOrder.InstrumentHandler.UpdateOrder(asOrder.OrderID, price, asOrder.WorkingQty);
+                    //}
                 }
             }
         }
@@ -371,7 +371,7 @@ namespace ThmTPWin.ViewModels {
         // use tagKey as the unique ID for each order (instead of OrderID)
         private string SendOrder(AutospreaderOrder asOrder) {
             asOrder.TagKey = $"as{(int)(asOrder.ASPrice * 100) % 10000}_{_randomG.GenerateUniqueID(9)}{DateTime.Now:fff}";
-            asOrder.InstrumentHandler.SendOrder(asOrder.BuySell, asOrder.Price, asOrder.Qty, asOrder.TagKey);
+            //asOrder.InstrumentHandler.SendOrder(asOrder.BuySell, asOrder.Price, asOrder.Qty, asOrder.TagKey);
             return asOrder.TagKey; // used as uniuqe key for autospreader
         }
 
@@ -385,7 +385,7 @@ namespace ThmTPWin.ViewModels {
     public class AutospreaderOrder {
         public string TagKey { get; set; }
         public string OrderID { get; set; }
-        public InstrumentHandlerBase InstrumentHandler { get; set; }
+        public ThmInstrumentInfo InstrumentHandler { get; set; }
         public EBuySell BuySell { get; set; }
         public decimal ASPrice { get; set; } // price diff for autospreader
         public decimal Price { get; set; } // actual price for sending

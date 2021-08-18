@@ -11,7 +11,6 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using ThmCommon.Handlers;
 using ThmCommon.Models;
 using ThmTPWin.Controllers;
 
@@ -26,26 +25,25 @@ namespace ThmTPWin.ViewModels {
             EAlgoType.InterTrigger
         };
 
-        public ThmInstrumentInfo InstrumentInfo => InstrumentHandler.InstrumentInfo;
-        public InstrumentHandlerBase InstrumentHandler { get; }
+        public ThmInstrumentInfo InstrumentInfo { get; }
         public BaseTradeParaVM TradeParaVM { get; }
         public PriceLadderVM LadderVM { get; }
 
-        public MDTraderVM(InstrumentHandlerBase instrumentHandler) {
-            InstrumentHandler = instrumentHandler;
+        public MDTraderVM(ThmInstrumentInfo instrumentHandler) {
+            InstrumentInfo = instrumentHandler;
 
             TradeParaVM = new BaseTradeParaVM(this, Algos);
             LadderVM = new PriceLadderVM(this);
 
-            TradeParaVM.Position = instrumentHandler.GetPosition();
+            //TradeParaVM.Position = instrumentHandler.GetPosition();
 
-            instrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
+            //instrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
         }
 
         private readonly object _marketDataUpdatelock = new();
         private void InstrumentHandler_OnMarketDataUpdated() {
             lock (_marketDataUpdatelock) {
-                LadderVM.UpdateMarketData(InstrumentHandler.CurMarketDepthData);
+                //LadderVM.UpdateMarketData(InstrumentInfo.CurMarketDepthData);
             }
         }
 
@@ -117,77 +115,83 @@ namespace ThmTPWin.ViewModels {
         }
 
         internal int ProcessSniper(EBuySell dir, decimal price, int qty) {
-            return InstrumentHandler.ProcessAlgo(new AlgoData(EAlgoType.Sniper) {
-                BuyOrSell = dir,
-                Price = price,
-                Qty = qty,
+            //return InstrumentInfo.ProcessAlgo(new AlgoData(EAlgoType.Sniper) {
+            //    BuyOrSell = dir,
+            //    Price = price,
+            //    Qty = qty,
 
-                LocalDateTime = DateTime.Now,
-                Account = InstrumentHandler.CurAccount
-            });
+            //    LocalDateTime = DateTime.Now,
+            //    Account = InstrumentInfo.CurAccount
+            //});
+            return 1;
         }
 
         internal int ProcessLimit(EBuySell dir, decimal price, int qty) {
-            return InstrumentHandler.ProcessAlgo(new AlgoData(EAlgoType.Limit) {
-                BuyOrSell = dir,
-                Price = price,
-                Qty = qty,
-            });
+            //return InstrumentInfo.ProcessAlgo(new AlgoData(EAlgoType.Limit) {
+            //    BuyOrSell = dir,
+            //    Price = price,
+            //    Qty = qty,
+            //});
+            return 1;
         }
 
         internal int ProcessTrigger(EBuySell dir, decimal price, int qty,
             EPriceType triggerPriceType,
             EOperator triggerOperator,
             int triggerQty) {
-            return InstrumentHandler.ProcessAlgo(new AlgoData(EAlgoType.Trigger) {
-                BuyOrSell = dir,
-                Price = price,
-                Qty = qty,
+            //return InstrumentInfo.ProcessAlgo(new AlgoData(EAlgoType.Trigger) {
+            //    BuyOrSell = dir,
+            //    Price = price,
+            //    Qty = qty,
 
-                TriggerPriceType = triggerPriceType,
-                TriggerOperator = triggerOperator,
-                TriggerQty = triggerQty,
+            //    TriggerPriceType = triggerPriceType,
+            //    TriggerOperator = triggerOperator,
+            //    TriggerQty = triggerQty,
 
-                LocalDateTime = DateTime.Now,
-                Account = InstrumentHandler.CurAccount
-            });
+            //    LocalDateTime = DateTime.Now,
+            //    Account = InstrumentInfo.CurAccount
+            //});
+            return 1;
         }
 
         internal int ProcessInterTrigger(EBuySell dir, decimal price, int qty,
-            InstrumentHandlerBase refInstrumentHandler,
+            ThmInstrumentInfo refInstrumentHandler,
             EPriceType refTiggerPriceType,
             EOperator refTriggerOperator,
             decimal refTriggerPrice) {
-            return InstrumentHandler.ProcessAlgo(new AlgoData(EAlgoType.InterTrigger) {
+            var algoData = new AlgoData(EAlgoType.InterTrigger) {
                 BuyOrSell = dir,
                 Price = price,
                 Qty = qty,
 
-                RefInstrumentHandler = refInstrumentHandler,
+                RefInstrument = refInstrumentHandler,
                 TriggerPriceType = refTiggerPriceType,
                 TriggerOperator = refTriggerOperator,
                 TriggerPrice = refTriggerPrice,
 
                 LocalDateTime = DateTime.Now,
-                Account = InstrumentHandler.CurAccount
-            });
+                Account = InstrumentInfo.CurAccount
+            };
+
+            //return InstrumentInfo.ProcessAlgo(algoData);
+            return 1;
         }
 
         public void DeleteAlgosByPrice(decimal price) {
-            InstrumentHandler.DeleteAlgosByPrice(price);
+            //InstrumentInfo.DeleteAlgosByPrice(price);
         }
 
         public void DeleteAllAlgos() {
             Logger.Info("Delete all algos.");
-            InstrumentHandler.DeleteAllAlgos();
+            //InstrumentInfo.DeleteAllAlgos();
         }
 
         public void DeleteOrder(string ordID, bool isBuy) {
-            InstrumentHandler.DeleteOrder(ordID, isBuy);
+            //InstrumentInfo.DeleteOrder(ordID, isBuy);
         }
 
         public void DeleteAlgo(string algoID) {
-            InstrumentHandler.DeleteAlgo(algoID);
+            //InstrumentInfo.DeleteAlgo(algoID);
         }
 
         public bool CheckQty(EBuySell dir) {
@@ -203,7 +207,7 @@ namespace ThmTPWin.ViewModels {
                 return false;
             }
 
-            var prodPos = TradingPMainWinVM.GetProductPosition(InstrumentHandler.InstrumentInfo.Product);
+            var prodPos = TradingPMainWinVM.GetProductPosition(InstrumentInfo.Product);
             var prodQty = (dir == EBuySell.Buy ? TradeParaVM.Quantity : -TradeParaVM.Quantity) + prodPos;
             if (Math.Abs(prodQty) > RiskManager.MaxPosPerProduct) {
                 TradeParaVM.QtyBackground = Brushes.Red;
@@ -229,10 +233,7 @@ namespace ThmTPWin.ViewModels {
         }
 
         public void Dispose() {
-            Logger.Info("Closed MDTrader for {}", InstrumentHandler.InstrumentInfo.InstrumentID);
-
-            InstrumentHandler.OnMarketDataUpdated -= InstrumentHandler_OnMarketDataUpdated;
-            InstrumentHandler.Stop();
+            Logger.Info("Closed MDTrader for {}", InstrumentInfo.InstrumentID);
         }
     }
 }

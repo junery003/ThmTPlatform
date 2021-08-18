@@ -8,12 +8,11 @@
 //
 //-----------------------------------------------------------------------------
 using System;
-using ThmCommon.Handlers;
 using ThmCommon.Utilities;
 
 namespace ThmCommon.Models {
     public sealed class AlgoData {
-        public string Provider { get; set; } //ATP, TT
+        public EProviderType Provider { get; set; } //ATP, TT
         public string ExchangeID { get; set; } //CME, SGX, etc.
         public string Product { get; set; } //i.e. contract, instrument
         public string ProductType { get; set; } //FUT etc
@@ -38,7 +37,7 @@ namespace ThmCommon.Models {
         public decimal? TriggerPrice { get; set; }
 
         #region Inter-Trigger
-        public InstrumentHandlerBase RefInstrumentHandler { get; set; }
+        public ThmInstrumentInfo RefInstrument { get; set; }
         #endregion
 
         #endregion

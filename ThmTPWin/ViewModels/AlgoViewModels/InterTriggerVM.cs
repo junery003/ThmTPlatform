@@ -8,7 +8,6 @@
 //
 //-----------------------------------------------------------------------------
 using Prism.Mvvm;
-using ThmCommon.Handlers;
 using ThmCommon.Models;
 
 namespace ThmTPWin.ViewModels.AlgoViewModels {
@@ -44,7 +43,7 @@ namespace ThmTPWin.ViewModels.AlgoViewModels {
             set => SetProperty(ref _refPrice, value);
         }
 
-        public InstrumentHandlerBase RefInstrumentHandler { get; set; }
+        public ThmInstrumentInfo RefInstrumentHandler { get; set; }
 
         public InterTriggerVM(string instrument) {
             Instrument = instrument;

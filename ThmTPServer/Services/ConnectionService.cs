@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using ThmAtpIntegrator.AtpHandler;
 using ThmCommon.Config;
 using ThmCommon.Handlers;
+using ThmCommon.Models;
 using ThmServices;
 using ThmTitanIntegrator.TitanHandler;
 
