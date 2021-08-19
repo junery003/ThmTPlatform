@@ -7,7 +7,9 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using Grpc.Core;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 using ThmServices;
 
 namespace ThmTPService.Services {
@@ -18,6 +20,18 @@ namespace ThmTPService.Services {
         private readonly ILogger<MarketDataService> _logger;
         public MarketDataService(ILogger<MarketDataService> logger) {
             _logger = logger;
+        }
+
+        public override async Task Subscribe(DepthDataSubscribeReq request,
+            IServerStreamWriter<DepthDataSubscribeRsp> responseStream,
+            ServerCallContext context) {
+            while (true) {
+                await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
+
+                });
+
+                await Task.Delay(1);
+            }
         }
     }
 }

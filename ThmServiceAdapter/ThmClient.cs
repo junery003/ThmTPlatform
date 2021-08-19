@@ -8,7 +8,6 @@
 //
 //-----------------------------------------------------------------------------
 using Grpc.Net.Client;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
@@ -16,37 +15,38 @@ using ThmCommon.Models;
 using ThmServiceAdapter.Services;
 
 namespace ThmServiceAdapter {
-    public class ThmClient : IDisposable {
-        private readonly string _host;
-        private readonly int _port;
+    public static class ThmClient {
+        private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private readonly GrpcChannel _channel;
+        private static string _host;
+        private static int _port;
+        private static GrpcChannel _channel;
 
-        private GreetService _greetService;
-        private ConnectionService _connService;
-        private MarketDataService _marketService;
-        private OrderService _orderService;
+        private static Dictionary<EProviderType, List<ExchangeCfg>> _providers;
+        private static readonly ISet<ThmInstrumentInfo> _instruments = new HashSet<ThmInstrumentInfo>();
 
-        public ThmClient(string host = "localhost", int port = 15001) {
+        private static GreetService _greetService; // test
+
+        private static ConnectionService _connService;
+        private static MarketDataService _marketService;
+        private static OrderService _orderService;
+
+        public static async Task<string> LoginAsync(string userName, string password,
+            string host = "localhost", int port = 15001) {
             _host = host;
             _port = port;
 
-            _channel = GrpcChannel.ForAddress($"http://{host}:{port}");
-        }
+            _channel = GrpcChannel.ForAddress($"http://{_host}:{_port}");
 
-        public async Task<string> Test() {
             if (_greetService == null) {
                 _greetService = new GreetService(_channel);
             }
+            var tmp = await _greetService.Test();
+            Logger.Info("GRPC testing OK. " + tmp);
 
-            return await _greetService.Test();
-        }
-
-        public async Task<string> LoginAsync(string userName, string password) {
             if (_connService == null) {
                 _connService = new ConnectionService(_channel);
             }
-
             var rsp = await _connService.LoginAsync(userName, password);
             if (rsp.Status == 0) {
                 return null;
@@ -55,23 +55,26 @@ namespace ThmServiceAdapter {
             return rsp.Message;
         }
 
-        public async Task<string> ConnectAsync(EProviderType providerType, LoginCfgBase loginCfg) {
+        public static async Task<string> ConnectAsync(EProviderType providerType, LoginCfgBase loginCfg) {
             if (_connService == null) {
                 _connService = new ConnectionService(_channel);
             }
-
             return await _connService.ConnectAsync(providerType, loginCfg);
         }
 
-        public Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
-            if (_connService == null) {
-                _connService = new ConnectionService(_channel);
-            }
-
-            return _connService.GetProviders();
+        public static Dictionary<EProviderType, List<ExchangeCfg>> GetProviders() {
+            _providers = _connService.GetProviders();
+            return _providers;
         }
 
-        public void SubscibeInstrument(ThmInstrumentInfo instrument) {
+        public static List<ExchangeCfg> GetExchanges(EProviderType providerType) {
+            return _providers[providerType];
+        }
+
+        #region Market Data
+        public static void SubscibeInstrument(ThmInstrumentInfo instrument) {
+            _instruments.Add(instrument);
+
             if (_marketService == null) {
                 _marketService = new MarketDataService(_channel);
             }
@@ -79,14 +82,36 @@ namespace ThmServiceAdapter {
             _marketService.Subscribe(instrument);
         }
 
+        public static void UnubscibeInstrument(ThmInstrumentInfo instrument) {
+            _marketService.Unsubscribe(instrument);
+        }
+
+        #endregion
+
         #region Order 
-        public void SendOrder() {
-            _orderService.SendOrder();
+        public static void SendOrder() {
+            if (_orderService == null) {
+                _orderService = new OrderService(_channel);
+            }
+
+            _orderService.Send();
+        }
+
+        public static void DeleteOrder() {
+            if (_orderService == null) {
+                _orderService = new OrderService(_channel);
+            }
+
+            _orderService.Cancel();
         }
 
         #endregion // Order
 
-        public void Dispose() {
+        public static bool ChangePassword(EProviderType providerType, string curPwd, string newPwd) {
+            return _connService.ChangePassword(providerType, curPwd, newPwd);
+        }
+
+        public static void Close() {
             _channel.Dispose();
         }
     }

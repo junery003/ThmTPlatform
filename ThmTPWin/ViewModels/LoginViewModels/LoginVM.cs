@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using ThmCommon.Config;
 using ThmCommon.Models;
+using ThmServiceAdapter;
 using ThmTPWin.Controllers;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
@@ -145,13 +146,13 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                 };
 
                 var login = ConfigHelper.LoginCfg.Login;
-                var rlt = await ConnManager.LoginAsync(login.Server, login.Port, login.UserID, login.Password);
+                var rlt = await ThmClient.LoginAsync(login.UserID, login.Password, login.Server, login.Port);
                 if (!string.IsNullOrEmpty(rlt)) {
                     AddProgess($"{providerType}: Failed to login - {rlt}");
                     return;
                 }
 
-                rlt = await ConnManager.ConnectAsync(providerType, loginCfg);
+                rlt = await ThmClient.ConnectAsync(providerType, loginCfg);
                 if (!string.IsNullOrEmpty(rlt)) {
                     AddProgess($"{providerType}: Failed to connect - {rlt}");
                     return;

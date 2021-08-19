@@ -18,10 +18,14 @@ namespace ThmServiceAdapter.Services {
             _client = new Order.OrderClient(channel);
         }
 
-        internal void SendOrder() {
+        internal void Send() {
         }
 
         internal void Cancel() {
+
+        }
+
+        internal void Update() {
 
         }
 

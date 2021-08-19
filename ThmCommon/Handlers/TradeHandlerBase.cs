@@ -44,12 +44,10 @@ namespace ThmCommon.Handlers {
         }
 
         public virtual void DeleteOrder(string id) {
-            if (!_orderDic.ContainsKey(id)) {
+            if (!_orderDic.Remove(id)) {
                 Logger.Warn($"DeleteOrder: {id} does not exist.");
                 return;
             }
-
-            _orderDic.Remove(id);
         }
 
         #endregion Orders

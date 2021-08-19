@@ -222,6 +222,8 @@ namespace ThmTPWin.ViewModels {
             foreach (var trade in TradeWidgetTabItms) {
                 trade.Dispose();
             }
+
+            ThmServiceAdapter.ThmClient.Close();
         }
     }
 

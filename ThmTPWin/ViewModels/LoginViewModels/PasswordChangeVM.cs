@@ -7,9 +7,9 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
-using System.Windows.Media;
 using Prism.Mvvm;
-using ThmCommon.Config;
+using System.Windows.Media;
+using ThmServiceAdapter;
 using ThmTPWin.Controllers;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
@@ -69,7 +69,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
         }
 
         public bool ChangePassword(ref string err) {
-            return ConnManager.ChangePassword(ThmCommon.Models.EProviderType.TITAN, _curPwd, _newPwd);
+            return ThmClient.ChangePassword(ThmCommon.Models.EProviderType.TITAN, _curPwd, _newPwd);
         }
     }
 }

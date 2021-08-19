@@ -73,5 +73,9 @@ namespace ThmServiceAdapter.Services {
 
             return providers;
         }
+
+        internal bool ChangePassword(EProviderType providerType, string curPwd, string newPwd) {
+            throw new System.NotImplementedException();
+        }
     }
 }

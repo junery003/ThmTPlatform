@@ -26,5 +26,13 @@ namespace ThmServiceAdapter.Services {
                 Symbol = instrument.InstrumentID
             });
         }
+
+        internal void Unsubscribe(ThmInstrumentInfo instrument) {
+            _client.Unsubscribe(new DepthDataUnscribeReq() {
+                Provider = (PROVIDER_TYPE)instrument.Provider,
+                Exchange = instrument.Exchange,
+                Symbol = instrument.InstrumentID
+            });
+        }
     }
 }

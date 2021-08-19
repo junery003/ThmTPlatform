@@ -7,9 +7,9 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Windows.Media;
-using Prism.Mvvm;
 using ThmCommon.Models;
 using ThmTPWin.Controllers;
 using ThmTPWin.ViewModels.AlgoViewModels;

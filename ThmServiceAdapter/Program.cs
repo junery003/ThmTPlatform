@@ -15,8 +15,8 @@ namespace ThmServiceAdapter {
     internal class Program {
         internal static async Task Main(string[] args) {
             Console.WriteLine("Hello World!");
-            var client = new ThmClient("localhost", 5001);
-            Console.WriteLine(await client.Test());
+
+            await ThmClient.LoginAsync("UserID", "Password", "localhost", 5001);
         }
     }
 }
