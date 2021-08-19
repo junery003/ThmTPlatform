@@ -72,7 +72,7 @@ namespace ThmTPWin {
 
             var rlt = cfgWin.ShowDialog();
             if (rlt.Value) {
-                _vm.AddMDTrader(cfgWin.SelectedInstrumentHandler);
+                _vm.AddMDTrader(cfgWin.SelectedInstrument);
             }
         }
 

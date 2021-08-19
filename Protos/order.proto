@@ -9,12 +9,13 @@ service Order {
     rpc UpdateOrder(UpdateOrderReq) returns (UpdateOrderRsp);
     rpc DeleteOrder(DeleteOrderReq) returns (DeleteOrderRsp);
 
-    rpc SubscribeOrder(SubscribeOrderReq) returns (stream SubscribeOrderRsp);
+    rpc Subscribe(SubscribeReq) returns (stream SubscribeRsp);
 }
 
 message SendOrderReq {
     PROVIDER_TYPE provider = 1;
-    string symbol = 2;
+    string exchange = 2;
+    string symbol = 3;
 
     double price = 5;
     double qty = 6;
@@ -28,7 +29,8 @@ message SendOrderRsp {
 
 message UpdateOrderReq {
     PROVIDER_TYPE provider = 1;
-    string symbol = 2;
+    string exchange = 2;
+    string symbol = 3;
 
     double price = 5;
     double qty = 6;
@@ -37,22 +39,28 @@ message UpdateOrderReq {
 }
 
 message UpdateOrderRsp {
-
+    string message = 1;
 }
 
 message DeleteOrderReq {
-    string orderID = 1;
+    PROVIDER_TYPE provider = 1;
+    string exchange = 2;
+    string symbol = 3;
+
+    string orderID = 5;
 }
 
 message DeleteOrderRsp {
     string message = 1;
 }
 
-message SubscribeOrderReq {
-
+message SubscribeReq {
+    PROVIDER_TYPE provider = 1;
+    string exchange = 2;
+    string symbol = 3;
 }
 
-message SubscribeOrderRsp {
+message SubscribeRsp {
 
 }
 

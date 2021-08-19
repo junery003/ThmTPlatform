@@ -18,18 +18,26 @@ namespace ThmCommon.Models {
         public string Product { get; set; }  // FEF
         public string Contract { get; set; } // Jan21
         public string InstrumentID { get; set; } // symbol: eg. "FEF Jan21", "FEFH21"
+
         public decimal TickSize { get; set; } = decimal.Zero;
 
         public List<string> Accounts { get; set; } = new List<string>();
         public string CurAccount { get; set; }
 
         public override bool Equals(object obj) {
-            if (obj == null || !GetType().Equals(obj.GetType())) {
+            if (obj == null) {
                 return false;
             }
 
-            var o = (ThmInstrumentInfo)obj;
-            return Exchange == o.Exchange && Type == o.Type && InstrumentID == o.InstrumentID;
+            var o = obj as ThmInstrumentInfo;
+            if (o == null) {
+                return false;
+            }
+
+            return Provider == o.Provider
+                && Exchange == o.Exchange
+                && Type == o.Type
+                && InstrumentID == o.InstrumentID;
         }
 
         public override int GetHashCode() {

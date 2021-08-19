@@ -89,20 +89,28 @@ namespace ThmServiceAdapter {
         #endregion
 
         #region Order 
-        public static void SendOrder() {
+        public static async Task<string> SendOrder() {
             if (_orderService == null) {
                 _orderService = new OrderService(_channel);
             }
 
-            _orderService.Send();
+            return await _orderService.SendAsync();
         }
 
-        public static void DeleteOrder() {
+        public static async Task<string> DeleteOrder() {
             if (_orderService == null) {
                 _orderService = new OrderService(_channel);
             }
 
-            _orderService.Cancel();
+            return await _orderService.CancelAsync();
+        }
+
+        public static async Task<string> UpdateOrder() {
+            if (_orderService == null) {
+                _orderService = new OrderService(_channel);
+            }
+
+            return await _orderService.UpdateAsync();
         }
 
         #endregion // Order

@@ -13,11 +13,9 @@ using ThmTPWin.ViewModels;
 
 namespace ThmTPWin.Views {
     /// <summary>
-    /// Interaction logic for InstrumentSelection.xaml
+    /// Interaction logic for InstrumentSelectionUsrCtrl.xaml
     /// </summary>
     public partial class InstrumentSelectionUsrCtrl : UserControl {
-        internal ThmInstrumentInfo InstrumentInfo { get; private set; }
-
         private readonly InstrumentSelectionVM _vm;
         public InstrumentSelectionUsrCtrl() {
             InitializeComponent();
@@ -26,17 +24,14 @@ namespace ThmTPWin.Views {
             DataContext = _vm;
         }
 
-        public bool Select(out string err) {
-            InstrumentInfo = _vm.GetInstrument(out err);
-            if (InstrumentInfo == null) {
+        public ThmInstrumentInfo Select(out string err) {
+            var instrumentInfo = _vm.GetInstrument(out err);
+            if (instrumentInfo == null) {
                 err = "Instrument not initialized: " + err;
-                return false;
+                return null;
             }
 
-            //InstrumentHandler.Start();
-            //Task.Delay(500).Wait();
-
-            return true;
+            return instrumentInfo;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ThmTPWin.Views {
     /// Interaction logic for InstrumentSelectionWin.xaml
     /// </summary>
     public partial class InstrumentSelectionWin : Window {
-        internal ThmInstrumentInfo SelectedInstrumentHandler => InstrumentSelection.InstrumentInfo;
+        internal ThmInstrumentInfo SelectedInstrument { get; private set; }
 
         internal InstrumentSelectionWin() {
             InitializeComponent();
@@ -24,7 +24,8 @@ namespace ThmTPWin.Views {
         private void SelectButton_Click(object sender, RoutedEventArgs e) {
             Cursor = System.Windows.Input.Cursors.Wait;
 
-            if (!InstrumentSelection.Select(out var err)) {
+            SelectedInstrument = InstrumentSelection.Select(out var err);
+            if (SelectedInstrument == null) {
                 MessageBox.Show(err);
                 return;
             }

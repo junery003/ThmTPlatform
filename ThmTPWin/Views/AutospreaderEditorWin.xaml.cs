@@ -13,7 +13,7 @@ using ThmTPWin.ViewModels;
 
 namespace ThmTPWin.Views {
     /// <summary>
-    /// Interaction logic for AutospreaderLegsWin.xaml
+    /// Interaction logic for AutospreaderEditorWin.xaml
     /// </summary>
     public partial class AutospreaderEditorWin : Window {
         private readonly AutospreaderEditorVM _vm;
@@ -49,7 +49,7 @@ namespace ThmTPWin.Views {
             var rlt = dlg.ShowDialog();
             if (rlt.Value) {
                 var contxt = (sender as Button)?.DataContext as AutospeaderLeg;
-                contxt.InstrumentHandler = dlg.SelectedInstrumentHandler;
+                contxt.InstrumentHandler = dlg.SelectedInstrument;
             }
         }
     }

@@ -24,7 +24,7 @@
 
     <ItemGroup>
         <PackageReference Include="MySql.Data" Version="8.0.26" />
-        <PackageReference Include="NLog" Version="4.7.10" />
+        <PackageReference Include="NLog" Version="4.7.11" />
     </ItemGroup>
 
 </Project>

@@ -51,18 +51,18 @@ namespace ThmTPWin.Views.AlgoViews {
         }
 
         private void SetAsRef_Click(object sender, RoutedEventArgs e) {
-            if (!instrumentSelectionUsrCtrl.Select(out var err)) {
+            var instInfo = instrumentSelectionUsrCtrl.Select(out var err);
+            if (instInfo == null) {
                 MessageBox.Show(err);
                 return;
             }
 
-            var tmp = instrumentSelectionUsrCtrl.InstrumentInfo;
-            if (!_vm.UpdateRefInstrument(tmp.InstrumentID, out err)) {
+            if (!_vm.UpdateRefInstrument(instInfo.InstrumentID, out err)) {
                 MessageBox.Show("Failed to set reference instrument: " + err);
                 return;
             }
 
-            _vm.RefInstrumentHandler = tmp;
+            _vm.RefInstrumentHandler = instInfo;
         }
     }
 }

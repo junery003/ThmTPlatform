@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Media;
 using ThmCommon.Models;
+using ThmServiceAdapter;
 using ThmTPWin.Controllers;
 
 namespace ThmTPWin.ViewModels {
@@ -29,14 +30,14 @@ namespace ThmTPWin.ViewModels {
         public BaseTradeParaVM TradeParaVM { get; }
         public PriceLadderVM LadderVM { get; }
 
-        public MDTraderVM(ThmInstrumentInfo instrumentHandler) {
-            InstrumentInfo = instrumentHandler;
+        public MDTraderVM(ThmInstrumentInfo instInfo) {
+            InstrumentInfo = instInfo;
 
             TradeParaVM = new BaseTradeParaVM(this, Algos);
             LadderVM = new PriceLadderVM(this);
 
             //TradeParaVM.Position = instrumentHandler.GetPosition();
-
+            ThmClient.SubscibeInstrument(instInfo);
             //instrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
         }
 
@@ -155,7 +156,7 @@ namespace ThmTPWin.ViewModels {
         }
 
         internal int ProcessInterTrigger(EBuySell dir, decimal price, int qty,
-            ThmInstrumentInfo refInstrumentHandler,
+            ThmInstrumentInfo refInstrumentInfo,
             EPriceType refTiggerPriceType,
             EOperator refTriggerOperator,
             decimal refTriggerPrice) {
@@ -164,7 +165,7 @@ namespace ThmTPWin.ViewModels {
                 Price = price,
                 Qty = qty,
 
-                RefInstrument = refInstrumentHandler,
+                RefInstrument = refInstrumentInfo,
                 TriggerPriceType = refTiggerPriceType,
                 TriggerOperator = refTriggerOperator,
                 TriggerPrice = refTriggerPrice,

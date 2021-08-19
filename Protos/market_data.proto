@@ -19,7 +19,6 @@ message DepthDataSubscribeRsp {
     PROVIDER_TYPE provider = 1;
     string exchange = 2;
     string symbol = 3;
-    string contract = 4;
     
     double bid1 = 5;
     double bid2 = 6;

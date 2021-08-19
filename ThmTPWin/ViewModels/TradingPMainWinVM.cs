@@ -50,21 +50,21 @@ namespace ThmTPWin.ViewModels {
             FillsCmd = new DelegateCommand(OpenFills);
         }
 
-        internal void AddMDTrader(ThmInstrumentInfo instrumentHandler) {
-            if (decimal.Compare(instrumentHandler.TickSize, decimal.Zero) == 0) {
-                Logger.Error(instrumentHandler.InstrumentID + ": Tick size not initialised");
+        internal void AddMDTrader(ThmInstrumentInfo instrumentInfo) {
+            if (decimal.Compare(instrumentInfo.TickSize, decimal.Zero) == 0) {
+                Logger.Error(instrumentInfo.InstrumentID + ": Tick size not initialised");
                 return;
             }
 
-            var mdTrader = TradeWidgetTabItms.FirstOrDefault(x => x.InstrumentInfo.Equals(instrumentHandler));
+            var mdTrader = TradeWidgetTabItms.FirstOrDefault(x => x.InstrumentInfo.Equals(instrumentInfo));
             if (mdTrader == null) {
-                mdTrader = new MDTraderVM(instrumentHandler);
+                mdTrader = new MDTraderVM(instrumentInfo);
                 TradeWidgetTabItms.Add(mdTrader);
             }
 
             SelectedTradeTabItm = mdTrader;
 
-            Logger.Info("MDTrader opened for {}", instrumentHandler.InstrumentID);
+            Logger.Info("MDTrader opened for {}", instrumentInfo.InstrumentID);
         }
 
         internal void AddASTrader(AutospeaderParas asItem, bool openWithLegs) {
