@@ -24,7 +24,8 @@ namespace ThmTPService.Services {
         }
 
         public override Task<HelloReply> SayHello(HelloRequest req, ServerCallContext context) {
-            _logger.LogInformation("Sending hello to " + req.Name);
+            _logger.LogInformation("Sending hello reply to " + req.Name);
+
             return Task.FromResult(new HelloReply {
                 Message = "Hello " + req.Name
             });
