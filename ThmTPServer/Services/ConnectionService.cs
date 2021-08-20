@@ -47,6 +47,10 @@ namespace ThmTPService.Services {
             });
         }
 
+        public override Task<LogoutRsp> Logout(LogoutReq req, ServerCallContext context) {
+            return base.Logout(req, context);
+        }
+
         public override Task<ConnectRsp> Connect(ConnectReq req, ServerCallContext context) {
             _logger.LogInformation("Connect " + req.Account);
             EProviderType providerType = EProviderType.Unknown;
@@ -155,6 +159,10 @@ namespace ThmTPService.Services {
         private static bool IsEnabled(EProviderType provider) {
             return _connectors.ContainsKey(provider)
                  && _connectors[provider].GetConfigHelper().GetConfig().Enabled;
+        }
+
+        public override Task<UpdateTitanPasswrodRsp> UpdateTitanPasswrod(UpdateTitanPasswrodReq req, ServerCallContext context) {
+            return base.UpdateTitanPasswrod(req, context);
         }
     }
 }

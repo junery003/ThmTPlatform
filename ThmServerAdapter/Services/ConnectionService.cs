@@ -74,8 +74,13 @@ namespace ThmServerAdapter.Services {
             return providers;
         }
 
-        internal bool ChangePassword(EProviderType providerType, string curPwd, string newPwd) {
-            throw new System.NotImplementedException();
+        internal async Task<string> ChangePasswordAsync(EProviderType providerType, string curPwd, string newPwd) {
+            var call = await _client.UpdateTitanPasswrodAsync(new UpdateTitanPasswrodReq {
+                CurPassword = curPwd,
+                NewPassword = newPwd
+            });
+
+            return call.Message;
         }
     }
 }

@@ -8,6 +8,7 @@
 //
 //-----------------------------------------------------------------------------
 using Prism.Mvvm;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using ThmServerAdapter;
 using ThmTPWin.Controllers;
@@ -68,8 +69,8 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
             CurUserId = ConfigHelper.LoginCfg.TitanLogin.Account;
         }
 
-        public bool ChangePassword(ref string err) {
-            return ThmServerAdapter.ThmClient.ChangePassword(ThmCommon.Models.EProviderType.TITAN, _curPwd, _newPwd);
+        public async Task<string> ChangePasswordAsync() {
+            return await ThmClient.ChangePasswordAsync(ThmCommon.Models.EProviderType.TITAN, _curPwd, _newPwd);
         }
     }
 }

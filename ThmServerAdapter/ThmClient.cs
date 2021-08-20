@@ -23,11 +23,9 @@ namespace ThmServerAdapter {
         private static Dictionary<EProviderType, List<ExchangeCfg>> _providers;
         private static readonly ISet<ThmInstrumentInfo> _instruments = new HashSet<ThmInstrumentInfo>();
 
+        #region Connection
         private static GreetService _greetService; // test
-
         private static ConnectionService _connService;
-        private static MarketDataService _marketService;
-        private static OrderService _orderService;
 
         public static async Task<string> LoginAsync(string serverAddr, string userName, string password) {
             _channel = GrpcChannel.ForAddress(serverAddr);
@@ -62,7 +60,11 @@ namespace ThmServerAdapter {
             return _providers[providerType];
         }
 
+        #endregion // Connection
+
         #region Market Data
+        private static MarketDataService _marketService;
+
         public static void SubscibeInstrument(ThmInstrumentInfo instrument) {
             _instruments.Add(instrument);
 
@@ -80,6 +82,8 @@ namespace ThmServerAdapter {
         #endregion
 
         #region Order 
+        private static OrderService _orderService;
+
         public static async Task<string> SendOrder() {
             if (_orderService == null) {
                 _orderService = new OrderService(_channel);
@@ -106,9 +110,12 @@ namespace ThmServerAdapter {
 
         #endregion // Order
 
-        public static bool ChangePassword(EProviderType providerType, string curPwd, string newPwd) {
-            return _connService.ChangePassword(providerType, curPwd, newPwd);
+        #region Others
+        public static async Task<string> ChangePasswordAsync(EProviderType providerType, string curPwd, string newPwd) {
+            return await _connService.ChangePasswordAsync(providerType, curPwd, newPwd);
         }
+
+        #endregion // Others
 
         public static void Close() {
             _channel?.Dispose();

@@ -42,12 +42,11 @@ namespace ThmServerAdapter.Services {
         }
 
         public async Task<string> SendAsync() {
-            using var call = _client.SendOrderAsync(new SendOrderReq {
+            var call = await _client.SendOrderAsync(new SendOrderReq {
 
             });
 
-            var rsp = await call.ResponseAsync;
-            return rsp.Message;
+            return call.Message;
         }
 
         public async Task<string> CancelAsync() {

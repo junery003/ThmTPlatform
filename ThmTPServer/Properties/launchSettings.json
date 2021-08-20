@@ -2,10 +2,9 @@
     "profiles": {
         "ThmTPService": {
             "commandName": "Project",
-            "dotnetRunMessages": "true",
-            "externalUrlConfiguration": true,
+            "launchBrowser": false,
             "nativeDebugging": true,
-            "applicationUrl": "http://localhost:10050;https://localhost:10051",
+            "applicationUrl": "http://localhost:10090;https://localhost:10091",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }

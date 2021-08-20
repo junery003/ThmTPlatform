@@ -24,10 +24,10 @@ namespace ThmTPWin.Views.LoginViews {
             DataContext = _vm;
         }
 
-        private void OK_Click(object sender, RoutedEventArgs e) {
-            string err = string.Empty;
-            if (!_vm.ChangePassword(ref err)) {
-                MessageBox.Show("Failed to change password: " + err);
+        private async void OK_Click(object sender, RoutedEventArgs e) {
+            string rlt = await _vm.ChangePasswordAsync();
+            if (!string.IsNullOrEmpty(rlt)) {
+                MessageBox.Show("Failed to change password: " + rlt);
                 return;
             }
 

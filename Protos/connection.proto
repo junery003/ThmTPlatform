@@ -8,6 +8,8 @@ service Connection {
 
     rpc Connect (ConnectReq) returns (ConnectRsp);
     rpc GetProviders (GetProvidersReq) returns (GetProvidersRsp);
+
+    rpc UpdateTitanPasswrod(UpdateTitanPasswrodReq) returns (UpdateTitanPasswrodRsp);
 }
 
 message LoginReq {
@@ -66,4 +68,14 @@ message Exchange {
 message Product {
     string name = 1;
     repeated string contracts = 2;
+}
+
+
+message UpdateTitanPasswrodReq {
+    string cur_password = 1;
+    string new_password = 2;
+}
+
+message UpdateTitanPasswrodRsp {
+    string message = 1;
 }

@@ -23,7 +23,8 @@ namespace ThmServerAdapter.Services {
         }
 
         public async Task<string> TestAsync() {
-            string user = "client1";
+            string user = "test client1";
+
             var reply = await _client.SayHelloAsync(new HelloRequest { Name = user });
 
             string rlt = reply.Message;
