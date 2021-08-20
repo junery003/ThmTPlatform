@@ -23,16 +23,19 @@ namespace ThmTPService.Services {
         }
 
         public override Task<SendOrderRsp> SendOrder(SendOrderReq req, ServerCallContext context) {
+            _logger.LogInformation("Sending order sending " + req.Symbol);
             return Task.FromResult(new SendOrderRsp {
             });
         }
 
         public override Task<UpdateOrderRsp> UpdateOrder(UpdateOrderReq req, ServerCallContext context) {
+            _logger.LogInformation("Sending order updating " + req.Symbol);
             return Task.FromResult(new UpdateOrderRsp {
             });
         }
 
         public override Task<DeleteOrderRsp> DeleteOrder(DeleteOrderReq req, ServerCallContext context) {
+            _logger.LogInformation("Sending order deleting " + req.Symbol);
             return Task.FromResult(new DeleteOrderRsp {
             });
         }

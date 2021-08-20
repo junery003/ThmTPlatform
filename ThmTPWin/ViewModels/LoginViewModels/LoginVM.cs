@@ -11,6 +11,7 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using ThmCommon.Config;
@@ -31,6 +32,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
             set => SetProperty(ref _selectedItm, value);
         }
 
+        private readonly string _grpcConn = ConfigurationManager.ConnectionStrings["GrpcConn"].ConnectionString;
         private readonly object _lock = new();
         internal LoginVM() {
             BindingOperations.EnableCollectionSynchronization(ProcessLogs, _lock);
@@ -109,10 +111,17 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
         }
 
         internal async Task<bool> StartAsync() {
+            var login = ConfigHelper.LoginCfg.Login;
+            var rlt = await ThmClient.LoginAsync(_grpcConn, login.UserID, login.Password);
+            if (!string.IsNullOrEmpty(rlt)) {
+                AddProgess($"Failed to login - {rlt}");
+                return false;
+            }
+
             var tasks = new List<Task>();
             foreach (var itm in LoginTabItms) {
                 if (itm.IsChecked) {
-                    var tsk = Start(itm.Provider);
+                    var tsk = Connect(itm.Provider);
                     if (tsk != null) {
                         tasks.Add(tsk);
                     }
@@ -126,7 +135,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
             return true;
         }
 
-        private Task Start(EProviderType providerType) {
+        private Task Connect(EProviderType providerType) {
             return Task.Run(async () => {
                 AddProgess($"Initializing {providerType} connection...");
 
@@ -145,14 +154,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                         return;
                 };
 
-                var login = ConfigHelper.LoginCfg.Login;
-                var rlt = await ThmClient.LoginAsync(login.UserID, login.Password, login.Server, login.Port);
-                if (!string.IsNullOrEmpty(rlt)) {
-                    AddProgess($"{providerType}: Failed to login - {rlt}");
-                    return;
-                }
-
-                rlt = await ThmClient.ConnectAsync(providerType, loginCfg);
+                var rlt = await ThmClient.ConnectAsync(providerType, loginCfg);
                 if (!string.IsNullOrEmpty(rlt)) {
                     AddProgess($"{providerType}: Failed to connect - {rlt}");
                     return;

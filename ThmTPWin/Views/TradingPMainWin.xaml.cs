@@ -25,7 +25,7 @@ namespace ThmTPWin {
         public TradingPMainWin() {
             InitializeComponent();
 
-            _vm = new TradingPMainWinVM();
+            _vm = new();
             DataContext = _vm;
         }
 
@@ -41,7 +41,7 @@ namespace ThmTPWin {
         private bool Login() {
             try {
                 if (_loginView == null) {
-                    _loginView = new LoginView() {
+                    _loginView = new() {
                         Owner = this,
                     };
                 }
@@ -66,7 +66,7 @@ namespace ThmTPWin {
         }
 
         private void MDTrader_Click(object sender, RoutedEventArgs e) {
-            var cfgWin = new InstrumentSelectionWin() {
+            InstrumentSelectionWin cfgWin = new() {
                 Owner = this,
             };
 

@@ -22,17 +22,16 @@ namespace ThmServiceAdapter.Services {
             _client = new Greeter.GreeterClient(channel);
         }
 
-        public async Task<string> Test() {
+        public async Task<string> TestAsync() {
             string user = "client1";
             var reply = await _client.SayHelloAsync(new HelloRequest { Name = user });
 
             string rlt = reply.Message;
             _logger.Info("Greeting: " + reply.Message);
 
-            reply = await _client.SayHelloAAsync(new HelloRequest { Name = user });
-
-            rlt += "\r\n" + reply.Message;
-            _logger.Info("Greeting: " + reply.Message);
+            //reply = await _client.SayHelloAsync(new HelloRequest { Name = user });
+            //rlt += "\r\n" + reply.Message;
+            //_logger.Info("Greeting: " + reply.Message);
 
             return rlt;
         }

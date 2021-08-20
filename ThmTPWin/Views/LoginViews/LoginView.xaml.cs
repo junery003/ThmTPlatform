@@ -8,7 +8,6 @@
 //
 //-----------------------------------------------------------------------------
 using System.Windows;
-using ThmCommon.Config;
 using ThmCommon.Models;
 using ThmTPWin.ViewModels.LoginViewModels;
 

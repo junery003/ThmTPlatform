@@ -8,9 +8,9 @@
 //
 //-----------------------------------------------------------------------------
 
-using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 using ThmServices;
 
 namespace ThmTPService.Services {
@@ -24,14 +24,9 @@ namespace ThmTPService.Services {
         }
 
         public override Task<HelloReply> SayHello(HelloRequest req, ServerCallContext context) {
+            _logger.LogInformation("Sending hello to " + req.Name);
             return Task.FromResult(new HelloReply {
                 Message = "Hello " + req.Name
-            });
-        }
-
-        public override Task<HelloReply> SayHelloA(HelloRequest req, ServerCallContext context) {
-            return Task.FromResult(new HelloReply {
-                Message = "Hello-async " + req.Name
             });
         }
     }

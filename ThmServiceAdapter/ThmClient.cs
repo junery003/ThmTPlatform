@@ -18,8 +18,6 @@ namespace ThmServiceAdapter {
     public static class ThmClient {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private static string _host;
-        private static int _port;
         private static GrpcChannel _channel;
 
         private static Dictionary<EProviderType, List<ExchangeCfg>> _providers;
@@ -31,34 +29,27 @@ namespace ThmServiceAdapter {
         private static MarketDataService _marketService;
         private static OrderService _orderService;
 
-        public static async Task<string> LoginAsync(string userName, string password,
-            string host = "localhost", int port = 15001) {
-            _host = host;
-            _port = port;
+        public static async Task<string> LoginAsync(string serverAddr, string userName, string password) {
+            _channel = GrpcChannel.ForAddress(serverAddr);
 
-            _channel = GrpcChannel.ForAddress($"http://{_host}:{_port}");
+            await TestAsync();
 
-            if (_greetService == null) {
-                _greetService = new GreetService(_channel);
-            }
-            var tmp = await _greetService.Test();
-            Logger.Info("GRPC testing OK. " + tmp);
-
-            if (_connService == null) {
-                _connService = new ConnectionService(_channel);
-            }
-            var rsp = await _connService.LoginAsync(userName, password);
-            if (rsp.Status == 0) {
+            _connService = new ConnectionService(_channel);
+            var call = await _connService.LoginAsync(userName, password);
+            if (call.Status == 0) {
                 return null;
             }
 
-            return rsp.Message;
+            return call.Message;
+        }
+
+        private static async Task TestAsync() {
+            _greetService = new GreetService(_channel);
+            var callTest = await _greetService.TestAsync();
+            Logger.Info("GRPC testing OK. " + callTest);
         }
 
         public static async Task<string> ConnectAsync(EProviderType providerType, LoginCfgBase loginCfg) {
-            if (_connService == null) {
-                _connService = new ConnectionService(_channel);
-            }
             return await _connService.ConnectAsync(providerType, loginCfg);
         }
 
@@ -120,7 +111,7 @@ namespace ThmServiceAdapter {
         }
 
         public static void Close() {
-            _channel.Dispose();
+            _channel?.Dispose();
         }
     }
 }

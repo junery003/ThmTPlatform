@@ -25,6 +25,8 @@ namespace ThmTPService.Services {
         public override async Task Subscribe(DepthDataSubscribeReq request,
             IServerStreamWriter<DepthDataSubscribeRsp> responseStream,
             ServerCallContext context) {
+            _logger.LogInformation("Sending Subscrib " + request.Symbol);
+
             while (true) {
                 await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
 

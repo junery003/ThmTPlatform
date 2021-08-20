@@ -27,6 +27,7 @@ namespace ThmServiceAdapter.Services {
         }
 
         public async Task Subscribe() {
+            Logger.Info("Subscribing orders ");
             using var call = _client.Subscribe(new SubscribeReq {
 
             });

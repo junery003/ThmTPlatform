@@ -17,7 +17,7 @@ namespace ThmTPWin.Controllers {
     internal static class ConfigHelper {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static LoginConfig LoginCfg { get; set; }
+        public static LoginConfig LoginCfg { get; private set; }
 
         private static readonly string ConfigPath = Directory.GetCurrentDirectory() + "/config/config.json";
         static ConfigHelper() {
@@ -72,7 +72,5 @@ namespace ThmTPWin.Controllers {
     public class ThmLogin {
         public string UserID { get; set; }
         public string Password { get; set; }
-        public string Server { get; set; }
-        public int Port { get; set; }
     }
 }

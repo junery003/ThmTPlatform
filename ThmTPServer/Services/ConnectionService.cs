@@ -35,17 +35,20 @@ namespace ThmTPService.Services {
 
         public ConnectionService(ILogger<ConnectionService> logger) {
             _logger = logger;
+
             Config = JsonConvert.DeserializeObject<ServerConfig>(File.ReadAllText(ServerConfigPath));
             InstrumentHandlerBase.EnableSaveData = Config.SaveData;
         }
 
         public override Task<LoginRsp> Login(LoginReq req, ServerCallContext context) {
+            _logger.LogInformation("Login: " + req.UserId);
             return Task.FromResult(new LoginRsp {
                 Message = ""
             });
         }
 
         public override Task<ConnectRsp> Connect(ConnectReq req, ServerCallContext context) {
+            _logger.LogInformation("Connect " + req.Account);
             EProviderType providerType = EProviderType.Unknown;
             switch (req.ProviderType) {
                 case PROVIDER_TYPE.Atp:

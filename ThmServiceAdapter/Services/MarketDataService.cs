@@ -28,6 +28,8 @@ namespace ThmServiceAdapter.Services {
         public event Action<MarketDepthData> OnMarketDataUpdate;
 
         internal async void Subscribe(ThmInstrumentInfo instrument) {
+            Logger.Info("Subscribing instrument: " + instrument.InstrumentID);
+
             var cts = new CancellationTokenSource();
 
             var call = _client.Subscribe(new DepthDataSubscribeReq() {
@@ -57,6 +59,8 @@ namespace ThmServiceAdapter.Services {
         }
 
         internal void Unsubscribe(ThmInstrumentInfo instrument) {
+            Logger.Info("Unsubscribing instrument: " + instrument.InstrumentID);
+
             _client.Unsubscribe(new DepthDataUnscribeReq() {
                 Provider = (PROVIDER_TYPE)instrument.Provider,
                 Exchange = instrument.Exchange,
