@@ -223,7 +223,7 @@ namespace ThmTPWin.ViewModels {
                 trade.Dispose();
             }
 
-            ThmServiceAdapter.ThmClient.Close();
+            ThmServerAdapter.ThmClient.Close();
         }
     }
 

@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
 using ThmCommon.Models;
-using ThmServiceAdapter.Services;
+using ThmServerAdapter.Services;
 
-namespace ThmServiceAdapter {
+namespace ThmServerAdapter {
     public static class ThmClient {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 

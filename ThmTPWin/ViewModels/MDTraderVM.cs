@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Media;
 using ThmCommon.Models;
-using ThmServiceAdapter;
+using ThmServerAdapter;
 using ThmTPWin.Controllers;
 
 namespace ThmTPWin.ViewModels {
@@ -37,7 +37,7 @@ namespace ThmTPWin.ViewModels {
             LadderVM = new PriceLadderVM(this);
 
             //TradeParaVM.Position = instrumentHandler.GetPosition();
-            ThmClient.SubscibeInstrument(instInfo);
+            ThmServerAdapter.ThmClient.SubscibeInstrument(instInfo);
             //instrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
         }
 

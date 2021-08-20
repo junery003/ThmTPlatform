@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using ThmCommon.Models;
 using ThmServices;
 
-namespace ThmServiceAdapter.Services {
+namespace ThmServerAdapter.Services {
     internal class MarketDataService {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 

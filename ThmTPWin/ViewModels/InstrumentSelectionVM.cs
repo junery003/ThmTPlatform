@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ThmCommon.Config;
 using ThmCommon.Models;
-using ThmServiceAdapter;
+using ThmServerAdapter;
 
 namespace ThmTPWin.ViewModels {
     public class InstrumentSelectionVM : BindableBase {
@@ -25,7 +25,7 @@ namespace ThmTPWin.ViewModels {
             set {
                 if (SetProperty(ref _selectedProvider, value)) {
                     Exchanges.Clear();
-                    ThmClient.GetExchanges(_selectedProvider)?.ForEach(exch => {
+                    ThmServerAdapter.ThmClient.GetExchanges(_selectedProvider)?.ForEach(exch => {
                         Exchanges.Add(exch);
                     });
                 }
@@ -89,7 +89,7 @@ namespace ThmTPWin.ViewModels {
         }
 
         internal InstrumentSelectionVM() {
-            ThmClient.GetProviders()?.Keys?.ToList().ForEach(x => Providers.Add(x));
+            ThmServerAdapter.ThmClient.GetProviders()?.Keys?.ToList().ForEach(x => Providers.Add(x));
         }
 
         internal ThmInstrumentInfo GetInstrument(out string err) {

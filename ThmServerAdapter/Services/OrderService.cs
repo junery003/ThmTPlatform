@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using ThmCommon.Models;
 using ThmServices;
 
-namespace ThmServiceAdapter.Services {
+namespace ThmServerAdapter.Services {
     internal class OrderService {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 

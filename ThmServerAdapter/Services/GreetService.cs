@@ -12,7 +12,7 @@ using Grpc.Net.Client;
 using System.Threading.Tasks;
 using ThmServices;
 
-namespace ThmServiceAdapter.Services {
+namespace ThmServerAdapter.Services {
     internal class GreetService {
         private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
 

@@ -35,7 +35,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ThmCommon\ThmCommon.csproj" />
-        <ProjectReference Include="..\ThmServiceAdapter\ThmServiceAdapter.csproj" />
+        <ProjectReference Include="..\ThmServerAdapter\ThmServerAdapter.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -11,7 +11,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace ThmServiceAdapter {
+namespace ThmServerAdapter {
     internal class Program {
         internal static async Task Main(string[] args) {
             Console.WriteLine("Hello World!");
