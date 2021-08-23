@@ -39,5 +39,20 @@ namespace ThmTPService.Services {
             return Task.FromResult(new DeleteOrderRsp {
             });
         }
+
+        public override async Task Subscribe(SubscribeReq req,
+            IServerStreamWriter<SubscribeRsp> responseStream,
+            ServerCallContext context) {
+            _logger.LogInformation("Subscibing order update: " + req.Symbol);
+
+            while (true) {
+                await responseStream.WriteAsync(new SubscribeRsp {
+
+                    //DateTime = data.DateTime.ToTimestamp(),
+                });
+
+                await Task.Delay(1);
+            }
+        }
     }
 }

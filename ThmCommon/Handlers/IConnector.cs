@@ -20,7 +20,7 @@ namespace ThmCommon.Handlers {
         bool StopContract(string instrumentID);
         void StartContracts();
 
-        InstrumentHandlerBase GetInstrumentHandler(string market, string productType, string product, string contract);
+        //InstrumentHandlerBase GetInstrumentHandler(string market, string productType, string product, string contract);
         InstrumentHandlerBase GetInstrumentHandler(string instrumentID);
 
         List<string> GetInstruments(string market, string productType, string product);

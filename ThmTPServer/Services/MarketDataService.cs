@@ -7,9 +7,11 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using ThmCommon.Models;
 using ThmServices;
 
 namespace ThmTPService.Services {
@@ -25,15 +27,52 @@ namespace ThmTPService.Services {
         public override async Task Subscribe(DepthDataSubscribeReq request,
             IServerStreamWriter<DepthDataSubscribeRsp> responseStream,
             ServerCallContext context) {
-            _logger.LogInformation("Sending Subscrib " + request.Symbol);
+            _logger.LogInformation("Sending to Subscribe " + request.Symbol);
 
-            while (true) {
+            var providerType = (EProviderType)request.Provider;
+            var conn = ConnectionService.GetConnector(providerType);
+            var instHandler = conn.GetInstrumentHandler(request.Symbol);
+
+            instHandler.OnMarketDataUpdated += async delegate (MarketDepthData data) {
                 await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
+                    Provider = (PROVIDER_TYPE)data.Provider,
+                    Exchange = request.Exchange,
+                    Type = data.ProductType,
+                    Symbol = data.InstrumentID,
 
+                    AQty1 = data.AskQty1,
+                    AQty2 = data.AskQty2,
+                    AQty3 = data.AskQty3,
+                    AQty4 = data.AskQty4,
+                    AQty5 = data.AskQty5,
+
+                    Ask1 = (double)data.AskPrice1,
+                    Ask2 = (double)data.AskPrice2,
+                    Ask3 = (double)data.AskPrice3,
+                    Ask4 = (double)data.AskPrice4,
+                    Ask5 = (double)data.AskPrice5,
+
+                    BQty1 = data.BidQty1,
+                    BQty2 = data.BidQty2,
+                    BQty3 = data.BidQty3,
+                    BQty4 = data.BidQty4,
+                    BQty5 = data.BidQty5,
+
+                    Bid1 = (double)data.BidPrice1,
+                    Bid2 = (double)data.BidPrice2,
+                    Bid3 = (double)data.BidPrice3,
+                    Bid4 = (double)data.BidPrice4,
+                    Bid5 = (double)data.BidPrice5,
+
+                    DateTime = data.DateTime.ToTimestamp(),
                 });
+            };
 
-                await Task.Delay(1);
-            }
+            //while (true) {
+            //    await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
+            //    });
+            //    await Task.Delay(1);
+            //}
         }
     }
 }

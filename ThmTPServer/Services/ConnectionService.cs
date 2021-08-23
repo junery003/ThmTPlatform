@@ -161,8 +161,20 @@ namespace ThmTPService.Services {
                  && _connectors[provider].GetConfigHelper().GetConfig().Enabled;
         }
 
+        public static IConnector GetConnector(EProviderType provider) {
+            if (_connectors.ContainsKey(provider)) {
+                return _connectors[provider];
+            }
+
+            return null;
+        }
+
         public override Task<UpdateTitanPasswrodRsp> UpdateTitanPasswrod(UpdateTitanPasswrodReq req, ServerCallContext context) {
-            return base.UpdateTitanPasswrod(req, context);
+            var rlt = GetConnector(EProviderType.TITAN)?.ChangePassword(req.CurPassword, req.NewPassword);
+
+            return Task.FromResult(new UpdateTitanPasswrodRsp() {
+                Message = rlt.Value ? null : "Failed to chang password"
+            }); ;
         }
     }
 }

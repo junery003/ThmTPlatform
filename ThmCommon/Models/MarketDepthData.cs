@@ -48,60 +48,23 @@ namespace ThmCommon.Models {
         public decimal SettlementPrice { get; set; }
         public int TotalTradedQuantity { get; set; }
 
-        //public int MarketSide { get; set; }
-        //public decimal OtcTradePrice { get; set; }
-        //public int OtcTradeQuantity { get; set; }
-        //public int ImbalanceQuantity { get; set; }
-        //public double ImpliedAskPrice { get; set; }
-        //public int ImpliedAskQuantity { get; set; }
-        //public double ImpliedBidPrice { get; set; }
-        //public int ImpliedBidQuantity { get; set; }
-        //public double IndicativeAskPrice { get; set; }
-        //public double IndicativeBidPrice { get; set; }
-        //public double IndicativeSettlPrc { get; set; }
-        //public UInt64 MergedAskCount { get; set; }
-        //public UInt64 MergedBidCount { get; set; }
-        //public double SeriesStatus { get; set; }
-        //public double WorkupPrice { get; set; }
-        //public double WorkupState { get; set; }
-        //public int CumulativeTradedQuantity { get; set; }
-        //public double OpenInterst { get; set; }
-        //public int IndicativeQuantity { get; set; }
-        //public double IndicativePrice { get; set; }
-        //public double LowerLimitPrice { get; set; }
-        //public double UpperLimitPrice { get; set; }
-        //public int IndicativeAskQuantity { get; set; }
-        //public int IndicativeBidQuantity { get; set; }
-        //public double IndicativeClosePrice { get; set; }
-        //public double IndicativeOpenPrice { get; set; }
-        //public int IndicativeOpenQuantity { get; set; }
-        //public double MergedAskCounterparty { get; set; }
-        //public double MergedBidCounterparty { get; set; }
-        //public double NetChange { get; set; }
-        //public double NetChangePercent { get; set; }
-        //public double CalculatedImpliedAskPrice { get; set; }
-        //public int CalculatedImpliedAskQuantity { get; set; }
-        //public double CalculatedImpliedBidPrice { get; set; }
-        //public int CalculatedImpliedBidQuantity { get; set; }
-        //public double SessionRollover { get; set; }
-
-        public decimal BidPrice1 { get; set; } //{ get { return DirectBidPrice; } set { DirectBidPrice = value; } }
+        public decimal BidPrice1 { get; set; }
         public decimal BidPrice2 { get; set; }
         public decimal BidPrice3 { get; set; }
         public decimal BidPrice4 { get; set; }
         public decimal BidPrice5 { get; set; }
-        public int BidQty1 { get; set; } //{ get { return DirectBidQuantity; } set { DirectBidQuantity = value; } }
+        public int BidQty1 { get; set; }
         public int BidQty2 { get; set; }
         public int BidQty3 { get; set; }
         public int BidQty4 { get; set; }
         public int BidQty5 { get; set; }
 
-        public decimal AskPrice1 { get; set; } // { get { return DirectAskPrice; } set { DirectAskPrice = value; } }
+        public decimal AskPrice1 { get; set; }
         public decimal AskPrice2 { get; set; }
         public decimal AskPrice3 { get; set; }
         public decimal AskPrice4 { get; set; }
         public decimal AskPrice5 { get; set; }
-        public int AskQty1 { get; set; } // { get { return DirectAskQuantity; } set { DirectAskQuantity = value; } }
+        public int AskQty1 { get; set; }
         public int AskQty2 { get; set; }
         public int AskQty3 { get; set; }
         public int AskQty4 { get; set; }

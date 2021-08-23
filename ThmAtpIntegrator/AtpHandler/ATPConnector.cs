@@ -24,13 +24,13 @@ namespace ThmAtpIntegrator.AtpHandler {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         // instrumentID, handler
-        internal Dictionary<string, AtpInstrumentHandler> InstrumentHandlerDic { get; } = new Dictionary<string, AtpInstrumentHandler>();
+        internal Dictionary<string, AtpInstrumentHandler> InstrumentHandlerDic { get; } = new();
 
         private ZmqHelper _zmqHelper;
         private readonly AtpConfigHelper _atpConfigHelper;
 
-        private readonly List<ExchangeCfg> _exchanges = new List<ExchangeCfg>();
-        private readonly List<string> _allAccounts = new List<string>();
+        private readonly List<ExchangeCfg> _exchanges = new();
+        private readonly List<string> _allAccounts = new();
 
         public bool IsConnected { get; set; } = false;  // MarketDataConnected
         //private bool _tradeConnected;
