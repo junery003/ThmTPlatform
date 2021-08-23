@@ -36,13 +36,14 @@ namespace ThmTPWin.ViewModels {
             TradeParaVM = new BaseTradeParaVM(this, Algos);
             LadderVM = new PriceLadderVM(this);
 
-            //TradeParaVM.Position = instrumentHandler.GetPosition();
+            TradeParaVM.Position = ThmClient.GetPosition(instInfo);
+
             ThmClient.OnMarketDataUpdate += ThmClient_OnMarketDataUpdate;
             ThmClient.SubscibeInstrument(instInfo);
         }
 
         private readonly object _marketDataUpdatelock = new();
-        private void ThmClient_OnMarketDataUpdate(MarketDepthData depthData) {          
+        private void ThmClient_OnMarketDataUpdate(MarketDepthData depthData) {
             lock (_marketDataUpdatelock) {
                 LadderVM.UpdateMarketData(depthData);
             }

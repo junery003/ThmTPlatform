@@ -18,14 +18,15 @@ namespace ThmTitanIntegrator.TitanHandler {
     public class TitanInstrumentHandler : InstrumentHandlerBase {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        //public override MarketDepthData CurMarketDepthData { get; protected set; }
-
         protected override AlgoHandlerBase AlgoHandler => _algoHandler;
         protected override TradeHandlerBase TradeHandler => _tradeHandler;
 
         private readonly TitanTradeHandler _tradeHandler;
         private readonly TitanAlgoHandler _algoHandler;
+
         private const string DT_FORMAT = "yyyy-MM-dd HH:mm:ss.fffffff";
+        private MarketDepthData _curMarketDepthData;
+
         public TitanInstrumentHandler(string instrumentID, string acount) {
             InstrumentInfo = new ThmInstrumentInfo {
                 Provider = EProviderType.TITAN, // "Titan",
@@ -67,12 +68,12 @@ namespace ThmTitanIntegrator.TitanHandler {
 
         internal void ParseMarketData(TitanDepthData depthDataMsg) {
             BuildDepthData(depthDataMsg);
-            UpdateMarketData();
+            UpdateMarketData(_curMarketDepthData);
         }
 
         private MarketDepthData BuildDepthData(TitanDepthData mdMsg) {
-            if (CurMarketDepthData == null) {
-                CurMarketDepthData = new MarketDepthData() {
+            if (_curMarketDepthData == null) {
+                _curMarketDepthData = new MarketDepthData() {
                     Provider = mdMsg.Provider,
                     Exchange = mdMsg.Exchange,
                     ProductType = mdMsg.ProductType,
@@ -82,47 +83,47 @@ namespace ThmTitanIntegrator.TitanHandler {
                 };
             }
 
-            CurMarketDepthData.DateTime = TimeUtil.String2DateTime(mdMsg.DateTime.Substring(0, DT_FORMAT.Length), DT_FORMAT);
-            CurMarketDepthData.LocalDateTime = DateTime.Now; // TimeUtil.MilliSeconds2DateTime(atpMDMsg.LocalTime);
+            _curMarketDepthData.DateTime = TimeUtil.String2DateTime(mdMsg.DateTime.Substring(0, DT_FORMAT.Length), DT_FORMAT);
+            _curMarketDepthData.LocalDateTime = DateTime.Now; // TimeUtil.MilliSeconds2DateTime(atpMDMsg.LocalTime);
 
-            CurMarketDepthData.HighPrice = mdMsg.HighPrice;
-            CurMarketDepthData.LowPrice = mdMsg.LowPrice;
-            CurMarketDepthData.OpenPrice = mdMsg.OpenPrice;
-            CurMarketDepthData.TotalTradedQuantity = mdMsg.Volume;
+            _curMarketDepthData.HighPrice = mdMsg.HighPrice;
+            _curMarketDepthData.LowPrice = mdMsg.LowPrice;
+            _curMarketDepthData.OpenPrice = mdMsg.OpenPrice;
+            _curMarketDepthData.TotalTradedQuantity = mdMsg.Volume;
             //CurMarketDepthData.LastTradedQuantity = atpObj.Volume;
-            CurMarketDepthData.LastTradedPrice = mdMsg.LastPrice;
-            CurMarketDepthData.SettlementPrice = mdMsg.SettlementPrice;
+            _curMarketDepthData.LastTradedPrice = mdMsg.LastPrice;
+            _curMarketDepthData.SettlementPrice = mdMsg.SettlementPrice;
 
-            CurMarketDepthData.DirectAskPrice = mdMsg.DirectAskPrice;
-            CurMarketDepthData.DirectAskQty = mdMsg.DirectAskQty;
-            CurMarketDepthData.DirectBidPrice = mdMsg.DirectBidPrice;
-            CurMarketDepthData.DirectBidQty = mdMsg.DirectBidQty;
+            _curMarketDepthData.DirectAskPrice = mdMsg.DirectAskPrice;
+            _curMarketDepthData.DirectAskQty = mdMsg.DirectAskQty;
+            _curMarketDepthData.DirectBidPrice = mdMsg.DirectBidPrice;
+            _curMarketDepthData.DirectBidQty = mdMsg.DirectBidQty;
 
-            CurMarketDepthData.AskPrice1 = mdMsg.AskPrice1;
-            CurMarketDepthData.AskPrice2 = mdMsg.AskPrice2;
-            CurMarketDepthData.AskPrice3 = mdMsg.AskPrice3;
-            CurMarketDepthData.AskPrice4 = mdMsg.AskPrice4;
-            CurMarketDepthData.AskPrice5 = mdMsg.AskPrice5;
+            _curMarketDepthData.AskPrice1 = mdMsg.AskPrice1;
+            _curMarketDepthData.AskPrice2 = mdMsg.AskPrice2;
+            _curMarketDepthData.AskPrice3 = mdMsg.AskPrice3;
+            _curMarketDepthData.AskPrice4 = mdMsg.AskPrice4;
+            _curMarketDepthData.AskPrice5 = mdMsg.AskPrice5;
 
-            CurMarketDepthData.AskQty1 = mdMsg.AskQty1;
-            CurMarketDepthData.AskQty2 = mdMsg.AskQty2;
-            CurMarketDepthData.AskQty3 = mdMsg.AskQty3;
-            CurMarketDepthData.AskQty4 = mdMsg.AskQty4;
-            CurMarketDepthData.AskQty5 = mdMsg.AskQty5;
+            _curMarketDepthData.AskQty1 = mdMsg.AskQty1;
+            _curMarketDepthData.AskQty2 = mdMsg.AskQty2;
+            _curMarketDepthData.AskQty3 = mdMsg.AskQty3;
+            _curMarketDepthData.AskQty4 = mdMsg.AskQty4;
+            _curMarketDepthData.AskQty5 = mdMsg.AskQty5;
 
-            CurMarketDepthData.BidPrice1 = mdMsg.BidPrice1;
-            CurMarketDepthData.BidPrice2 = mdMsg.BidPrice2;
-            CurMarketDepthData.BidPrice3 = mdMsg.BidPrice3;
-            CurMarketDepthData.BidPrice4 = mdMsg.BidPrice4;
-            CurMarketDepthData.BidPrice5 = mdMsg.BidPrice5;
+            _curMarketDepthData.BidPrice1 = mdMsg.BidPrice1;
+            _curMarketDepthData.BidPrice2 = mdMsg.BidPrice2;
+            _curMarketDepthData.BidPrice3 = mdMsg.BidPrice3;
+            _curMarketDepthData.BidPrice4 = mdMsg.BidPrice4;
+            _curMarketDepthData.BidPrice5 = mdMsg.BidPrice5;
 
-            CurMarketDepthData.BidQty1 = mdMsg.BidQty1;
-            CurMarketDepthData.BidQty2 = mdMsg.BidQty2;
-            CurMarketDepthData.BidQty3 = mdMsg.BidQty3;
-            CurMarketDepthData.BidQty4 = mdMsg.BidQty4;
-            CurMarketDepthData.BidQty5 = mdMsg.BidQty5;
+            _curMarketDepthData.BidQty1 = mdMsg.BidQty1;
+            _curMarketDepthData.BidQty2 = mdMsg.BidQty2;
+            _curMarketDepthData.BidQty3 = mdMsg.BidQty3;
+            _curMarketDepthData.BidQty4 = mdMsg.BidQty4;
+            _curMarketDepthData.BidQty5 = mdMsg.BidQty5;
 
-            return CurMarketDepthData;
+            return _curMarketDepthData;
         }
 
         internal void ParseOrderData(TitanOrderData titanOrder) {

@@ -18,6 +18,7 @@ namespace ThmAtpIntegrator.AtpHandler {
     public class AtpInstrumentHandler : InstrumentHandlerBase {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private MarketDepthData _curDepthData;
         protected override AlgoHandlerBase AlgoHandler => _algoHandler;
         protected override TradeHandlerBase TradeHandler => _tradeHandler;
 
@@ -63,61 +64,61 @@ namespace ThmAtpIntegrator.AtpHandler {
         internal void ParseMarketDepthData(AtpDepthData depthDataMsg) {
             BuildDepthData(depthDataMsg);
 
-            UpdateMarketData();
+            UpdateMarketData(_curDepthData);
         }
 
         private MarketDepthData BuildDepthData(AtpDepthData mdMsg) {
-            if (CurMarketDepthData == null) {
-                CurMarketDepthData = new MarketDepthData() {
+            if (_curDepthData == null) {
+                _curDepthData = new MarketDepthData() {
                     Provider = mdMsg.Provider,  // ATP
                     Exchange = mdMsg.Exchange,
-                    ProductType = "Future",  // by default //Product.Type,
-                    Product = mdMsg.Product, //Product.Name,                
+                    ProductType = "Future",   // by default //Product.Type,
+                    Product = mdMsg.Product,  //Product.Name,                
                     Contract = mdMsg.Contract, //Product.Alias
                     InstrumentID = mdMsg.InstrumentID,
                 };
             }
 
-            CurMarketDepthData.DateTime = TimeUtil.String2DateTime(mdMsg.DateTime);
-            CurMarketDepthData.LocalDateTime = DateTime.Now; // TimeUtil.MilliSeconds2DateTime(atpMDMsg.LocalTime);
+            _curDepthData.DateTime = TimeUtil.String2DateTime(mdMsg.DateTime);
+            _curDepthData.LocalDateTime = DateTime.Now; // TimeUtil.MilliSeconds2DateTime(atpMDMsg.LocalTime);
 
-            CurMarketDepthData.HighPrice = mdMsg.HighPrice;
-            CurMarketDepthData.LowPrice = mdMsg.LowPrice;
-            CurMarketDepthData.OpenPrice = mdMsg.OpenPrice;
-            CurMarketDepthData.TotalTradedQuantity = mdMsg.Volume;
-            CurMarketDepthData.LastTradedPrice = mdMsg.LastPrice;
-            CurMarketDepthData.SettlementPrice = mdMsg.SettlementPrice;
+            _curDepthData.HighPrice = mdMsg.HighPrice;
+            _curDepthData.LowPrice = mdMsg.LowPrice;
+            _curDepthData.OpenPrice = mdMsg.OpenPrice;
+            _curDepthData.TotalTradedQuantity = mdMsg.Volume;
+            _curDepthData.LastTradedPrice = mdMsg.LastPrice;
+            _curDepthData.SettlementPrice = mdMsg.SettlementPrice;
 
-            CurMarketDepthData.DirectAskPrice = mdMsg.DirectAskPrice;
-            CurMarketDepthData.DirectAskQty = mdMsg.DirectAskQty;
-            CurMarketDepthData.DirectBidPrice = mdMsg.DirectBidPrice;
-            CurMarketDepthData.DirectBidQty = mdMsg.DirectBidQty;
+            _curDepthData.DirectAskPrice = mdMsg.DirectAskPrice;
+            _curDepthData.DirectAskQty = mdMsg.DirectAskQty;
+            _curDepthData.DirectBidPrice = mdMsg.DirectBidPrice;
+            _curDepthData.DirectBidQty = mdMsg.DirectBidQty;
 
-            CurMarketDepthData.AskPrice1 = mdMsg.AskPrice1;
-            CurMarketDepthData.AskPrice2 = mdMsg.AskPrice2;
-            CurMarketDepthData.AskPrice3 = mdMsg.AskPrice3;
-            CurMarketDepthData.AskPrice4 = mdMsg.AskPrice4;
-            CurMarketDepthData.AskPrice5 = mdMsg.AskPrice5;
+            _curDepthData.AskPrice1 = mdMsg.AskPrice1;
+            _curDepthData.AskPrice2 = mdMsg.AskPrice2;
+            _curDepthData.AskPrice3 = mdMsg.AskPrice3;
+            _curDepthData.AskPrice4 = mdMsg.AskPrice4;
+            _curDepthData.AskPrice5 = mdMsg.AskPrice5;
 
-            CurMarketDepthData.AskQty1 = mdMsg.AskQty1;
-            CurMarketDepthData.AskQty2 = mdMsg.AskQty2;
-            CurMarketDepthData.AskQty3 = mdMsg.AskQty3;
-            CurMarketDepthData.AskQty4 = mdMsg.AskQty4;
-            CurMarketDepthData.AskQty5 = mdMsg.AskQty5;
+            _curDepthData.AskQty1 = mdMsg.AskQty1;
+            _curDepthData.AskQty2 = mdMsg.AskQty2;
+            _curDepthData.AskQty3 = mdMsg.AskQty3;
+            _curDepthData.AskQty4 = mdMsg.AskQty4;
+            _curDepthData.AskQty5 = mdMsg.AskQty5;
 
-            CurMarketDepthData.BidPrice1 = mdMsg.BidPrice1;
-            CurMarketDepthData.BidPrice2 = mdMsg.BidPrice2;
-            CurMarketDepthData.BidPrice3 = mdMsg.BidPrice3;
-            CurMarketDepthData.BidPrice4 = mdMsg.BidPrice4;
-            CurMarketDepthData.BidPrice5 = mdMsg.BidPrice5;
+            _curDepthData.BidPrice1 = mdMsg.BidPrice1;
+            _curDepthData.BidPrice2 = mdMsg.BidPrice2;
+            _curDepthData.BidPrice3 = mdMsg.BidPrice3;
+            _curDepthData.BidPrice4 = mdMsg.BidPrice4;
+            _curDepthData.BidPrice5 = mdMsg.BidPrice5;
 
-            CurMarketDepthData.BidQty1 = mdMsg.BidQty1;
-            CurMarketDepthData.BidQty2 = mdMsg.BidQty2;
-            CurMarketDepthData.BidQty3 = mdMsg.BidQty3;
-            CurMarketDepthData.BidQty4 = mdMsg.BidQty4;
-            CurMarketDepthData.BidQty5 = mdMsg.BidQty5;
+            _curDepthData.BidQty1 = mdMsg.BidQty1;
+            _curDepthData.BidQty2 = mdMsg.BidQty2;
+            _curDepthData.BidQty3 = mdMsg.BidQty3;
+            _curDepthData.BidQty4 = mdMsg.BidQty4;
+            _curDepthData.BidQty5 = mdMsg.BidQty5;
 
-            return CurMarketDepthData;
+            return _curDepthData;
         }
 
         internal void ParseOrderData(AtpOrderData orderMsg) {

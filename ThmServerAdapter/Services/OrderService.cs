@@ -90,5 +90,8 @@ namespace ThmServerAdapter.Services {
             return rsp.Message;
         }
 
+        internal int GetPosition(ThmInstrumentInfo instrument) {
+            throw new NotImplementedException();
+        }
     }
 }

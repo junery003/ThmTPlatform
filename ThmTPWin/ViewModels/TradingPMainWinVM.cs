@@ -40,7 +40,7 @@ namespace ThmTPWin.ViewModels {
             get => _selectedTradeTabItm;
             set => SetProperty(ref _selectedTradeTabItm, value);
         }
-        public static ObservableCollection<ITraderTabItm> TradeWidgetTabItms { get; } = new ();
+        public static ObservableCollection<ITraderTabItm> TradeWidgetTabItms { get; } = new();
 
         public TradingPMainWinVM() {
             InitTimer();

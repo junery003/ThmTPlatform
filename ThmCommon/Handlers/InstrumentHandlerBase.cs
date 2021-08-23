@@ -22,8 +22,6 @@ namespace ThmCommon.Handlers {
         public List<string> Accounts { get; protected set; } = new List<string>();
         public string CurAccount { get; protected set; }
 
-        public virtual MarketDepthData CurMarketDepthData { get; protected set; }
-
         public abstract bool Start();
         public abstract void Stop();
 
@@ -38,16 +36,16 @@ namespace ThmCommon.Handlers {
         protected abstract TradeHandlerBase TradeHandler { get; }
 
         #region data update
-        public event Action OnMarketDataUpdated;
-        public void UpdateMarketData() {
+        public event Action<MarketDepthData> OnMarketDataUpdated;
+        public void UpdateMarketData(MarketDepthData depthData) {
             var task1 = Task.Run(() => {
-                ProcessWorkingAlgos(CurMarketDepthData.CurBestQuot);
+                ProcessWorkingAlgos(depthData.CurBestQuot);
             });
             var task2 = Task.Run(async () => {
-                _ = await SaveDataAsync(CurMarketDepthData);
+                _ = await SaveDataAsync(depthData);
             });
             var task3 = Task.Run(() => {
-                OnMarketDataUpdated?.Invoke();
+                OnMarketDataUpdated?.Invoke(depthData);
             });
 
             _ = Task.WhenAll(task1, task2, task3).ConfigureAwait(false);
@@ -83,7 +81,7 @@ namespace ThmCommon.Handlers {
         /// <returns>1 if added successfully but not being executed; 
         ///          0 if added and then executed; 
         ///         -1 if not added</returns>
-        public int ProcessAlgo(AlgoData algo) {
+        public int ProcessAlgo(AlgoData algo, MarketDepthData depthData) {
             if (algo.Type == EAlgoType.InterTrigger) {
                 //if (0 == algo.RefInstrument.CheckInterTrigger(algo, this, algo.RefInstrument.CurMarketDepthData.CurBestQuot)) {
                 //    return 0;
@@ -93,7 +91,7 @@ namespace ThmCommon.Handlers {
                 return 1;
             }
 
-            return AlgoHandler.ProcessAlgo(algo, CurMarketDepthData.CurBestQuot);
+            return AlgoHandler.ProcessAlgo(algo, depthData.CurBestQuot);
         }
 
         public void ProcessWorkingAlgos(BestQuot md) {

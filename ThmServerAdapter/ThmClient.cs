@@ -83,6 +83,10 @@ namespace ThmServerAdapter {
             _marketService.Unsubscribe(instrument);
         }
 
+        public static int GetPosition(ThmInstrumentInfo instrument) {
+            return _orderService.GetPosition(instrument);
+        }
+
         #endregion
 
         #region Order 

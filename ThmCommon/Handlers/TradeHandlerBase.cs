@@ -31,9 +31,9 @@ namespace ThmCommon.Handlers {
         public abstract void SendDeleteOrder(string orderID, bool isBuy);
         #endregion
 
-        #region orders Dic updating
+        #region Orders Dic Updating
         // ID: for ATP: exchange+exchange+orderID+orderRef, 
-        //      for TT: site order key        
+        //     for TT:  site order key        
         private readonly Dictionary<string, OrderData> _orderDic = new Dictionary<string, OrderData>();
         public virtual void AddOrder(OrderData orderData) {
             _orderDic[orderData.ID] = orderData;

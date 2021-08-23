@@ -16,8 +16,6 @@ namespace ThmTTIntegrator.TTFunctions {
     public sealed class TTInstrumentHandler : InstrumentHandlerBase {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public override MarketDepthData CurMarketDepthData => _priceHandler.CurMarketData;
-
         protected override TradeHandlerBase TradeHandler => _tradeHandler;
         protected override AlgoHandlerBase AlgoHandler => _algoHandler;
 
