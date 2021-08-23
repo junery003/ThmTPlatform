@@ -1,0 +1,10 @@
+syntax="proto3";
+
+package ThmServices;
+
+enum PROVIDER_TYPE {
+    Unknown = 0;
+    ATP = 1;
+    TT = 2;
+    TITAN = 3;
+}

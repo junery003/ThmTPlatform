@@ -1,5 +1,7 @@
 ﻿syntax="proto3";
 
+import "common.proto";
+
 package ThmServices;
 
 service Connection {
@@ -28,13 +30,6 @@ message LogoutReq {
 
 message LogoutRsp {
 
-}
-
-enum PROVIDER_TYPE {
-    Unknown = 0;
-    ATP = 1;
-    TT = 2;
-    TITAN = 3;
 }
 
 message ConnectReq {

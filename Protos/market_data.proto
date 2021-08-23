@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-import "connection.proto";
+import "common.proto";
 
 package ThmServices;
 
