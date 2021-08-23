@@ -41,10 +41,10 @@ namespace ThmTPWin.ViewModels {
             set => SetProperty(ref _name, value);
         }
 
-        private ThmInstrumentInfo _instrumentHandler;  // contract
-        public ThmInstrumentInfo InstrumentHandler {
-            get => _instrumentHandler;
-            set { SetProperty(ref _instrumentHandler, value); }
+        private ThmInstrumentInfo _instrumentInfo;  // contract
+        public ThmInstrumentInfo InstrumentInfo {
+            get => _instrumentInfo;
+            set { SetProperty(ref _instrumentInfo, value); }
         }
 
         private decimal _ratio = 1;

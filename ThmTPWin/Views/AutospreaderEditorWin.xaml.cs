@@ -49,7 +49,7 @@ namespace ThmTPWin.Views {
             var rlt = dlg.ShowDialog();
             if (rlt.Value) {
                 var contxt = (sender as Button)?.DataContext as AutospeaderLeg;
-                contxt.InstrumentHandler = dlg.SelectedInstrument;
+                contxt.InstrumentInfo = dlg.SelectedInstrument;
             }
         }
     }

@@ -37,14 +37,14 @@ namespace ThmTPWin.ViewModels {
             LadderVM = new PriceLadderVM(this);
 
             //TradeParaVM.Position = instrumentHandler.GetPosition();
-            ThmServerAdapter.ThmClient.SubscibeInstrument(instInfo);
-            //instrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
+            ThmClient.OnMarketDataUpdate += ThmClient_OnMarketDataUpdate;
+            ThmClient.SubscibeInstrument(instInfo);
         }
 
         private readonly object _marketDataUpdatelock = new();
-        private void InstrumentHandler_OnMarketDataUpdated() {
+        private void ThmClient_OnMarketDataUpdate(MarketDepthData depthData) {          
             lock (_marketDataUpdatelock) {
-                //LadderVM.UpdateMarketData(InstrumentInfo.CurMarketDepthData);
+                LadderVM.UpdateMarketData(depthData);
             }
         }
 

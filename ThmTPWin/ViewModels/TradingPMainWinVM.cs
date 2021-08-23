@@ -79,7 +79,7 @@ namespace ThmTPWin.ViewModels {
 
             if (openWithLegs) {
                 foreach (var leg in asItem.ASLegs) {
-                    AddMDTrader(leg.InstrumentHandler);
+                    AddMDTrader(leg.InstrumentInfo);
                 }
             }
 

@@ -8,6 +8,7 @@
 //
 //-----------------------------------------------------------------------------
 using System;
+using ThmCommon.Models;
 
 namespace ThmAtpIntegrator.Models {
     [Serializable]
@@ -18,7 +19,7 @@ namespace ThmAtpIntegrator.Models {
             (Exchange, Product, Contract) = AtpFunctions.AtpUtil.ExtractContract(instrumentID);
         }
 
-        public string Provider { get; } = "ATP";
+        public EProviderType Provider { get; } = EProviderType.ATP;
 
         //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
         public string Exchange { get; private set; }

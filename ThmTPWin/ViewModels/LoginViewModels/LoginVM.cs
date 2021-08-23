@@ -112,7 +112,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
 
         internal async Task<bool> StartAsync() {
             var login = ConfigHelper.LoginCfg.Login;
-            var rlt = await ThmServerAdapter.ThmClient.LoginAsync(_grpcConn, login.UserID, login.Password);
+            var rlt = await ThmClient.LoginAsync(_grpcConn, login.UserID, login.Password);
             if (!string.IsNullOrEmpty(rlt)) {
                 AddProgess($"Failed to login - {rlt}");
                 return false;
@@ -154,7 +154,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                         return;
                 };
 
-                var rlt = await ThmServerAdapter.ThmClient.ConnectAsync(providerType, loginCfg);
+                var rlt = await ThmClient.ConnectAsync(providerType, loginCfg);
                 if (!string.IsNullOrEmpty(rlt)) {
                     AddProgess($"{providerType}: Failed to connect - {rlt}");
                     return;

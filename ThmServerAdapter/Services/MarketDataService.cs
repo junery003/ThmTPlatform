@@ -10,6 +10,7 @@
 using Grpc.Core;
 using Grpc.Net.Client;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ThmCommon.Models;
@@ -21,13 +22,18 @@ namespace ThmServerAdapter.Services {
 
         private readonly MarketData.MarketDataClient _client;
 
+        private readonly Dictionary<string, MarketDepthData> _marketData = new();
+
         internal MarketDataService(GrpcChannel channel) {
             _client = new MarketData.MarketDataClient(channel);
         }
 
-        public event Action<MarketDepthData> OnMarketDataUpdate;
+        private event Action<MarketDepthData> OnMarketDataUpdate;
 
-        internal async void Subscribe(ThmInstrumentInfo instrument) {
+        internal async Task Subscribe(ThmInstrumentInfo instrument, Action<MarketDepthData> onMarketDataUpdate) {
+            OnMarketDataUpdate = onMarketDataUpdate;
+
+            _marketData.Add(instrument.ID, null);
             Logger.Info("Subscribing instrument: " + instrument.InstrumentID);
 
             var cts = new CancellationTokenSource();
@@ -54,12 +60,54 @@ namespace ThmServerAdapter.Services {
             await watchTsk;
         }
 
-        private MarketDepthData ParseDepthData(DepthDataSubscribeRsp rsp) {
-            throw new NotImplementedException();
+        private MarketDepthData ParseDepthData(DepthDataSubscribeRsp msg) {
+            string id = msg.Exchange + msg.Type + msg.Symbol + (EProviderType)msg.Provider;
+            MarketDepthData depthData = _marketData[id];
+            if (depthData == null) {
+                depthData = new() {
+                    Provider = (EProviderType)msg.Provider,
+                    Exchange = msg.Exchange,
+                    ProductType = msg.Type,
+                    InstrumentID = msg.Symbol,
+                };
+
+                _marketData[id] = depthData;
+            }
+
+            depthData.DateTime = msg.DateTime.ToDateTime();
+            depthData.LocalDateTime = DateTime.Now;
+
+            depthData.AskPrice1 = (decimal)msg.Ask1;
+            depthData.AskPrice2 = (decimal)msg.Ask2;
+            depthData.AskPrice3 = (decimal)msg.Ask3;
+            depthData.AskPrice4 = (decimal)msg.Ask4;
+            depthData.AskPrice5 = (decimal)msg.Ask5;
+
+            depthData.AskQty1 = msg.AQty1;
+            depthData.AskQty2 = msg.AQty2;
+            depthData.AskQty3 = msg.AQty3;
+            depthData.AskQty4 = msg.AQty4;
+            depthData.AskQty5 = msg.AQty5;
+
+            depthData.BidPrice1 = (decimal)msg.Bid1;
+            depthData.BidPrice2 = (decimal)msg.Bid2;
+            depthData.BidPrice3 = (decimal)msg.Bid3;
+            depthData.BidPrice4 = (decimal)msg.Bid4;
+            depthData.BidPrice5 = (decimal)msg.Bid5;
+
+            depthData.BidQty1 = msg.BQty1;
+            depthData.BidQty2 = msg.BQty2;
+            depthData.BidQty3 = msg.BQty3;
+            depthData.BidQty4 = msg.BQty4;
+            depthData.BidQty5 = msg.BQty5;
+
+            return depthData;
         }
 
         internal void Unsubscribe(ThmInstrumentInfo instrument) {
-            Logger.Info("Unsubscribing instrument: " + instrument.InstrumentID);
+            if (_marketData.Remove(instrument.ID)) {
+                Logger.Info("Unsubscribed instrument: " + instrument.InstrumentID);
+            }
 
             _client.Unsubscribe(new DepthDataUnscribeReq() {
                 Provider = (PROVIDER_TYPE)instrument.Provider,

@@ -91,15 +91,15 @@ namespace ThmTPWin.ViewModels {
         private void ComposeInfo() {
             var id = string.Empty;
             foreach (var leg in ASLegs) {
-                if (leg.InstrumentHandler == null) {
+                if (leg.InstrumentInfo == null) {
                     continue;
                 }
 
                 if (leg.IsActiveQuoting) {
-                    id += $"{leg.Multiplier}x{leg.InstrumentHandler.InstrumentID}v ";
+                    id += $"{leg.Multiplier}x{leg.InstrumentInfo.InstrumentID}v ";
                 }
                 else {
-                    id += $"{leg.Multiplier}x{leg.InstrumentHandler.InstrumentID} ";
+                    id += $"{leg.Multiplier}x{leg.InstrumentInfo.InstrumentID} ";
                 }
             }
 
@@ -141,12 +141,12 @@ namespace ThmTPWin.ViewModels {
 
             var para1 = ASLegs[0];
             var para2 = ASLegs[1];
-            if (para1.InstrumentHandler == null || para2.InstrumentHandler == null) {
+            if (para1.InstrumentInfo == null || para2.InstrumentInfo == null) {
                 err = "Please specify a contract for each leg.";
                 return false;
             }
 
-            if (para1.InstrumentHandler.InstrumentID == para2.InstrumentHandler.InstrumentID) {
+            if (para1.InstrumentInfo.InstrumentID == para2.InstrumentInfo.InstrumentID) {
                 err = "Please specify different contracts.";
                 return false;
             }

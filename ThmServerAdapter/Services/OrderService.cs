@@ -10,6 +10,7 @@
 using Grpc.Core;
 using Grpc.Net.Client;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Models;
 using ThmServices;
@@ -20,16 +21,22 @@ namespace ThmServerAdapter.Services {
 
         private readonly Order.OrderClient _client;
 
-        public event Action<OrderData> OnOrderUpdate;
+        private event Action<OrderData> OnOrderUpdate;
+
+        private readonly Dictionary<string, OrderData> _orderData = new();
 
         internal OrderService(GrpcChannel channel) {
             _client = new Order.OrderClient(channel);
         }
 
-        public async Task Subscribe() {
+        public async Task Subscribe(ThmInstrumentInfo instrument, Action<OrderData> onOrderDataUpdate) {
+            OnOrderUpdate = onOrderDataUpdate;
+
             Logger.Info("Subscribing orders ");
             using var call = _client.Subscribe(new SubscribeReq {
-
+                Exchange = instrument.Exchange,
+                Provider = (PROVIDER_TYPE)instrument.Provider,
+                Symbol = instrument.InstrumentID
             });
 
             await foreach (var msg in call.ResponseStream.ReadAllAsync()) {
@@ -37,8 +44,24 @@ namespace ThmServerAdapter.Services {
             }
         }
 
-        private OrderData ParseOrderData(object msg) {
-            throw new NotImplementedException();
+        private OrderData ParseOrderData(SubscribeRsp msg) {
+            string id = msg.Exchange + msg.Type + msg.Symbol + msg.Provider;
+            var orderData = _orderData[id];
+            if (orderData == null) {
+                orderData = new OrderData(id) {
+                    Provider = (EProviderType)msg.Provider,
+                    Exchange = msg.Exchange,
+                    ProductType = msg.Type,
+                    Type = msg.OrderType
+                };
+            }
+
+            orderData.LocalDateTime = DateTime.Now;
+            orderData.BuyOrSell = msg.IsBuy ? EBuySell.Buy : EBuySell.Sell;
+            orderData.EntryPrice = (decimal)msg.Price;
+            orderData.Qty = (int)msg.Qty;
+
+            return orderData;
         }
 
         public async Task<string> SendAsync() {

@@ -8,6 +8,7 @@
 //
 //-----------------------------------------------------------------------------
 using Grpc.Net.Client;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ThmCommon.Config;
@@ -22,6 +23,9 @@ namespace ThmServerAdapter {
 
         private static Dictionary<EProviderType, List<ExchangeCfg>> _providers;
         private static readonly ISet<ThmInstrumentInfo> _instruments = new HashSet<ThmInstrumentInfo>();
+
+        public static event Action<MarketDepthData> OnMarketDataUpdate;
+        public static event Action<OrderData> OnOrderDataUpdate;
 
         #region Connection
         private static GreetService _greetService; // test
@@ -65,14 +69,14 @@ namespace ThmServerAdapter {
         #region Market Data
         private static MarketDataService _marketService;
 
-        public static void SubscibeInstrument(ThmInstrumentInfo instrument) {
+        public static Task SubscibeInstrument(ThmInstrumentInfo instrument) {
             _instruments.Add(instrument);
 
             if (_marketService == null) {
                 _marketService = new MarketDataService(_channel);
             }
 
-            _marketService.Subscribe(instrument);
+            return _marketService.Subscribe(instrument, OnMarketDataUpdate);
         }
 
         public static void UnubscibeInstrument(ThmInstrumentInfo instrument) {
@@ -83,6 +87,14 @@ namespace ThmServerAdapter {
 
         #region Order 
         private static OrderService _orderService;
+
+        public static Task SubscribeOrderData(ThmInstrumentInfo instrument) {
+            if (_orderService == null) {
+                _orderService = new OrderService(_channel);
+            }
+
+            return _orderService.Subscribe(instrument, OnOrderDataUpdate);
+        }
 
         public static async Task<string> SendOrder() {
             if (_orderService == null) {

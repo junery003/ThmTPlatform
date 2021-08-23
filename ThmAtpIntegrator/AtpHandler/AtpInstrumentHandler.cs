@@ -69,11 +69,11 @@ namespace ThmAtpIntegrator.AtpHandler {
         private MarketDepthData BuildDepthData(AtpDepthData mdMsg) {
             if (CurMarketDepthData == null) {
                 CurMarketDepthData = new MarketDepthData() {
-                    Provider = mdMsg.Provider,  // "ATP"
+                    Provider = mdMsg.Provider,  // ATP
                     Exchange = mdMsg.Exchange,
-                    ProductType = "Future",  // by default //_instrument.Product.Type.ToString(),
-                    Product = mdMsg.Product, //obj.Product.Name,                
-                    Contract = mdMsg.Contract, //_instrument.Product.Alias
+                    ProductType = "Future",  // by default //Product.Type,
+                    Product = mdMsg.Product, //Product.Name,                
+                    Contract = mdMsg.Contract, //Product.Alias
                     InstrumentID = mdMsg.InstrumentID,
                 };
             }
@@ -85,7 +85,6 @@ namespace ThmAtpIntegrator.AtpHandler {
             CurMarketDepthData.LowPrice = mdMsg.LowPrice;
             CurMarketDepthData.OpenPrice = mdMsg.OpenPrice;
             CurMarketDepthData.TotalTradedQuantity = mdMsg.Volume;
-            //CurDepthData.LastTradedQuantity = atpObj.Volume;
             CurMarketDepthData.LastTradedPrice = mdMsg.LastPrice;
             CurMarketDepthData.SettlementPrice = mdMsg.SettlementPrice;
 

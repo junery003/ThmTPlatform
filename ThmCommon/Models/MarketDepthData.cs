@@ -18,7 +18,9 @@ namespace ThmCommon.Models {
     public sealed class MarketDepthData {
         public const int MaxLevel = 5;
 
-        public string Provider { get; set; }
+        public string ID => Exchange + ProductType + InstrumentID + Provider;
+
+        public EProviderType Provider { get; set; }
         public string Exchange { get; set; }
         public string ProductType { get; set; } = "Future";
         public string Product { get; set; }
@@ -112,30 +114,30 @@ namespace ThmCommon.Models {
         public (decimal, int) GetPriceQtyByLevel(int level, EBuySell buySell = EBuySell.Buy) {
             if (buySell == EBuySell.Buy) {
                 switch (level) {
-                case 1:
-                    return (BidPrice1, BidQty1);
-                case 2:
-                    return (BidPrice2, BidQty2);
-                case 3:
-                    return (BidPrice3, BidQty3);
-                case 4:
-                    return (BidPrice4, BidQty4);
-                case 5:
-                    return (BidPrice5, BidQty5);
+                    case 1:
+                        return (BidPrice1, BidQty1);
+                    case 2:
+                        return (BidPrice2, BidQty2);
+                    case 3:
+                        return (BidPrice3, BidQty3);
+                    case 4:
+                        return (BidPrice4, BidQty4);
+                    case 5:
+                        return (BidPrice5, BidQty5);
                 }
             }
             else if (buySell == EBuySell.Sell) {
                 switch (level) {
-                case 1:
-                    return (AskPrice1, AskQty1);
-                case 2:
-                    return (AskPrice2, AskQty2);
-                case 3:
-                    return (AskPrice3, AskQty3);
-                case 4:
-                    return (AskPrice4, AskQty4);
-                case 5:
-                    return (AskPrice5, AskQty5);
+                    case 1:
+                        return (AskPrice1, AskQty1);
+                    case 2:
+                        return (AskPrice2, AskQty2);
+                    case 3:
+                        return (AskPrice3, AskQty3);
+                    case 4:
+                        return (AskPrice4, AskQty4);
+                    case 5:
+                        return (AskPrice5, AskQty5);
                 }
             }
 
@@ -145,40 +147,40 @@ namespace ThmCommon.Models {
         public void SetPriceQtyByLevel(decimal price, int qty, int level, EBuySell buySell = EBuySell.Buy) {
             if (buySell == EBuySell.Buy) {
                 switch (level) {
-                case 1:
-                    (BidPrice1, BidQty1) = (price, qty);
-                    return;
-                case 2:
-                    (BidPrice2, BidQty2) = (price, qty);
-                    return;
-                case 3:
-                    (BidPrice3, BidQty3) = (price, qty);
-                    return;
-                case 4:
-                    (BidPrice4, BidQty4) = (price, qty);
-                    return;
-                case 5:
-                    (BidPrice5, BidQty5) = (price, qty);
-                    return;
+                    case 1:
+                        (BidPrice1, BidQty1) = (price, qty);
+                        return;
+                    case 2:
+                        (BidPrice2, BidQty2) = (price, qty);
+                        return;
+                    case 3:
+                        (BidPrice3, BidQty3) = (price, qty);
+                        return;
+                    case 4:
+                        (BidPrice4, BidQty4) = (price, qty);
+                        return;
+                    case 5:
+                        (BidPrice5, BidQty5) = (price, qty);
+                        return;
                 }
             }
             else if (buySell == EBuySell.Sell) { // offer
                 switch (level) {
-                case 1:
-                    (AskPrice1, AskQty1) = (price, qty);
-                    return;
-                case 2:
-                    (AskPrice2, AskQty2) = (price, qty);
-                    return;
-                case 3:
-                    (AskPrice3, AskQty3) = (price, qty);
-                    return;
-                case 4:
-                    (AskPrice4, AskQty4) = (price, qty);
-                    return;
-                case 5:
-                    (AskPrice5, AskQty5) = (price, qty);
-                    return;
+                    case 1:
+                        (AskPrice1, AskQty1) = (price, qty);
+                        return;
+                    case 2:
+                        (AskPrice2, AskQty2) = (price, qty);
+                        return;
+                    case 3:
+                        (AskPrice3, AskQty3) = (price, qty);
+                        return;
+                    case 4:
+                        (AskPrice4, AskQty4) = (price, qty);
+                        return;
+                    case 5:
+                        (AskPrice5, AskQty5) = (price, qty);
+                        return;
                 }
             }
 

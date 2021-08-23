@@ -8,6 +8,8 @@
 //
 //-----------------------------------------------------------------------------
 
+using ThmCommon.Models;
+
 namespace ThmTitanIntegrator.Models {
     internal class TitanDepthData {
         public TitanDepthData(string symbol) {
@@ -16,7 +18,7 @@ namespace ThmTitanIntegrator.Models {
             Contract = symbol;
         }
 
-        public string Provider { get; } = "Titan";
+        public EProviderType Provider { get; } = EProviderType.TITAN;
 
         public string Exchange { get; private set; } = "SGX";
         public string ProductType { get; private set; } = "Future";

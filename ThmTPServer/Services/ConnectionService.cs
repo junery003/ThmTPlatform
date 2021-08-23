@@ -127,7 +127,7 @@ namespace ThmTPService.Services {
             return Task.FromResult(rsp);
         }
 
-        private Provider BuildProvider(EProviderType providerType) {
+        private static Provider BuildProvider(EProviderType providerType) {
             Provider provider = new() {
                 ProviderType = (PROVIDER_TYPE)providerType,
             };

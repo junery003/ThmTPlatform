@@ -15,6 +15,7 @@ using System.Windows.Media;
 using ThmCommon.Handlers;
 using ThmCommon.Models;
 using ThmCommon.Utilities;
+using ThmServerAdapter;
 
 namespace ThmTPWin.ViewModels {
     public class ASTraderVM : BindableBase, ITraderTabItm {
@@ -29,6 +30,9 @@ namespace ThmTPWin.ViewModels {
         private readonly AutospeaderLeg _asLeg1;
         private readonly AutospeaderLeg _asLeg2;
 
+        private MarketDepthData _depthData1;
+        private MarketDepthData _depthData2;
+
         private readonly decimal _tickSize = decimal.Zero;
         private readonly MarketDepthData _combinedData = new();
 
@@ -40,18 +44,20 @@ namespace ThmTPWin.ViewModels {
         public ASTraderVM(AutospeaderParas asItem) {
             _asItem = asItem;
 
-            _asLeg1 = asItem.ASLegs[0];
-            _asLeg2 = asItem.ASLegs[1];
+            _asLeg1 = _asItem.ASLegs[0];
+            _asLeg2 = _asItem.ASLegs[1];
 
             decimal tickSize = decimal.Zero;
             foreach (var para in asItem.ASLegs) {
                 //_syntheticHandler.AddHandler(para.InstrumentHandler);
 
-                //para.InstrumentHandler.OnMarketDataUpdated += InstrumentHandler_OnMarketDataUpdated;
                 //para.InstrumentHandler.OnOrderDataUpdated += InstrumentHandler_OnOrderDataUpdated;
 
+                ThmClient.OnMarketDataUpdate += ThmClient_OnMarketDataUpdate;
+                ThmClient.SubscibeInstrument(para.InstrumentInfo);
+
                 if (tickSize == decimal.Zero) {
-                    tickSize = para.InstrumentHandler.TickSize;
+                    tickSize = para.InstrumentInfo.TickSize;
                 }
             }
 
@@ -66,14 +72,21 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        private readonly object _mdLock = new object();
-        private void InstrumentHandler_OnMarketDataUpdated() {
+        private readonly object _mdLock = new();
+        private void ThmClient_OnMarketDataUpdate(MarketDepthData depthData) {
             lock (_mdLock) {
+                if (depthData.ID == _asLeg1.InstrumentInfo.ID) {
+                    _depthData1 = depthData;
+                }
+                else if (depthData.ID == _asLeg2.InstrumentInfo.ID) {
+                    _depthData2 = depthData;
+                }
+
                 LadderVM.UpdateMarketData(CombineMarketData());
             }
         }
 
-        private readonly object _orderLock = new object();
+        private readonly object _orderLock = new();
         private void InstrumentHandler_OnOrderDataUpdated(OrderData ordData) {
             lock (_orderLock) {
                 OnOrderDataUpdated(ordData);
@@ -150,11 +163,8 @@ namespace ThmTPWin.ViewModels {
 
         #region combined market data
         internal MarketDepthData CombineMarketData() {
-            //var depthData1 = _asLeg1.InstrumentHandler.CurMarketDepthData;
-            //var depthData2 = _asLeg2.InstrumentHandler.CurMarketDepthData;
-
-            //GenerateBids(depthData1, depthData2);
-            //GenerateOffers(depthData1, depthData2);
+            GenerateBids(_depthData1, _depthData2);
+            GenerateOffers(_depthData1, _depthData2);
 
             // update price accrodingly
             Task.Run(() => {
@@ -313,7 +323,7 @@ namespace ThmTPWin.ViewModels {
                     ;
 
                 if (asOrder.TagKey == null || !_orderDic.ContainsKey(asOrder.TagKey)) {
-                    asOrder.InstrumentHandler = _asLeg1.InstrumentHandler;
+                    asOrder.InstrumentInfo = _asLeg1.InstrumentInfo;
                     asOrder.Price = price;
                     asOrder.WorkingQty = asOrder.Qty;
 
@@ -333,7 +343,7 @@ namespace ThmTPWin.ViewModels {
 
                     //asOrder.Price = GetValidPrice(asOrder.Qty, asOrder.BuySell, _asLeg1.InstrumentHandler.CurMarketDepthData)
                     //    - asOrder.ASPrice;
-                    asOrder.InstrumentHandler = _asLeg2.InstrumentHandler;
+                    asOrder.InstrumentInfo = _asLeg2.InstrumentInfo;
                     asOrder.WorkingQty = asOrder.Qty;
 
                     var tagKey = SendOrder(asOrder);
@@ -385,7 +395,7 @@ namespace ThmTPWin.ViewModels {
     public class AutospreaderOrder {
         public string TagKey { get; set; }
         public string OrderID { get; set; }
-        public ThmInstrumentInfo InstrumentHandler { get; set; }
+        public ThmInstrumentInfo InstrumentInfo { get; set; }
         public EBuySell BuySell { get; set; }
         public decimal ASPrice { get; set; } // price diff for autospreader
         public decimal Price { get; set; } // actual price for sending

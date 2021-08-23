@@ -12,6 +12,8 @@ using System.Collections.Generic;
 
 namespace ThmCommon.Models {
     public sealed class ThmInstrumentInfo {
+        public string ID => Exchange + Type + InstrumentID + Provider;
+
         public EProviderType Provider { get; set; } = EProviderType.TITAN; // Provider;
         public string Exchange { get; set; } = "SGX"; // market
         public string Type { get; set; } = "Future"; // "Option",  "Future", ..., "Synthetic"
@@ -34,14 +36,11 @@ namespace ThmCommon.Models {
                 return false;
             }
 
-            return Provider == o.Provider
-                && Exchange == o.Exchange
-                && Type == o.Type
-                && InstrumentID == o.InstrumentID;
+            return ID == o.ID;
         }
 
         public override int GetHashCode() {
-            return (Exchange.GetHashCode() << 2) ^ (InstrumentID.GetHashCode());
+            return ID.GetHashCode();
         }
     }
 
