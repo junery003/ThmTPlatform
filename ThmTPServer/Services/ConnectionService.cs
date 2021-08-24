@@ -55,7 +55,7 @@ namespace ThmTPService.Services {
             _logger.LogInformation("Connect " + req.Account);
 
             var providerType = EProviderType.Unknown;
-            switch (req.ProviderType) {
+            switch (req.Provider) {
                 case ProviderType.Atp:
                     providerType = EProviderType.ATP;
                     break;
@@ -74,7 +74,7 @@ namespace ThmTPService.Services {
             }
 
             IConnector conn = null;
-            switch (req.ProviderType) {
+            switch (req.Provider) {
                 case ProviderType.Atp:
                     conn = new AtpConnector();
                     break;
