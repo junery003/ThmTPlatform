@@ -53,7 +53,8 @@ namespace ThmTPService.Services {
 
         public override Task<ConnectRsp> Connect(ConnectReq req, ServerCallContext context) {
             _logger.LogInformation("Connect " + req.Account);
-            EProviderType providerType = EProviderType.Unknown;
+
+            var providerType = EProviderType.Unknown;
             switch (req.ProviderType) {
                 case PROVIDER_TYPE.Atp:
                     providerType = EProviderType.ATP;

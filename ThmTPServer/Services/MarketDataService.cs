@@ -29,8 +29,7 @@ namespace ThmTPService.Services {
             ServerCallContext context) {
             _logger.LogInformation("Sending to Subscribe " + request.Symbol);
 
-            var providerType = (EProviderType)request.Provider;
-            var conn = ConnectionService.GetConnector(providerType);
+            var conn = ConnectionService.GetConnector((EProviderType)request.Provider);
             var instHandler = conn.GetInstrumentHandler(request.Symbol);
 
             instHandler.OnMarketDataUpdated += async delegate (MarketDepthData data) {
