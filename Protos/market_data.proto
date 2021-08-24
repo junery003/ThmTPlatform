@@ -11,15 +11,15 @@ service MarketData {
 }
 
 message DepthDataSubscribeReq {
-    PROVIDER_TYPE provider = 1;
+    ProviderType provider = 1;
     string exchange = 2;
     string symbol = 3;
 }
 
 message DepthDataSubscribeRsp {
-    PROVIDER_TYPE provider = 1;
+    ProviderType provider = 1;
     string exchange = 2;
-    string type = 3;
+    string product_type = 3;
     string symbol = 4;
     google.protobuf.Timestamp date_time = 5;
     
@@ -49,7 +49,7 @@ message DepthDataSubscribeRsp {
 }
 
 message DepthDataUnscribeReq {
-    PROVIDER_TYPE provider = 1;
+    ProviderType provider = 1;
     string exchange = 2;
     string symbol = 3;
 }

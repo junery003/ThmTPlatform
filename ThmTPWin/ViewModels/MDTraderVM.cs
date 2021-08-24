@@ -10,6 +10,7 @@
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using ThmCommon.Models;
 using ThmServerAdapter;
@@ -49,7 +50,7 @@ namespace ThmTPWin.ViewModels {
             }
         }
 
-        public void ProcessAlgo(EBuySell dir, decimal price) {
+        public async void ProcessAlgo(EBuySell dir, decimal price) {
             var qty = TradeParaVM.Quantity;
             switch (TradeParaVM.SelectedAlgoType) {
                 case EAlgoType.Limit: {
@@ -78,7 +79,7 @@ namespace ThmTPWin.ViewModels {
                     }
                 case EAlgoType.Sniper: {
                         var rlt = ProcessSniper(dir, price, qty);
-                        if (rlt == 1) {
+                        if (rlt.Result == 1) {
                             IncreaseAlgo(price);
                         }
                         break;
@@ -116,16 +117,15 @@ namespace ThmTPWin.ViewModels {
             TradeParaVM.ResetQuantity();
         }
 
-        internal int ProcessSniper(EBuySell dir, decimal price, int qty) {
-            //return InstrumentInfo.ProcessAlgo(new AlgoData(EAlgoType.Sniper) {
-            //    BuyOrSell = dir,
-            //    Price = price,
-            //    Qty = qty,
+        internal async Task<int> ProcessSniper(EBuySell dir, decimal price, int qty) {
+            return await ThmClient.ProcessAlgo(new AlgoData(EAlgoType.Sniper) {
+                BuyOrSell = dir,
+                Price = price,
+                Qty = qty,
 
-            //    LocalDateTime = DateTime.Now,
-            //    Account = InstrumentInfo.CurAccount
-            //});
-            return 1;
+                LocalDateTime = DateTime.Now,
+                Account = InstrumentInfo.CurAccount
+            });
         }
 
         internal int ProcessLimit(EBuySell dir, decimal price, int qty) {

@@ -35,7 +35,7 @@ namespace ThmServerAdapter.Services {
             Logger.Info("Subscribing orders ");
             using var call = _client.Subscribe(new SubscribeReq {
                 Exchange = instrument.Exchange,
-                Provider = (PROVIDER_TYPE)instrument.Provider,
+                Provider = (ProviderType)instrument.Provider,
                 Symbol = instrument.InstrumentID
             });
 
@@ -57,7 +57,7 @@ namespace ThmServerAdapter.Services {
             }
 
             orderData.LocalDateTime = DateTime.Now;
-            orderData.BuyOrSell = msg.IsBuy ? EBuySell.Buy : EBuySell.Sell;
+            orderData.BuyOrSell = (EBuySell)msg.BuySell;
             orderData.EntryPrice = (decimal)msg.Price;
             orderData.Qty = (int)msg.Qty;
 

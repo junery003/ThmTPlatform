@@ -126,6 +126,18 @@ namespace ThmServerAdapter {
 
         #endregion // Order
 
+        #region Algo
+        private static AlgoService _algoService;
+        public static Task<int> ProcessAlgo(AlgoData algoData) {
+            if (_algoService == null) {
+                _algoService = new AlgoService(_channel);
+            }
+
+            return _algoService.Process(algoData);
+        }
+
+        #endregion // Algo
+
         #region Others
         public static async Task<string> ChangePasswordAsync(EProviderType providerType, string curPwd, string newPwd) {
             return await _connService.ChangePasswordAsync(providerType, curPwd, newPwd);

@@ -33,7 +33,7 @@ message LogoutRsp {
 }
 
 message ConnectReq {
-    PROVIDER_TYPE provider_type = 1;
+    ProviderType provider = 1;
     string account = 2;
     string customer_info = 3;
 }
@@ -50,7 +50,7 @@ message GetProvidersRsp {
 }
 
 message Provider {
-    PROVIDER_TYPE provider_type = 1;
+    ProviderType provider_type = 1;
     repeated Exchange exchanges = 2;
 }
 

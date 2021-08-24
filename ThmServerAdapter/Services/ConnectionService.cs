@@ -30,7 +30,7 @@ namespace ThmServerAdapter.Services {
 
         internal async Task<string> ConnectAsync(EProviderType providerType, LoginCfgBase loginCfg) {
             ConnectReq connectReq = new() {
-                ProviderType = (PROVIDER_TYPE)providerType,
+                Provider = (ProviderType)providerType,
                 Account = loginCfg.Account,
                 CustomerInfo = loginCfg.CustomerInfo ?? "",
             };

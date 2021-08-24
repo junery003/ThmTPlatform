@@ -56,13 +56,13 @@ namespace ThmTPService.Services {
 
             var providerType = EProviderType.Unknown;
             switch (req.ProviderType) {
-                case PROVIDER_TYPE.Atp:
+                case ProviderType.Atp:
                     providerType = EProviderType.ATP;
                     break;
-                case PROVIDER_TYPE.Tt:
+                case ProviderType.Tt:
                     providerType = EProviderType.TT;
                     break;
-                case PROVIDER_TYPE.Titan:
+                case ProviderType.Titan:
                     providerType = EProviderType.TITAN;
                     break;
             }
@@ -75,13 +75,13 @@ namespace ThmTPService.Services {
 
             IConnector conn = null;
             switch (req.ProviderType) {
-                case PROVIDER_TYPE.Atp:
+                case ProviderType.Atp:
                     conn = new AtpConnector();
                     break;
-                case PROVIDER_TYPE.Tt:
+                case ProviderType.Tt:
                     //conn = new TTConnector();
                     break;
-                case PROVIDER_TYPE.Titan:
+                case ProviderType.Titan:
                     conn = new TitanConnector();
                     break;
             }
@@ -130,7 +130,7 @@ namespace ThmTPService.Services {
 
         private static Provider BuildProvider(EProviderType providerType) {
             Provider provider = new() {
-                ProviderType = (PROVIDER_TYPE)providerType,
+                ProviderType = (ProviderType)providerType,
             };
 
             var exchanges = _connectors[providerType].GetConfigHelper().GetConfig().Exchanges;

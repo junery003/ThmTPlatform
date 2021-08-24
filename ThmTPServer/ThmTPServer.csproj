@@ -26,6 +26,7 @@
         <Protobuf Include="../Protos/market_data.proto" GrpcServices="Server" Link="Protos/market_data.proto" />
         <Protobuf Include="../Protos/order.proto" GrpcServices="Server" Link="Protos/order.proto" />
         <Protobuf Include="../Protos/common.proto" GrpcServices="Server" Link="Protos/common.proto" />
+        <Protobuf Include="../Protos/algo.proto" GrpcServices="Server" Link="Protos/algo.proto" />
     </ItemGroup>
 
     <ItemGroup>

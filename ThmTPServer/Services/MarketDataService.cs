@@ -34,9 +34,9 @@ namespace ThmTPService.Services {
 
             instHandler.OnMarketDataUpdated += async delegate (MarketDepthData data) {
                 await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
-                    Provider = (PROVIDER_TYPE)data.Provider,
+                    Provider = (ProviderType)data.Provider,
                     Exchange = request.Exchange,
-                    Type = data.ProductType,
+                    ProductType = data.ProductType,
                     Symbol = data.InstrumentID,
 
                     AQty1 = data.AskQty1,

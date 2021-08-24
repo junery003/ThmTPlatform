@@ -14,13 +14,13 @@ service Order {
 }
 
 message SendOrderReq {
-    PROVIDER_TYPE provider = 1;
+    ProviderType provider = 1;
     string exchange = 2;
     string symbol = 3;
 
     double price = 5;
     double qty = 6;
-    bool isBuy = 7;
+    BuySell buy_sell = 7;
     string tag = 8;
 }
 
@@ -29,13 +29,13 @@ message SendOrderRsp {
 }
 
 message UpdateOrderReq {
-    PROVIDER_TYPE provider = 1;
+    ProviderType provider = 1;
     string exchange = 2;
     string symbol = 3;
 
     double price = 5;
     double qty = 6;
-    bool isBuy = 7;
+    BuySell buy_sell = 7;
     string tag = 8;
 }
 
@@ -44,7 +44,7 @@ message UpdateOrderRsp {
 }
 
 message DeleteOrderReq {
-    PROVIDER_TYPE provider = 1;
+    ProviderType provider = 1;
     string exchange = 2;
     string symbol = 3;
 
@@ -56,13 +56,13 @@ message DeleteOrderRsp {
 }
 
 message SubscribeReq {
-    PROVIDER_TYPE provider = 1;
+    ProviderType provider = 1;
     string exchange = 2;
     string symbol = 3;
 }
 
 message SubscribeRsp {
-    PROVIDER_TYPE provider = 1;
+    ProviderType provider = 1;
     string exchange = 2;
     string type = 3;
     string symbol = 4;
@@ -71,7 +71,7 @@ message SubscribeRsp {
 
     double price = 7;
     double qty = 8;
-    bool isBuy = 9;
+    BuySell buy_sell = 9;
     string status = 10;
     string order_type = 11;
     string text = 12;

@@ -13,7 +13,7 @@ using ThmCommon.Utilities;
 namespace ThmCommon.Models {
     public sealed class AlgoData {
         public EProviderType Provider { get; set; } //ATP, TT
-        public string ExchangeID { get; set; } //CME, SGX, etc.
+        public string Exchange { get; set; } //CME, SGX, etc.
         public string Product { get; set; } //i.e. contract, instrument
         public string ProductType { get; set; } //FUT etc
         public string Contract { get; set; }

@@ -2,9 +2,15 @@ syntax="proto3";
 
 package ThmServices;
 
-enum PROVIDER_TYPE {
-    Unknown = 0;
-    ATP = 1;
-    TT = 2;
-    TITAN = 3;
+enum ProviderType {
+    PROVIDER_TYPE_Unknown = 0;
+    PROVIDER_TYPE_ATP = 1;
+    PROVIDER_TYPE_TT = 2;
+    PROVIDER_TYPE_TITAN = 3;
+}
+
+enum BuySell {
+    BUY_SELL_Unknown = 0;
+    BUY_SELL_Buy = 1;  // Take from TT
+    BUY_SELL_Sell = 2;  // Hit from TT
 }

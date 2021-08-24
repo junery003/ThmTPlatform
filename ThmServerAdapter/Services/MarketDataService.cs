@@ -39,7 +39,7 @@ namespace ThmServerAdapter.Services {
             var cts = new CancellationTokenSource();
 
             var call = _client.Subscribe(new DepthDataSubscribeReq() {
-                Provider = (PROVIDER_TYPE)instrument.Provider,
+                Provider = (ProviderType)instrument.Provider,
                 Exchange = instrument.Exchange,
                 Symbol = instrument.InstrumentID
             },
@@ -61,13 +61,13 @@ namespace ThmServerAdapter.Services {
         }
 
         private MarketDepthData ParseDepthData(DepthDataSubscribeRsp msg) {
-            string id = msg.Exchange + msg.Type + msg.Symbol + (EProviderType)msg.Provider;
+            string id = msg.Exchange + msg.ProductType + msg.Symbol + (EProviderType)msg.Provider;
             MarketDepthData depthData = _marketData[id];
             if (depthData == null) {
                 depthData = new() {
                     Provider = (EProviderType)msg.Provider,
                     Exchange = msg.Exchange,
-                    ProductType = msg.Type,
+                    ProductType = msg.ProductType,
                     InstrumentID = msg.Symbol,
                 };
 
@@ -110,7 +110,7 @@ namespace ThmServerAdapter.Services {
             }
 
             _client.Unsubscribe(new DepthDataUnscribeReq() {
-                Provider = (PROVIDER_TYPE)instrument.Provider,
+                Provider = (ProviderType)instrument.Provider,
                 Exchange = instrument.Exchange,
                 Symbol = instrument.InstrumentID
             });

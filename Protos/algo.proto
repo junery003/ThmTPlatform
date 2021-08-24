@@ -1,0 +1,28 @@
+﻿syntax = "proto3";
+
+import "common.proto";
+import "google/protobuf/timestamp.proto";
+
+package ThmServices;
+
+service Algo {
+    rpc Process(ProcessReq) returns (ProcessRsp);
+}
+
+message ProcessReq {
+    ProviderType provider = 1;
+    string exchange = 2;
+    string symbol = 3;
+
+    string algo_type = 4;
+    BuySell buy_sell = 5;
+    double price = 6;
+    double qty = 7;
+    
+    string tag = 8;
+    string text = 9;
+}
+
+message ProcessRsp {
+    int32 result = 1;
+}

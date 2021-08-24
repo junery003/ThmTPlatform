@@ -38,53 +38,53 @@ namespace ThmCommon.Handlers {
         ///         -1 if not added</returns>
         public int ProcessAlgo(AlgoData algoData, BestQuot bestQuot) {
             switch (algoData.Type) {
-            case EAlgoType.PreOpen: {
-                AddAlgo(algoData);
-                return 1;
-            }
-            case EAlgoType.Limit: {
-                _tradeHandler.SendNewOrder(algoData.BuyOrSell,
-                    algoData.Price,
-                    algoData.Qty,
-                    algoData.Type.ToString());
-                return 0;
-            }
-            case EAlgoType.Market:
-                Logger.Warn("Market order not supported yet");
-                return 0;
-            case EAlgoType.Trigger: {
-                if (Trigger(algoData, bestQuot) > 0) { // executed 
+                case EAlgoType.PreOpen: {
+                        AddAlgo(algoData);
+                        return 1;
+                    }
+                case EAlgoType.Limit: {
+                        _tradeHandler.SendNewOrder(algoData.BuyOrSell,
+                            algoData.Price,
+                            algoData.Qty,
+                            algoData.Type.ToString());
+                        return 0;
+                    }
+                case EAlgoType.Market:
+                    Logger.Warn("Market order not supported yet");
                     return 0;
-                }
-                AddTrigger(algoData);
-                return 1;
-            }
-            case EAlgoType.Sniper: {
-                if (Snipe(algoData, bestQuot) >= algoData.Qty) { // finished
-                    return 0;
-                }
-                AddSniper(algoData);
-                return 1;
-            }
-            case EAlgoType.InterTrigger: {
-                AddInterTrigger(algoData);
-                return 1;
-            }
-            default: {
-                Logger.Error("Algo not supported: {}-{}", algoData.AlgoID, algoData.Type);
-                return -1;
-            }
+                case EAlgoType.Trigger: {
+                        if (Trigger(algoData, bestQuot) > 0) { // executed 
+                            return 0;
+                        }
+                        AddTrigger(algoData);
+                        return 1;
+                    }
+                case EAlgoType.Sniper: {
+                        if (Snipe(algoData, bestQuot) >= algoData.Qty) { // finished
+                            return 0;
+                        }
+                        AddSniper(algoData);
+                        return 1;
+                    }
+                case EAlgoType.InterTrigger: {
+                        AddInterTrigger(algoData);
+                        return 1;
+                    }
+                default: {
+                        Logger.Error("Algo not supported: {}-{}", algoData.AlgoID, algoData.Type);
+                        return -1;
+                    }
             }
         }
 
         private void AddInterTrigger(AlgoData algoData) {
             algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
             algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
-            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
+            algoData.Exchange = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
             algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
             algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
 
-            AddAlgo(algoData);
+            AddAlgo(algoData); 
             _tradeHandler.AddOrUpdateAlgoOrder(algoData);
 
             Logger.Info($"Added algo: {algoData.Type} {algoData.AlgoID} - {algoData.BuyOrSell} {algoData.Qty}@{algoData.Price} ");
@@ -93,7 +93,7 @@ namespace ThmCommon.Handlers {
         private void AddSniper(AlgoData algoData) {
             algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
             algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
-            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
+            algoData.Exchange = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
             algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
             algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
 
@@ -106,7 +106,7 @@ namespace ThmCommon.Handlers {
         private void AddTrigger(AlgoData algoData) {
             algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
             algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
-            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
+            algoData.Exchange = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
             algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
             algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
 
@@ -222,86 +222,86 @@ namespace ThmCommon.Handlers {
         private int Trigger(AlgoData algo, BestQuot md) {
             if (algo.BuyOrSell == EBuySell.Buy) {
                 switch (algo.TriggerPriceType) {
-                case EPriceType.OppositeSide: {
-                    if (algo.Price == md.AskPrice1) {
-                        if ((algo.TriggerOperator == EOperator.LessET && md.AskQty1 <= algo.TriggerQty)
-                            || (algo.TriggerOperator == EOperator.GreaterET && md.AskQty1 >= algo.TriggerQty)) {
-                            //TradeHandler.AddOrder(BuySell.Buy, algo.Price, Math.Min(qty, algo.Qty), algo.Type.ToString());
-                            _tradeHandler.SendNewOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
+                    case EPriceType.OppositeSide: {
+                            if (algo.Price == md.AskPrice1) {
+                                if ((algo.TriggerOperator == EOperator.LessET && md.AskQty1 <= algo.TriggerQty)
+                                    || (algo.TriggerOperator == EOperator.GreaterET && md.AskQty1 >= algo.TriggerQty)) {
+                                    //TradeHandler.AddOrder(BuySell.Buy, algo.Price, Math.Min(qty, algo.Qty), algo.Type.ToString());
+                                    _tradeHandler.SendNewOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
 
-                            Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
-                            return algo.Qty;
+                                    Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
+                                    return algo.Qty;
+                                }
+                            }
+                            else if (algo.Price < md.AskPrice1) {
+                                //orderId = _tradeHandler.SendInsertOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
+                                return 0;
+                            }
+
+                            return 0;
                         }
-                    }
-                    else if (algo.Price < md.AskPrice1) {
-                        //orderId = _tradeHandler.SendInsertOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
-                        return 0;
-                    }
+                    case EPriceType.SameSide: {
+                            if (algo.Price == md.BidPrice1) {
+                                if ((algo.TriggerOperator == EOperator.LessET && md.BidQty1 <= algo.TriggerQty)
+                                    || (algo.TriggerOperator == EOperator.GreaterET && md.BidQty1 >= algo.TriggerQty)) {
+                                    _tradeHandler.SendNewOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
 
-                    return 0;
-                }
-                case EPriceType.SameSide: {
-                    if (algo.Price == md.BidPrice1) {
-                        if ((algo.TriggerOperator == EOperator.LessET && md.BidQty1 <= algo.TriggerQty)
-                            || (algo.TriggerOperator == EOperator.GreaterET && md.BidQty1 >= algo.TriggerQty)) {
-                            _tradeHandler.SendNewOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
+                                    Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
+                                    return algo.Qty;
+                                }
+                            }
+                            else if (algo.Price < md.BidPrice1) {
+                                //orderId = _tradeHandler.SendInsertOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
+                                return 0;
+                            }
 
-                            Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
-                            return algo.Qty;
+                            return 0;
                         }
-                    }
-                    else if (algo.Price < md.BidPrice1) {
-                        //orderId = _tradeHandler.SendInsertOrder(EBuySell.Buy, algo.Price, algo.Qty, algo.Type.ToString());
-                        return 0;
-                    }
-
-                    return 0;
-                }
-                default: {
-                    break;
-                }
+                    default: {
+                            break;
+                        }
                 }
             }
             else if (algo.BuyOrSell == EBuySell.Sell) {
                 switch (algo.TriggerPriceType) {
-                case EPriceType.OppositeSide: {
-                    if (algo.Price == md.BidPrice1) { // for best price 
-                        if ((algo.TriggerOperator == EOperator.LessET && md.BidQty1 <= algo.TriggerQty)
-                            || (algo.TriggerOperator == EOperator.GreaterET && md.BidQty1 >= algo.TriggerQty)) {
-                            //orderId = TradeHandler.AddOrder(BuySell.Sell, algo.Price, Math.Min(qty, algo.Qty), algo.Type.ToString());
-                            _tradeHandler.SendNewOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
+                    case EPriceType.OppositeSide: {
+                            if (algo.Price == md.BidPrice1) { // for best price 
+                                if ((algo.TriggerOperator == EOperator.LessET && md.BidQty1 <= algo.TriggerQty)
+                                    || (algo.TriggerOperator == EOperator.GreaterET && md.BidQty1 >= algo.TriggerQty)) {
+                                    //orderId = TradeHandler.AddOrder(BuySell.Sell, algo.Price, Math.Min(qty, algo.Qty), algo.Type.ToString());
+                                    _tradeHandler.SendNewOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
 
-                            Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
-                            return algo.Qty;
+                                    Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
+                                    return algo.Qty;
+                                }
+                            }
+                            else if (algo.Price > md.BidPrice1) {
+                                //orderId = _tradeHandler.SendInsertOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
+                                return 0;
+                            }
+
+                            return 0;
                         }
-                    }
-                    else if (algo.Price > md.BidPrice1) {
-                        //orderId = _tradeHandler.SendInsertOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
-                        return 0;
-                    }
+                    case EPriceType.SameSide: {
+                            if (algo.Price == md.AskPrice1) { // for best price 
+                                if ((algo.TriggerOperator == EOperator.LessET && md.AskQty1 <= algo.TriggerQty)
+                                    || (algo.TriggerOperator == EOperator.GreaterET && md.AskQty1 >= algo.TriggerQty)) {
+                                    _tradeHandler.SendNewOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
 
-                    return 0;
-                }
-                case EPriceType.SameSide: {
-                    if (algo.Price == md.AskPrice1) { // for best price 
-                        if ((algo.TriggerOperator == EOperator.LessET && md.AskQty1 <= algo.TriggerQty)
-                            || (algo.TriggerOperator == EOperator.GreaterET && md.AskQty1 >= algo.TriggerQty)) {
-                            _tradeHandler.SendNewOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
+                                    Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
+                                    return algo.Qty;
+                                }
+                            }
+                            else if (algo.Price > md.AskPrice1) {
+                                //orderId = _tradeHandler.SendInsertOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
+                                return 0;
+                            }
 
-                            Logger.Info("Trigger: {} {}-'{}'@'{}'", algo.AlgoID, algo.BuyOrSell, algo.Qty, algo.Price);
-                            return algo.Qty;
+                            return 0;
                         }
-                    }
-                    else if (algo.Price > md.AskPrice1) {
-                        //orderId = _tradeHandler.SendInsertOrder(EBuySell.Sell, algo.Price, algo.Qty, algo.Type.ToString());
-                        return 0;
-                    }
-
-                    return 0;
-                }
-                default: {
-                    break;
-                }
+                    default: {
+                            break;
+                        }
                 }
             }
 
