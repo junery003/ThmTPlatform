@@ -28,11 +28,7 @@ namespace ThmServerAdapter.Services {
             var reply = await _client.SayHelloAsync(new HelloRequest { Name = user });
 
             string rlt = reply.Message;
-            _logger.Info("Greeting: " + reply.Message);
-
-            //reply = await _client.SayHelloAsync(new HelloRequest { Name = user });
-            //rlt += "\r\n" + reply.Message;
-            //_logger.Info("Greeting: " + reply.Message);
+            _logger.Info("Greeting: " + rlt);
 
             return rlt;
         }

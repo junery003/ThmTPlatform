@@ -32,6 +32,7 @@ namespace ThmTPServer {
             // for compatibilities only (does not support HTTP/2)
             //AppContext.SetSwitch("Microsoft.AspNetCore.Server.Kestrel.EnableWindows81Http2", true);
 
+            //app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseEndpoints(endpoints => {
@@ -41,7 +42,7 @@ namespace ThmTPServer {
                 endpoints.MapGrpcService<OrderService>();
                 endpoints.MapGrpcService<AlgoService>();
 
-                if(env.IsDevelopment()) {
+                if (env.IsDevelopment()) {
                     endpoints.MapGrpcReflectionService();
                 }
 
