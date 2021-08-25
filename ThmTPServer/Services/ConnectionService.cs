@@ -21,7 +21,7 @@ using ThmCommon.Models;
 using ThmServices;
 using ThmTitanIntegrator.TitanHandler;
 
-namespace ThmTPService.Services {
+namespace ThmTPServer.Services {
     /// <summary>
     /// ConnectionService
     /// </summary>

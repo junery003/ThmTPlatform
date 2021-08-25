@@ -1,6 +1,6 @@
 {
     "profiles": {
-        "ThmTPService": {
+        "ThmTPServer": {
             "commandName": "Project",
             "launchBrowser": false,
             "nativeDebugging": true,

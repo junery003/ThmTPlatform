@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using ThmCommon.Models;
 using ThmServices;
 
-namespace ThmTPService.Services {
+namespace ThmTPServer.Services {
     /// <summary>
     /// MarketDataService
     /// </summary>

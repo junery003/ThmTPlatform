@@ -8,7 +8,7 @@
 //
 //-----------------------------------------------------------------------------
 
-namespace ThmTPService.Services {
+namespace ThmTPServer.Services {
     /// <summary>
     /// ServerConfig
     /// </summary>

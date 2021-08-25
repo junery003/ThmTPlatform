@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using ThmServices;
 
-namespace ThmTPService.Services {
+namespace ThmTPServer.Services {
     /// <summary>
     /// OrderService
     /// </summary>
