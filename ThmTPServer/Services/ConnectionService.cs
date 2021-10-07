@@ -20,6 +20,7 @@ using ThmCommon.Handlers;
 using ThmCommon.Models;
 using ThmServices;
 using ThmTitanIntegrator.TitanHandler;
+using ThmTTIntegrator.TTHandler;
 
 namespace ThmTPServer.Services {
     /// <summary>
@@ -79,7 +80,7 @@ namespace ThmTPServer.Services {
                     conn = new AtpConnector();
                     break;
                 case ProviderType.Tt:
-                    //conn = new TTConnector();
+                    conn = new TTConnector();
                     break;
                 case ProviderType.Titan:
                     conn = new TitanConnector();
