@@ -4,7 +4,7 @@
         "Password": "jun123"
     },
     "AtpLogin": {
-        "Enabled": false,
+        "Enabled": true,
         "BrokerId": "2SP004",
         "UserId": "sp2008",
         "Password": ")LYdA2rS",
@@ -13,7 +13,7 @@
         "Auth": true
     },
     "TTLogin": {
-        "Enabled": true,
+        "Enabled": false,
         "Account": ""
     },
     "TitanLogin": {

@@ -8,8 +8,9 @@
         <Description>Any feedback, please contact leijun@themeinternationaltrading.com</Description>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <Authors>Jun</Authors>
-        <AssemblyVersion>2.1.0.0</AssemblyVersion>
-        <FileVersion>2.1.0.0</FileVersion>
+        <AssemblyVersion>2.3.0.0</AssemblyVersion>
+        <FileVersion>2.3.0.0</FileVersion>
+        <Version>2.3.0</Version>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

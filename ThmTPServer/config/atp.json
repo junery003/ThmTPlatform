@@ -16,24 +16,24 @@
     },
     "Exchanges": [
         {
-            "Enabled": false,
+            "Enabled": true,
             "Market": "SGX",
             "Type": "Future",
             "Products": [
                 {
                     "Name": "FEF",
-                    "Contracts": [ "FEF2101-SGX", "FEF2102-SGX", "FEF2103-SGX" ]
+                    "Contracts": [ "FEF2201-SGX", "FEF2202-SGX", "FEF2203-SGX" ]
                 }
             ]
         },
         {
-            "Enabled": false,
+            "Enabled": true,
             "Market": "APEX",
             "Type": "Future",
             "Products": [
                 {
                     "Name": "CPF",
-                    "Contracts": [ "CPF2109-APEX", "CPF2101-APEX" ]
+                    "Contracts": [ "CPF2205-APEX", "CPF2201-APEX" ]
                 }
             ]
         }
