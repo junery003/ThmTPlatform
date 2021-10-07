@@ -17,7 +17,7 @@
         "Account": ""
     },
     "TitanLogin": {
-        "Enabled": true,
+        "Enabled": false,
         "Account": "B000219",
         "CustomerInfo": "B219A11"
     }
