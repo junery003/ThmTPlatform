@@ -84,6 +84,10 @@ namespace ThmServerAdapter {
         }
 
         public static int GetPosition(ThmInstrumentInfo instrument) {
+            if (_orderService == null) {
+                _orderService = new OrderService(_channel);
+            }
+
             return _orderService.GetPosition(instrument);
         }
 

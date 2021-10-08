@@ -1,5 +1,5 @@
 {
-    "Enabled": false,
+    "Enabled": true,
     "Provider": "ATP",
     "StreamDataServer": "tcp://127.0.0.1:9999",
     "StreamTradeServer": "tcp://127.0.0.1:9998",

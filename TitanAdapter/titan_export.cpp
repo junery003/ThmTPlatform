@@ -14,7 +14,9 @@
 #include <memory>
 using namespace std;
 
-unique_ptr<TitanClient> kClient = nullptr;
+static unique_ptr<TitanClient> kClient{ nullptr };
+// -----------------------------------------------------------------------------------------------;
+
 bool InitExport() {
     if (kClient == nullptr) {
         kClient = make_unique<TitanClient>();

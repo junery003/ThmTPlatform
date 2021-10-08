@@ -52,8 +52,8 @@ namespace ThmTPWin.ViewModels {
 
         internal void AddMDTrader(ThmInstrumentInfo instrumentInfo) {
             if (decimal.Compare(instrumentInfo.TickSize, decimal.Zero) == 0) {
-                Logger.Error(instrumentInfo.InstrumentID + ": Tick size not initialised");
-                return;
+                Logger.Warn(instrumentInfo.InstrumentID + ": Tick size not initialised");
+                //return;
             }
 
             var mdTrader = TradeWidgetTabItms.FirstOrDefault(x => x.InstrumentInfo.Equals(instrumentInfo));

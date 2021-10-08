@@ -14,7 +14,7 @@
 #include <memory>
 
 // the ATP client
-std::unique_ptr<AtpClient> kAtpClient = nullptr;
+static std::unique_ptr<AtpClient> kAtpClient{ nullptr };
 ////////////////////////////////////////////////////////////////////////////////////
 void InitExport(const char* md_server,
     const char* td_server,
