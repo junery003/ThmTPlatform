@@ -91,7 +91,7 @@ namespace ThmServerAdapter.Services {
         }
 
         internal int GetPosition(ThmInstrumentInfo instrument) {
-            throw new NotImplementedException();
+            return 0; // tbd
         }
     }
 }
