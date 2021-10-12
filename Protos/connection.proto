@@ -65,7 +65,6 @@ message Product {
     repeated string contracts = 2;
 }
 
-
 message UpdateTitanPasswrodReq {
     string cur_password = 1;
     string new_password = 2;

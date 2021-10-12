@@ -43,7 +43,7 @@ namespace ThmTPWin.Views {
 
         private void AlgoCmbox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var vm = DataContext as BaseTradeParaVM;
-            switch (vm.SelectedAlgoType) {
+            switch (vm?.SelectedAlgoType) {
             case EAlgoType.Trigger: {
                 ShowTrigger();
                 break;

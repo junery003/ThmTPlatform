@@ -28,13 +28,13 @@ message DepthDataSubscribeRsp {
     double bid3 = 18;
     double bid4 = 19;
     double bid5 = 20;
-   
+
     int32 bQty1 = 21;
     int32 bQty2 = 22;
     int32 bQty3 = 23;
     int32 bQty4 = 24;
     int32 bQty5 = 25;
-        
+
     double ask1 = 26;
     double ask2 = 27;
     double ask3 = 28;
