@@ -40,7 +40,7 @@
 
         <TextBlock Text="Any feedback, please contact:" Grid.Column="0" Grid.Row="1" Margin="15,0,10,0" />
         <TextBlock Margin="15,0,10,10">
-            <Hyperlink NavigateUri="mailto:leijun@themeinternationaltrading.com?subject=Feedback&amp;body=feedback" RequestNavigate="OnNavigate_Email">leijun@themeinternaltionaltrading.com</Hyperlink>
+            <Hyperlink NavigateUri="mailto:leijun@themeinternationaltrading.com?subject=TTP Feedback&amp;body=feedback" RequestNavigate="OnNavigate_Email">leijun@themeinternaltionaltrading.com</Hyperlink>
         </TextBlock>
 
         <Button Content="OK" Margin="5" Width="70" HorizontalAlignment="Right" Click="OKBtn_click" />

@@ -18,9 +18,9 @@ namespace ThmAtpIntegrator {
         internal static void Main(string[] args) {
             try {
                 Logger.Info("Start to run ATP...");
-                var atpConn = new AtpConnector();
+                var conn = new AtpConnector();
                 try {
-                    atpConn.Connect();
+                    conn.Connect();
 
                     bool quit = false;
                     while (!quit) {
@@ -42,7 +42,7 @@ namespace ThmAtpIntegrator {
                     Logger.Error(ex);
                 }
                 finally {
-                    atpConn?.Dispose();
+                    conn?.Dispose();
                 }
             }
             catch (Exception ex) {

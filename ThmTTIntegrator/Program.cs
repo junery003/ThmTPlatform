@@ -17,10 +17,6 @@ namespace ThmTTIntegrator {
 
         internal static void Main() {
             try {
-                //if (config.ThmConfig.TTConfig.OptionMMConfig != null && config.ThmConfig.TTConfig.OptionMMConfig.Enabled) {
-                //    OptionMMAlgo.Initialize(config.TTConfig.OptionMMConfig);
-                //}
-
                 Logger.Info("========== Starting to run TT ...");
                 var ttConn = new TTConnector();
                 try {

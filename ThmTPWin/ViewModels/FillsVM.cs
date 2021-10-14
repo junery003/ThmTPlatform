@@ -20,10 +20,10 @@ namespace ThmTPWin.ViewModels {
         public string Header => ID;
 
         private readonly string _filledSound = "./sounds/shotgun.wav";
-        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; } = new ObservableCollection<OrderAlgoDataView>();
+        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; } = new();
 
         private readonly TradingPMainWinVM _parent;
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
         public FillsVM(TradingPMainWinVM parent) {
             BindingOperations.EnableCollectionSynchronization(OrderViewList, _lock);
 

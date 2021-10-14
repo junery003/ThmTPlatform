@@ -42,10 +42,10 @@ namespace ThmTPWin.ViewModels {
             set => SetProperty(ref _selectedOrder, value);
         }
 
-        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; } = new ObservableCollection<OrderAlgoDataView>();
+        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; } = new();
 
         private readonly TradingPMainWinVM _parent;
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
         public OrderBookVM(TradingPMainWinVM parent) {
             BindingOperations.EnableCollectionSynchronization(OrderViewList, _lock);
 

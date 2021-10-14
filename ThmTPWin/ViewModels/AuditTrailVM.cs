@@ -17,9 +17,9 @@ namespace ThmTPWin.ViewModels {
     internal class AuditTrailVM : BindableBase, IOrdersTabItm {
         public const string ID = "Audit Trail";
         public string Header => ID;
-        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; } = new ObservableCollection<OrderAlgoDataView>();
+        public ObservableCollection<OrderAlgoDataView> OrderViewList { get; } = new();
 
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
         public AuditTrailVM() {
             BindingOperations.EnableCollectionSynchronization(OrderViewList, _lock);
         }

@@ -16,7 +16,7 @@ using ThmCommon.Utilities;
 
 namespace ThmTPWin.ViewModels {
     public class AutospreaderSettingVM : BindableBase {
-        public static ObservableCollection<AutospeaderParas> ASParaList { get; } = new ObservableCollection<AutospeaderParas>();
+        public static ObservableCollection<AutospeaderParas> ASParaList { get; } = new();
 
         private static int _count = 0;
 

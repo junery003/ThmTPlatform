@@ -20,7 +20,7 @@ namespace ThmTPWin.Views {
         public AutospeaderParas SelectedAS => _vm.SelectedASPara;
         public bool OpenWithLegs { get; private set; } = false;
 
-        private readonly AutospreaderSettingVM _vm = new AutospreaderSettingVM();
+        private readonly AutospreaderSettingVM _vm = new();
         internal AutospreaderSettingWin() {
             InitializeComponent();
 

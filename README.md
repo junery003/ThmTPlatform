@@ -9,3 +9,6 @@ Added GRPC framework for Server and multiple Clients Trading:
 	
 * make sure the path is correct, else proto code may not be generated successfully
 
+ThemeTP: the new trading system 
+    integrates ATP/TT APIs	
+    implement algos
