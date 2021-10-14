@@ -22,7 +22,7 @@ namespace ThmServerAdapter.Services {
         internal async Task<int> Process(AlgoData algoData) {
             var call = await _client.ProcessAsync(new ProcessReq() {
                 Provider = (ProviderType)algoData.Provider,
-                Exchange = algoData.Exchange,
+                Exchange = algoData.ExchangeID,
                 Symbol = algoData.InstrumentID,
                 Price = (double)algoData.Price,
                 Qty = algoData.Qty,

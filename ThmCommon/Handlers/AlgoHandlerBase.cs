@@ -80,7 +80,7 @@ namespace ThmCommon.Handlers {
         private void AddInterTrigger(AlgoData algoData) {
             algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
             algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
-            algoData.Exchange = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
+            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
             algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
             algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
 
@@ -93,7 +93,7 @@ namespace ThmCommon.Handlers {
         private void AddSniper(AlgoData algoData) {
             algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
             algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
-            algoData.Exchange = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
+            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
             algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
             algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
 
@@ -106,7 +106,7 @@ namespace ThmCommon.Handlers {
         private void AddTrigger(AlgoData algoData) {
             algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
             algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
-            algoData.Exchange = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
+            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
             algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
             algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
 

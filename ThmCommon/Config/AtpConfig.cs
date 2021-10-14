@@ -13,12 +13,13 @@ namespace ThmCommon.Config {
     public class AtpConfig : IConfig {
         public bool Enabled { get; set; } = false;
         public string Provider { get; set; } = "ATP";
+        public bool SaveData { get; set; } = false;
 
         public string StreamDataServer { get; set; }
         public string StreamTradeServer { get; set; }
 
-        public AtpAcount Account { get; } = new AtpAcount();
-        public List<ExchangeCfg> Exchanges { get; } = new List<ExchangeCfg>();
+        public AtpAcount Account { get; } = new();
+        public List<ExchangeCfg> Exchanges { get; } = new();
 
         public bool IsValid(ref string err) {
             return true;

@@ -37,7 +37,7 @@ struct ExchangeConfig {
 struct AtpConfig {
     std::string md_stream_server;
     std::string td_stream_server;
-    AtpAccount acount;
+    AtpAccount account;
     std::vector<ExchangeConfig> exchanges;
     int log_level{ 1 };
 };

@@ -12,11 +12,11 @@ using System.Collections.Generic;
 
 namespace ThmCommon.Models {
     public sealed class ThmInstrumentInfo {
-        public string ID => Exchange + Type + InstrumentID + Provider;
+        public string ID => Exchange + ProductType + InstrumentID + Provider;
 
         public EProviderType Provider { get; set; } = EProviderType.TITAN; // Provider;
         public string Exchange { get; set; } = "SGX"; // market
-        public string Type { get; set; } = "Future"; // "Option",  "Future", ..., "Synthetic"
+        public string ProductType { get; set; } = "Future"; // "Option",  "Future", ..., "Synthetic"
         public string Product { get; set; }  // FEF
         public string Contract { get; set; } // Jan21
         public string InstrumentID { get; set; } // symbol: eg. "FEF Jan21", "FEFH21"

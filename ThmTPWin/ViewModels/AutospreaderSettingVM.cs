@@ -110,7 +110,7 @@ namespace ThmTPWin.ViewModels {
             _instrumentInfo = new ThmInstrumentInfo {
                 Provider = EProviderType.TITAN,
                 Exchange = "TTP",
-                Type = "Synthetic",
+                ProductType = "Synthetic",
                 InstrumentID = ThmUtil.GenerateGUID()
             };
 

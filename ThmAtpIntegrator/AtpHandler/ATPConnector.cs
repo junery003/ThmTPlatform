@@ -27,7 +27,7 @@ namespace ThmAtpIntegrator.AtpHandler {
         internal Dictionary<string, AtpInstrumentHandler> InstrumentHandlerDic { get; } = new();
 
         private ZmqHelper _zmqHelper;
-        private readonly AtpConfigHelper _atpConfigHelper;
+        private readonly AtpConfigHelper _cfgHelper;
 
         private readonly List<ExchangeCfg> _exchanges = new();
         private readonly List<string> _allAccounts = new();
@@ -38,7 +38,7 @@ namespace ThmAtpIntegrator.AtpHandler {
         private Timer _mdReconnTimer = null;
 
         public AtpConnector() {
-            _atpConfigHelper = new AtpConfigHelper();
+            _cfgHelper = new AtpConfigHelper();
         }
 
         public bool Connect(LoginCfgBase loginCfg = null) {
@@ -72,7 +72,7 @@ namespace ThmAtpIntegrator.AtpHandler {
         }
 
         private bool Init(LoginCfgBase loginCfg = null) {
-            if (!_atpConfigHelper.LoadConfig()) {
+            if (!_cfgHelper.LoadConfig()) {
                 Logger.Error("ATP failed to load config.");
                 return false;
             }
@@ -151,14 +151,14 @@ namespace ThmAtpIntegrator.AtpHandler {
         }
 
         public IConfigHelper GetConfigHelper() {
-            return _atpConfigHelper;
+            return _cfgHelper;
         }
 
         public InstrumentHandlerBase GetInstrumentHandler(string market, string productType, string product, string instrument) {
             foreach (var pair in InstrumentHandlerDic) {
                 var info = pair.Value.InstrumentInfo;
                 var (exch, prod, contract) = AtpUtil.ExtractContract(instrument);
-                if (info.Exchange == exch && info.Type == productType
+                if (info.Exchange == exch && info.ProductType == productType
                     && info.Product == prod && info.Contract == contract) {
                     return InstrumentHandlerDic[pair.Key];
                 }

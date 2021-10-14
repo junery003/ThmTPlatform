@@ -63,7 +63,7 @@ namespace ThmCommon.Models {
 
             Provider = algo.Provider;
             Product = algo.Product;
-            Exchange = algo.Exchange;
+            Exchange = algo.ExchangeID;
             InstrumentID = algo.InstrumentID;
             Contract = algo.Contract;
 

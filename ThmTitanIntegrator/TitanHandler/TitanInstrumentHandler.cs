@@ -31,7 +31,7 @@ namespace ThmTitanIntegrator.TitanHandler {
             InstrumentInfo = new ThmInstrumentInfo {
                 Provider = EProviderType.TITAN, // "Titan",
                 Exchange = "SGX",
-                Type = "Future",
+                ProductType = "Future",
                 Product = instrumentID.Substring(0, instrumentID.Length - 3),
                 //Product = instrumentID,
                 InstrumentID = instrumentID, // "FEFH21"

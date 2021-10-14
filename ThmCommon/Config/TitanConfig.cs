@@ -13,12 +13,13 @@ namespace ThmCommon.Config {
     public class TitanConfig : IConfig {
         public bool Enabled { get; set; } = false;
         public string Provider { get; set; } = "Titan";
+        public bool SaveData { get; set; } = false;
 
         public string StreamDataServer { get; set; }
         public string StreamTradeServer { get; set; }
 
         public TitanAcount Account { get; set; }
-        public List<ExchangeCfg> Exchanges { get; } = new List<ExchangeCfg>();
+        public List<ExchangeCfg> Exchanges { get; } = new();
 
         public bool IsValid(ref string err) {
             return true;

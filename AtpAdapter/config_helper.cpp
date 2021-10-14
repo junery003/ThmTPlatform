@@ -28,6 +28,11 @@ const string ConfigHelper::kConfigPath{ "/config/atp.json" };
 void from_json(const json& j, AtpAccount& cfg) {
     j.at("MDServer").get_to(cfg.md_server);
     j.at("TradeServer").get_to(cfg.trade_server);
+    j.at("BrokerId").get_to(cfg.broker_ID);
+    j.at("UserId").get_to(cfg.user_ID);
+    j.at("Password").get_to(cfg.user_password);
+    j.at("AppId").get_to(cfg.app_ID);
+    j.at("AuthCode").get_to(cfg.auth_code);
 }
 
 void from_json(const json& j, ExchangeConfig& cfg) {
@@ -40,7 +45,7 @@ void from_json(const json& j, ExchangeConfig& cfg) {
 void from_json(const json& j, AtpConfig& cfg) {
     j.at("StreamDataServer").get_to(cfg.md_stream_server);
     j.at("StreamTradeServer").get_to(cfg.td_stream_server);
-    j.at("Acount").get_to(cfg.acount);
+    j.at("Account").get_to(cfg.account);
     j.at("Exchanges").get_to<std::vector<ExchangeConfig>>(cfg.exchanges);
     j.at("LogLevel").get_to(cfg.log_level);
 }
@@ -58,6 +63,7 @@ bool ConfigHelper::Load() {
         string data((istreambuf_iterator<char>(fs)), istreambuf_iterator<char>());
 
         config = json::parse(data).get<AtpConfig>();
+        config.account.investor_ID = config.account.user_ID;
 
         Logger::Log()->info("Setting log level: {}", config.log_level);
         Logger::SetLevel(config.log_level);

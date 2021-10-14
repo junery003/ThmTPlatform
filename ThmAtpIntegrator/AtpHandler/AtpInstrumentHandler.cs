@@ -26,8 +26,8 @@ namespace ThmAtpIntegrator.AtpHandler {
         private readonly AtpAlgoHandler _algoHandler;
         public AtpInstrumentHandler(string instrumentID) {
             InstrumentInfo = new ThmInstrumentInfo {
-                Provider = EProviderType.ATP, // "ATP",
-                Type = "Future",
+                Provider = EProviderType.ATP,
+                ProductType = "Future",
                 InstrumentID = instrumentID
             };
             (InstrumentInfo.Exchange, InstrumentInfo.Product, InstrumentInfo.Contract) = AtpUtil.ExtractContract(instrumentID);

@@ -12,7 +12,7 @@ using System.Security;
 
 namespace ThmAtpIntegrator.AtpHandler {
     /// <summary>
-    /// call functions from AtpBridge.dll 
+    /// call functions from AtpAdapter.dll 
     /// </summary>
     public static class DllHelper {
         private const string DLL = @"AtpAdapter.dll";
