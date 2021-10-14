@@ -4,6 +4,12 @@
         <TargetFramework>net5.0</TargetFramework>
         <BaseOutputPath>bin/</BaseOutputPath>
         <Description>Any feedback, please contact: leijun@themeinternationaltrading.com.</Description>
+        <ApplicationIcon />
+        <OutputType>Library</OutputType>
+        <StartupObject />
+        <AssemblyVersion>1.2.0.0</AssemblyVersion>
+        <FileVersion>1.2.0.0</FileVersion>
+        <Version>1.2.0</Version>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

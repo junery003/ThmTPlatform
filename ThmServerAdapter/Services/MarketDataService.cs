@@ -30,7 +30,7 @@ namespace ThmServerAdapter.Services {
 
         private event Action<MarketDepthData> OnMarketDataUpdate;
 
-        internal async Task Subscribe(ThmInstrumentInfo instrument, Action<MarketDepthData> onMarketDataUpdate) {
+        internal async Task SubscribeAsync(ThmInstrumentInfo instrument, Action<MarketDepthData> onMarketDataUpdate) {
             OnMarketDataUpdate = onMarketDataUpdate;
 
             _marketData.Add(instrument.ID, null);
@@ -45,6 +45,11 @@ namespace ThmServerAdapter.Services {
             },
             cancellationToken: cts.Token);
 
+            await foreach (var rsp in call.ResponseStream.ReadAllAsync()) {
+                OnMarketDataUpdate?.Invoke(ParseDepthData(rsp));
+            }
+
+            /*
             var watchTsk = Task.Run(async () => {
                 try {
                     await foreach (var rsp in call.ResponseStream.ReadAllAsync()) {
@@ -58,6 +63,7 @@ namespace ThmServerAdapter.Services {
 
             cts.Cancel();
             await watchTsk;
+            */
         }
 
         private MarketDepthData ParseDepthData(DepthDataSubscribeRsp msg) {

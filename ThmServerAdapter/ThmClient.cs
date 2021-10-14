@@ -76,7 +76,7 @@ namespace ThmServerAdapter {
                 _marketService = new MarketDataService(_channel);
             }
 
-            return _marketService.Subscribe(instrument, OnMarketDataUpdate);
+            return _marketService.SubscribeAsync(instrument, OnMarketDataUpdate);
         }
 
         public static void UnubscibeInstrument(ThmInstrumentInfo instrument) {

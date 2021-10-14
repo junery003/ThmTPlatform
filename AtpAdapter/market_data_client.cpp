@@ -88,7 +88,7 @@ void MarketDataClient::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin
     }
 
     if (pRspInfo->ErrorID != 0) {
-        Logger::Log()->error("[{}:{}] Failed to login, ErrorCode={}, ErrorMsg={}, RequestID={}, Chain={}", __func__, __LINE__,
+        Logger::Log()->error("[{}:{}] ATP MD Failed to login, ErrorCode={}, ErrorMsg={}, RequestID={}, Chain={}", __func__, __LINE__,
             pRspInfo->ErrorID, pRspInfo->ErrorMsg, nRequestID, bIsLast);
         return;
     }

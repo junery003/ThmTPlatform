@@ -7,10 +7,10 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using ThmCommon.Models;
 using ThmServices;
 
@@ -32,46 +32,50 @@ namespace ThmTPServer.Services {
             var conn = ConnectionService.GetConnector((EProviderType)request.Provider);
             var instHandler = conn.GetInstrumentHandler(request.Symbol);
 
-            instHandler.OnMarketDataUpdated += async delegate (MarketDepthData data) {
-                await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
-                    Provider = (ProviderType)data.Provider,
-                    Exchange = request.Exchange,
-                    ProductType = data.ProductType,
-                    Symbol = data.InstrumentID,
-
-                    AQty1 = data.AskQty1,
-                    AQty2 = data.AskQty2,
-                    AQty3 = data.AskQty3,
-                    AQty4 = data.AskQty4,
-                    AQty5 = data.AskQty5,
-
-                    Ask1 = (double)data.AskPrice1,
-                    Ask2 = (double)data.AskPrice2,
-                    Ask3 = (double)data.AskPrice3,
-                    Ask4 = (double)data.AskPrice4,
-                    Ask5 = (double)data.AskPrice5,
-
-                    BQty1 = data.BidQty1,
-                    BQty2 = data.BidQty2,
-                    BQty3 = data.BidQty3,
-                    BQty4 = data.BidQty4,
-                    BQty5 = data.BidQty5,
-
-                    Bid1 = (double)data.BidPrice1,
-                    Bid2 = (double)data.BidPrice2,
-                    Bid3 = (double)data.BidPrice3,
-                    Bid4 = (double)data.BidPrice4,
-                    Bid5 = (double)data.BidPrice5,
-
-                    DateTime = data.DateTime.ToTimestamp(),
-                });
+            instHandler.OnMarketDataUpdated += delegate (MarketDepthData data) {
+                responseStream.WriteAsync(BuildRsp(data));
             };
 
-            //while (true) {
-            //    await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
-            //    });
-            //    await Task.Delay(1);
-            //}
+            while (true) {
+                await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
+                });
+                await Task.Delay(1000);
+            }
+        }
+
+        private DepthDataSubscribeRsp BuildRsp(MarketDepthData data) {
+            return new DepthDataSubscribeRsp {
+                Provider = (ProviderType)data.Provider,
+                Exchange = data.Exchange,
+                ProductType = data.ProductType,
+                Symbol = data.InstrumentID,
+
+                AQty1 = data.AskQty1,
+                AQty2 = data.AskQty2,
+                AQty3 = data.AskQty3,
+                AQty4 = data.AskQty4,
+                AQty5 = data.AskQty5,
+
+                Ask1 = (double)data.AskPrice1,
+                Ask2 = (double)data.AskPrice2,
+                Ask3 = (double)data.AskPrice3,
+                Ask4 = (double)data.AskPrice4,
+                Ask5 = (double)data.AskPrice5,
+
+                BQty1 = data.BidQty1,
+                BQty2 = data.BidQty2,
+                BQty3 = data.BidQty3,
+                BQty4 = data.BidQty4,
+                BQty5 = data.BidQty5,
+
+                Bid1 = (double)data.BidPrice1,
+                Bid2 = (double)data.BidPrice2,
+                Bid3 = (double)data.BidPrice3,
+                Bid4 = (double)data.BidPrice4,
+                Bid5 = (double)data.BidPrice5,
+
+                DateTime = data.DateTime.ToTimestamp(),
+            };
         }
     }
 }
