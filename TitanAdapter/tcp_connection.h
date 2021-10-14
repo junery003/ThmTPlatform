@@ -34,31 +34,29 @@ public:
     }
 
 public:
+    void SetUpperLayer(std::shared_ptr<ProtocolBase> upper_layer) override {
+        upper_layer_ = upper_layer;
+    }
+    void SetLowerLayer(std::shared_ptr<ProtocolBase> lower_layer) override {}
+
     bool Start() override;
     void Stop() override {
         Disconnect();
     }
 
-    void SetConnection(bool is_connected) override {
-        is_connected_ = is_connected;
-    }
-
-    void SetUpperLayer(std::shared_ptr<ProtocolBase> upper_layer) override {
-        upper_layer_ = upper_layer;
-    }
-    void SetLowerLayer(std::shared_ptr<ProtocolBase> lower_layer) override {}
     bool Parse(const char* msg, const int msg_len) override;
 
     void Send(const char* msg, size_t len);
+
+    void SetConnection(bool is_connected) override {
+        is_connected_ = is_connected;
+    }
 
 private:
     void Connect(bool is_primary = true);
     void Disconnect();
 
     void Receive();
-
-    ////#include <boost/coroutine2/coroutine.hpp>
-    //boost::asio::awaitable<void> TestEcho();
 
 private:
     char read_buf_[kReadLenMax]{ 0 };  // 

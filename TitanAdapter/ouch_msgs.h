@@ -222,12 +222,12 @@ The OUCH message protocol utilises the following code references :
         */
         uint8_t order_state;
 
-        char customer_info[15];
-        char exchange_info[32];
+        char customer_info[15]{ 0 };
+        char exchange_info[32]{ 0 };
         uint64_t pretrade_qty{ 0 };
         uint64_t display_qty{ 0 };
         uint16_t stp_key{ 0 };
-        char reserved[2];
+        char reserved[2]{ 0 };
     };
 
     struct OrderCanceledMsg {
@@ -239,7 +239,7 @@ The OUCH message protocol utilises the following code references :
         uint64_t order_id;
         char reason;
 
-        static std::string FormatReason(char reason) {
+        std::string FormatReason() {
             switch (reason) {
             case 1:  return "Canceled by user";
             case 4:  return "Order inactivated";

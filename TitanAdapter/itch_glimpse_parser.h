@@ -26,14 +26,15 @@ public:
     }
 
 public:
-    bool Start() override;
-    void Stop() override;
-    bool Parse(const char* msg, const int msg_len) override;
-
     void SetUpperLayer(std::shared_ptr<ProtocolBase> upper_layer) override {}
     void SetLowerLayer(std::shared_ptr<ProtocolBase> lower_layer) override {
         lower_layer_ = lower_layer;
     }
+
+    bool Start() override;
+    void Stop() override;
+
+    bool Parse(const char* msg, const int msg_len) override;
 
     inline void SetInitSeqNumber(uint64_t seq_num) {
         //sequence_num_ = seq_num;
@@ -64,38 +65,6 @@ private:
 
     // glimpse only
     bool EndOfSnapshot(const char* msg, const int msg_len);
-
-private:
-    inline static std::string ParseFinancialProduct(char financial_product) {
-        switch (financial_product) {
-        case 1: return "Option";
-        case 2: return "Forward";
-        case 3: return "Future";
-        case 4: return "FRA";
-        case 5: return "Cash";
-        case 6: return "Payment";
-        case 7: return "Exchange Rate";
-        case 8: return "Interest Rate Swap";
-        case 9: return "REPO";
-        case 10: return "Synthetic Box Leg/Reference";
-        case 11: return "Standard Combination";
-        case 12: return "Guarantee";
-        case 13: return "OTC General";
-        case 14: return "Equity Warrant";
-        case 15: return "Security Lending";
-        default: return "Not Supported";
-        }
-    }
-
-    inline static std::string ParsePutOrCall(char put_or_call) {
-        // Option type.Values:      
-        switch (put_or_call) {
-        case 1: return "Call";
-        case 2: return "Put";
-        case 0: return "Undefined";
-        default: return "N/A";
-        }
-    }
 
 private:
     std::shared_ptr<ZmqHelper> md_zmq_;

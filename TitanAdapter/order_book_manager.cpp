@@ -13,13 +13,13 @@
 #include "logger.h"
 
 bool OrderBookManager::InitSubsription(const std::string& instrument_id, uint32_t order_book_id) {
-    if (symbol_id_mapping_.find(instrument_id) == symbol_id_mapping_.end()) {
+    if (!symbol_id_mapping_.contains(instrument_id)) {
         return false;
         //Subscribe(instrument_id);
     }
 
     symbol_id_mapping_[instrument_id] = order_book_id;
-    if (subsribed_orderbook_.find(order_book_id) == subsribed_orderbook_.end()) {
+    if (!subsribed_orderbook_.contains(order_book_id)) {
         subsribed_orderbook_[order_book_id] = std::make_shared<OrderBook>(order_book_id);
     }
 
@@ -27,8 +27,7 @@ bool OrderBookManager::InitSubsription(const std::string& instrument_id, uint32_
 }
 
 void OrderBookManager::Subscribe(const std::string& instrument_id) {
-    auto it = symbol_id_mapping_.find(instrument_id);
-    if (it == symbol_id_mapping_.end()) {
+    if (!symbol_id_mapping_.contains(instrument_id)) {
         symbol_id_mapping_[instrument_id] = 0;
         //Logger::Log()->info("[{}:{}] Subscribed {}", __func__, __LINE__, instrument_id);
     }

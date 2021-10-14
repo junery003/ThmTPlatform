@@ -22,21 +22,21 @@ public:
     }
 
 public:
+    void SetUpperLayer(std::shared_ptr<ProtocolBase> upper_layer) override {
+        upper_layer_ = upper_layer;
+    }
+    void SetLowerLayer(std::shared_ptr<ProtocolBase> lower_layer) override {}
+
     bool Start() override;
     void Stop() override {
         Disconnect();
     }
 
+    bool Parse(const char* msg, const int msg_len) override;
+
     void Send(const char* msg, size_t len);
 
-    void SetConnection(bool is_connected) override {
-    }
-
-    void SetUpperLayer(std::shared_ptr<ProtocolBase> upper_layer) override {
-        upper_layer_ = upper_layer;
-    }
-    void SetLowerLayer(std::shared_ptr<ProtocolBase> lower_layer) override {}
-    bool Parse(const char* msg, const int msg_len) override;
+    //void SetConnection(bool is_connected) override {}
 
 private:
     void Connect();

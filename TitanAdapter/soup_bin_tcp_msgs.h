@@ -54,8 +54,8 @@ struct LoginRejectedPkt {
     */
     char reason_code;
 
-    static std::string RejectReason(char code) {
-        switch (code) {
+    std::string RejectReason() {
+        switch (reason_code) {
             case 'A':
                 return "Not Authorized";
             case 'S':

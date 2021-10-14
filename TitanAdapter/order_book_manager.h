@@ -52,7 +52,7 @@ public:
         char leg_side,
         uint32_t leg_ratio,
         const std::string& timestamp) {
-        if (combination_orderbook_.find(comb_order_book_id) == combination_orderbook_.end()) {
+        if (!combination_orderbook_.contains(comb_order_book_id)) {
             combination_orderbook_[comb_order_book_id] = std::make_shared<CombinationOrderBook>(comb_order_book_id);
         }
 

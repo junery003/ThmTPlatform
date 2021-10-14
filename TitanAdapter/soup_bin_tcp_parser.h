@@ -41,7 +41,6 @@ public:
         upper_layer->SetLowerLayer(shared_from_this());
     }
 
-public:
     bool Start() override {
         return conn_->Start();
     }

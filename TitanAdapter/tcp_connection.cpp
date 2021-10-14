@@ -14,20 +14,6 @@
 using namespace boost::asio;
 using namespace std;
 
-//#include <coroutine>
-//boost::asio::awaitable<void> TcpConnection::TestEcho() {
-//    try {
-//        char data[1024];
-//        for (;;) {
-//            size_t n = co_await skt_.async_read_some(buffer(data), boost::asio::use_awaitable);
-//            co_await async_write(skt_, buffer(data, n), boost::asio::use_awaitable);
-//        }
-//    }
-//    catch (exception& e) {
-//        //Logger::Log()->
-//    }
-//}
-
 bool TcpConnection::Start() {
     Connect();
     return true;

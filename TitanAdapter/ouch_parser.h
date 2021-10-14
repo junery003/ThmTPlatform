@@ -23,11 +23,23 @@ public:
     }
 
 public:
+    void SetUpperLayer(std::shared_ptr<ProtocolBase> upper_layer) override {}
+    void SetLowerLayer(std::shared_ptr<ProtocolBase> lower_layer) override {
+        lower_layer_ = std::dynamic_pointer_cast<SoupBinTcpParser>(lower_layer);
+    }
+
     bool Start() override;
     void Stop() override {
         lower_layer_->Stop();
     }
 
+    bool Parse(const char* msg, const int msg_len) override;
+
+    void UnsequencedData(const char* data, const uint16_t data_len) {
+        lower_layer_->UnsequencedData(data, data_len);
+    }
+
+private:
     // ------------------------------------------------------------------------------------------------;
     // inbound messages:  client --> server
     //void EnterOrder(EntryOrderMsg* msg);
@@ -35,18 +47,6 @@ public:
     //void CancelOrder(CancelOrderMsg* msg);
     //void CancelOrderByID(CancelByOrderIDMsg* msg);
 
-public:
-    bool Parse(const char* msg, const int msg_len) override;
-    void SetUpperLayer(std::shared_ptr<ProtocolBase> upper_layer) override {}
-    void SetLowerLayer(std::shared_ptr<ProtocolBase> lower_layer) override {
-        lower_layer_ = std::dynamic_pointer_cast<SoupBinTcpParser>(lower_layer);
-    }
-
-    void UnsequencedData(const char* data, const uint16_t data_len) {
-        lower_layer_->UnsequencedData(data, data_len);
-    }
-
-private:
     // ------------------------------------------------------------------------------------------------;
     // outbound messages
     void OrderAccepted(const char* msg);

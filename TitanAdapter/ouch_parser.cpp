@@ -205,7 +205,7 @@ void OuchParser::OrderCanceled(const char* msg) {
     j["Side"] = GetSide(data->side);
     j["OrderID"] = ntohll(data->order_id);
 
-    j["Text"] = OrderCanceledMsg::FormatReason(data->reason);
+    j["Text"] = data->FormatReason();
 
     td_zmq_->Send(j.dump());
 

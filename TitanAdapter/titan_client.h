@@ -21,8 +21,7 @@
 class TitanClient {
 public:
     TitanClient();
-    ~TitanClient() {
-    }
+    ~TitanClient() {}
 
 public:
     bool Start();

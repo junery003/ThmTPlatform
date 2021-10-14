@@ -22,12 +22,12 @@ namespace ThmTitanIntegrator.TitanHandler {
         public TitanConfig TitanCfg { get; private set; }
 
         // instrumentID, handler?
-        internal Dictionary<string, TitanInstrumentHandler> InstrumentHandlerDic { get; } = new Dictionary<string, TitanInstrumentHandler>();
+        internal Dictionary<string, TitanInstrumentHandler> InstrumentHandlerDic { get; } = new();
 
         private ZmqHelper _zmqHelper;
         private readonly TitanConfigHelper _titanCfgHelper;
 
-        private readonly List<ExchangeCfg> _exchanges = new List<ExchangeCfg>();
+        private readonly List<ExchangeCfg> _exchanges = new();
         private string _account;
         public bool IsConnected { get; private set; } = false;  // MarketDataConnected
 

@@ -16,12 +16,15 @@
 #include <string>
 #include <memory>
 
-class ProtocolBase : public ClientBase {
+class ProtocolBase {
 public:
     virtual ~ProtocolBase() = default;
 
     virtual void SetUpperLayer(std::shared_ptr<ProtocolBase> upper_layer) = 0;
     virtual void SetLowerLayer(std::shared_ptr<ProtocolBase> lower_layer) = 0;
+
+    virtual bool Start() = 0;
+    virtual void Stop() = 0;
 
     // msg and its len; return successfully if msg len is correct
     virtual bool Parse(const char* msg, const int msg_len) = 0;
@@ -34,11 +37,11 @@ public:
     inline static OrderSide GetSide(char side) {
         switch (side) {
         case 'B':
-            return OrderSide::BUY;
+                return OrderSide::Buy;
         case 'S':
-            return OrderSide::SELL;
+                return OrderSide::Sell;
         default: // should not happen        
-            return OrderSide::UNKNOWN;
+                return OrderSide::Unknown;
         }
     }
 

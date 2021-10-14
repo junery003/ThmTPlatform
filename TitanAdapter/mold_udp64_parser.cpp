@@ -31,18 +31,15 @@ bool MoldUdp64Parser::Parse(const char* msg, const int msg_len) {
 
     const auto msg_count = ntohs(header->message_count);
     switch (msg_count) {
-    case 0: // heartbeat
-    {
+        case 0: { // heartbeat
         //Logger::Log()->info("[{}:{}] MoldUDP64-Heartbeat, sequenceNum:{}", __func__, __LINE__, cur_seq_num);
         break;
     }
-    case 0xFFFF: // end of session
-    {
+        case 0xFFFF: { // end of session
         Logger::Log()->info("[{}:{}] MoldUDP64-End of session, sequenceNum:{}", __func__, __LINE__, cur_seq_num);
         break;
     }
-    default: // message block
-    {
+        default: { // message block        
         //Logger::Log()->info("[{}:{}] MoldUDP64-Message block, seqNum:{}, msg count:{}, session:{}", __func__, __LINE__, cur_seq_num, msg_count, header->session);
 
         const static auto header_len = sizeof(*header);

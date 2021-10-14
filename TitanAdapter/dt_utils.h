@@ -25,9 +25,9 @@ typedef uint32_t date_t; //
 typedef uint64_t timestamp_t;
 
 enum class OrderSide : uint8_t {
-    UNKNOWN = 0,
-    BUY = 1,
-    SELL = 2
+    Unknown = 0,
+    Buy = 1,
+    Sell = 2
 };
 
 enum class OrderStatus : uint8_t {

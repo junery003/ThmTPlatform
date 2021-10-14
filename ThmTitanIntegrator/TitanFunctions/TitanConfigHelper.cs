@@ -20,7 +20,7 @@ namespace ThmTitanIntegrator.TitanFunctions {
         private static readonly string TitanConfigPath = Directory.GetCurrentDirectory() + "/config/titan.json";
 
         public bool LoadConfig() {
-            Logger.Info("Loding config .. " + TitanConfigPath);
+            Logger.Info("Loding config... " + TitanConfigPath);
             Config = JsonConvert.DeserializeObject<TitanConfig>(File.ReadAllText(TitanConfigPath));
             string err = string.Empty;
             if (!Config.IsValid(ref err)) {

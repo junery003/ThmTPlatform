@@ -67,8 +67,8 @@ Code  message type
         // 0: indicates that Put or Call is undefined for the order book.
         char put_or_call;
 
-        static std::string GetFinancialProduct(char finprod) {
-            switch (finprod) {
+        std::string ParseFinancialProduct() {
+            switch (financial_product) {
             case 1: return "Option";
             case 2: return "Forward";
             case 3: return "Future";
@@ -85,6 +85,16 @@ Code  message type
             case 14: return "Equity Warrent";
             case 15: return "Security Lending";
             default: return "Not defined";
+            }
+        }
+
+        std::string ParsePutOrCall() {
+            // Option type.Values:
+            switch (put_or_call) {
+                case 1: return "Call";
+                case 2: return "Put";
+                case 0: return "Undefined";
+                default: return "N/A";
             }
         }
     };

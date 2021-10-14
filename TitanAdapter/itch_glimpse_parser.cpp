@@ -147,7 +147,8 @@ bool ItchGlimpseParser::OrderExecutedWPrice(const char* msg, const int msg_len) 
         OrderStatus::Filled,
         ntohll(data->match_id),
         ntohl(data->combo_group_id),
-        cur_time_ + "." + to_string(ntohl(data->timestamp_nanoseconds)));
+        cur_time_ + "." + to_string(ntohl(data->timestamp_nanoseconds)),
+        true);
 
     md_zmq_->Send(order_book->UpdateMarketData());
 
@@ -312,7 +313,7 @@ bool ItchGlimpseParser::TradeMessageIdentifier(const char* msg, const int msg_le
     data->qty = ntohll(data->qty);
     string timestamp{ cur_time_ + '.' + to_string(ntohl(data->timestamp_nanoseconds)) };
 
-    Logger::Log()->info("[{}:{}] Trade Message: order book id:{}, match id:{:x}, combo group id:{:x}, "
+    Logger::Log()->info("[{}:{}] ITCH/Glimpse P: order book id:{}, match id:{:x}, combo group id:{:x}, "
         "side:{}, trade price:{}, qty:{}, time:{}",
         __func__, __LINE__, data->order_book_id, data->match_id, data->combo_group_id,
         data->side, data->trade_price, data->qty, timestamp);
@@ -346,7 +347,7 @@ bool ItchGlimpseParser::OrderBookDirectory(const char* msg, const int msg_len) {
     order_book->Init(symbol,
         ParseFieldRightPadding(data->long_name, sizeof(data->long_name)),
         ParseFieldRightPadding(data->ISIN, sizeof(data->ISIN)),
-        OrderBookDirectoryMsg::GetFinancialProduct(data->financial_product),
+        data->ParseFinancialProduct(),
         ParseFieldRightPadding(data->currency, sizeof(data->currency)),
         ntohl(data->odd_lot_size),
         ntohl(data->round_lot_size),
@@ -359,7 +360,7 @@ bool ItchGlimpseParser::OrderBookDirectory(const char* msg, const int msg_len) {
         data->leg_num,
         ntohl(data->commodity_code),
         ntohl(data->strike_price),
-        ParsePutOrCall(data->put_or_call),
+        data->ParsePutOrCall(),
         cur_time_ + "." + to_string(ntohl(data->timestamp_nanoseconds))
     );
 

@@ -18,7 +18,7 @@ namespace ThmTitanIntegrator.Models {
             Contract = symbol;
         }
 
-        public EProviderType Provider { get; } = EProviderType.TITAN;
+        public EProviderType Provider { get; } = EProviderType.TITAN; // "Titan";
 
         public string Exchange { get; private set; } = "SGX";
         public string ProductType { get; private set; } = "Future";
