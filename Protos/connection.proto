@@ -66,8 +66,9 @@ message Product {
 }
 
 message UpdateTitanPasswrodReq {
-    string cur_password = 1;
-    string new_password = 2;
+    string user_id = 1;
+    string cur_password = 2;
+    string new_password = 3;
 }
 
 message UpdateTitanPasswrodRsp {

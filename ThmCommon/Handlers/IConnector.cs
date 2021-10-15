@@ -16,8 +16,7 @@ namespace ThmCommon.Handlers {
         bool IsConnected { get; }
         bool Connect(LoginCfgBase loginCfg = null);
         //IAccount GetAccount();
-        bool StartContract(string instrumentID);
-        bool StopContract(string instrumentID);
+        bool StartContract(string instrumentID, string exchange = null);
         void StartContracts();
 
         //InstrumentHandlerBase GetInstrumentHandler(string market, string productType, string product, string contract);
@@ -26,6 +25,6 @@ namespace ThmCommon.Handlers {
         List<string> GetInstruments(string market, string productType, string product);
         IConfigHelper GetConfigHelper();
 
-        bool ChangePassword(string curPwd, string newPwd);
+        bool ChangePassword(string usrId, string curPwd, string newPwd);
     }
 }

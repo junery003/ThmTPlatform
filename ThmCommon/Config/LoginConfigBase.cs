@@ -29,6 +29,15 @@ namespace ThmCommon.Config {
         public bool IsAuth { get; set; } = true;
     }
 
+    public class CtpLoginCfg : LoginCfgBase {
+        public override bool Enabled { get; set; }
+        public override string Account { get => UserId; set { UserId = value; } }
+        public override string CustomerInfo { get; set; }
+
+        public string UserId { get; set; }
+        public string Password { get; set; }
+    }
+
     public class TTLoginCfg : LoginCfgBase {
         public override bool Enabled { get; set; }
         public override string Account { get; set; }

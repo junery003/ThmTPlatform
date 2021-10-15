@@ -111,7 +111,7 @@ namespace ThmAtpIntegrator.AtpHandler {
             return true;
         }
 
-        public bool StartContract(string instrumentID) {
+        public bool StartContract(string instrumentID, string exchange = null) {
             if (!InstrumentHandlerDic.ContainsKey(instrumentID)) {
                 InstrumentHandlerDic[instrumentID] = new AtpInstrumentHandler(instrumentID);
             }
@@ -231,7 +231,7 @@ namespace ThmAtpIntegrator.AtpHandler {
         //    DllHelper.ReqPositionUpdate(contract);
         //}
 
-        public bool ChangePassword(string curPwd, string newPwd) {
+        public bool ChangePassword(string usrId, string curPwd, string newPwd) {
             return false;
         }
 

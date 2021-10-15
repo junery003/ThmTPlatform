@@ -172,7 +172,7 @@ namespace ThmTPServer.Services {
         }
 
         public override Task<UpdateTitanPasswrodRsp> UpdateTitanPasswrod(UpdateTitanPasswrodReq req, ServerCallContext context) {
-            var rlt = GetConnector(EProviderType.TITAN)?.ChangePassword(req.CurPassword, req.NewPassword);
+            var rlt = GetConnector(EProviderType.TITAN)?.ChangePassword(req.UserId, req.CurPassword, req.NewPassword);
 
             return Task.FromResult(new UpdateTitanPasswrodRsp() {
                 Message = rlt.Value ? null : "Failed to chang password"

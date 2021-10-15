@@ -95,7 +95,7 @@ namespace ThmTitanIntegrator.TitanHandler {
             */
         }
 
-        public bool StartContract(string instrumentID) {
+        public bool StartContract(string instrumentID, string exchange = null) {
             if (!InstrumentHandlerDic.ContainsKey(instrumentID)) {
                 InstrumentHandlerDic[instrumentID] = new TitanInstrumentHandler(instrumentID, _account);
             }
@@ -185,7 +185,7 @@ namespace ThmTitanIntegrator.TitanHandler {
             StartContracts();
         }
 
-        public bool ChangePassword(string curPwd, string newPwd) {
+        public bool ChangePassword(string usrId, string curPwd, string newPwd) {
             return DllHelper.ChangePassword(TitanCfg.Account.OuchCfg.UserID, curPwd, newPwd);
         }
 

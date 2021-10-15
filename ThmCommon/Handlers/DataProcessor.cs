@@ -16,7 +16,7 @@ namespace ThmCommon.Handlers {
     /// DataProcessor
     /// </summary>
     public class DataProcessor : IDataHandler {
-        private readonly DataController _dataController = new DataController();
+        private readonly DataController _dataController = new();
         //private readonly RedisHelper _redisHandler = new RedisHelper();
 
         /// <summary>

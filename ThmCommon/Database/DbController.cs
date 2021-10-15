@@ -57,8 +57,8 @@ namespace ThmCommon.Database {
         }
 
         void Select(string connStr) {
-            using (MySqlConnection connect = new MySqlConnection(connStr))
-            using (MySqlCommand cmd = new MySqlCommand()) {
+            using (MySqlConnection connect = new(connStr))
+            using (MySqlCommand cmd = new()) {
                 string commandLine = "SELECT * FROM Table WHERE active=1";
 
                 commandLine = commandLine.Remove(commandLine.Length - 3);
@@ -78,13 +78,13 @@ namespace ThmCommon.Database {
         }
 
         long Intert(string connStr) {
-            using (MySqlConnection connect = new MySqlConnection(connStr))
-            using (MySqlCommand cmd = new MySqlCommand()) {
+            using (MySqlConnection connect = new(connStr))
+            using (MySqlCommand cmd = new()) {
 
                 cmd.Connection = connect;
                 cmd.Connection.Open();
 
-                string commandLine = @"INSERT INTO Table (id, weekday, start, end) VALUES" +
+                var commandLine = @"INSERT INTO Table (id, weekday, start, end) VALUES" +
                     "(@ id, @weekday, @start, @end);";
 
                 cmd.CommandText = commandLine;

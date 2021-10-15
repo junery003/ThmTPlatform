@@ -19,7 +19,7 @@ namespace ThmCommon.Database {
         public static List<string> ExchangeList => exchangeIdxDic.Keys.ToList();
         public static int TABLECOUNT { get; } = 5;
 
-        private static readonly Dictionary<string, int> exchangeIdxDic = new Dictionary<string, int>
+        private static readonly Dictionary<string, int> exchangeIdxDic = new()
         {
             { "SGX",  0},
             { "HKE",  0},

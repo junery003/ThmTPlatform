@@ -31,10 +31,10 @@ namespace ThmCommon.Handlers {
         public abstract void SendDeleteOrder(string orderID, bool isBuy);
         #endregion
 
-        #region Orders Dic Updating
+        #region orders Dic updating
         // ID: for ATP: exchange+exchange+orderID+orderRef, 
         //     for TT:  site order key        
-        private readonly Dictionary<string, OrderData> _orderDic = new Dictionary<string, OrderData>();
+        private readonly Dictionary<string, OrderData> _orderDic = new();
         public virtual void AddOrder(OrderData orderData) {
             _orderDic[orderData.ID] = orderData;
         }
@@ -54,7 +54,7 @@ namespace ThmCommon.Handlers {
 
         #region Algo Orders Dic
         // algoID for Algo Order
-        private readonly Dictionary<string, OrderData> _algoOrderDic = new Dictionary<string, OrderData>();
+        private readonly Dictionary<string, OrderData> _algoOrderDic = new();
         internal void AddOrUpdateAlgoOrder(AlgoData algo) {
             OrderData orderData;
             if (!_algoOrderDic.ContainsKey(algo.AlgoID)) {

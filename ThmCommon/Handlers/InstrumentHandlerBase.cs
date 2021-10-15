@@ -16,10 +16,10 @@ namespace ThmCommon.Handlers {
     public abstract class InstrumentHandlerBase : IDisposable {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static bool EnableSaveData { get; set; } = true;
+        public static bool EnableSaveData { get; set; } = false;
 
         public ThmInstrumentInfo InstrumentInfo { get; protected set; }
-        public List<string> Accounts { get; protected set; } = new List<string>();
+        public List<string> Accounts { get; protected set; } = new();
         public string CurAccount { get; protected set; }
 
         public abstract bool Start();

@@ -56,20 +56,20 @@ namespace ThmCommon.Handlers {
                         if (Trigger(algoData, bestQuot) > 0) { // executed 
                             return 0;
                         }
-                        AddTrigger(algoData);
+                    AddWorkingAlgo(algoData);
                         return 1;
                     }
                 case EAlgoType.Sniper: {
                         if (Snipe(algoData, bestQuot) >= algoData.Qty) { // finished
                             return 0;
                         }
-                        AddSniper(algoData);
+                    AddWorkingAlgo(algoData);
                         return 1;
                     }
-                case EAlgoType.InterTrigger: {
-                        AddInterTrigger(algoData);
-                        return 1;
-                    }
+                //case EAlgoType.InterTrigger: {
+                //        AddWorkingAlgo(algoData);
+                //        return 1;
+                //    }
                 default: {
                         Logger.Error("Algo not supported: {}-{}", algoData.AlgoID, algoData.Type);
                         return -1;
@@ -77,33 +77,7 @@ namespace ThmCommon.Handlers {
             }
         }
 
-        private void AddInterTrigger(AlgoData algoData) {
-            algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
-            algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
-            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
-            algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
-            algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
-
-            AddAlgo(algoData); 
-            _tradeHandler.AddOrUpdateAlgoOrder(algoData);
-
-            Logger.Info($"Added algo: {algoData.Type} {algoData.AlgoID} - {algoData.BuyOrSell} {algoData.Qty}@{algoData.Price} ");
-        }
-
-        private void AddSniper(AlgoData algoData) {
-            algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
-            algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
-            algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
-            algoData.InstrumentID = _tradeHandler.InstrumentHandler.InstrumentInfo.InstrumentID;
-            algoData.Contract = _tradeHandler.InstrumentHandler.InstrumentInfo.Contract;
-
-            AddAlgo(algoData);
-            _tradeHandler.AddOrUpdateAlgoOrder(algoData);
-
-            Logger.Info($"Added algo: {algoData.Type} {algoData.AlgoID} - {algoData.BuyOrSell} {algoData.Qty}@{algoData.Price} ");
-        }
-
-        private void AddTrigger(AlgoData algoData) {
+        internal void AddWorkingAlgo(AlgoData algoData) {
             algoData.Provider = _tradeHandler.InstrumentHandler.InstrumentInfo.Provider;
             algoData.Product = _tradeHandler.InstrumentHandler.InstrumentInfo.Product;
             algoData.ExchangeID = _tradeHandler.InstrumentHandler.InstrumentInfo.Exchange;
@@ -166,8 +140,8 @@ namespace ThmCommon.Handlers {
         #endregion algos
 
         #region working algos
-        private readonly object _triggerLock = new object();
-        private readonly object _sniperLock = new object();
+        private readonly object _triggerLock = new();
+        private readonly object _sniperLock = new();
         public void ProcessWorkingAlgos(BestQuot md) {
             var triggerTask = Task.Run(() => {
                 lock (_triggerLock) {
@@ -311,7 +285,7 @@ namespace ThmCommon.Handlers {
         // return qty executed
         private int Snipe(AlgoData algo, BestQuot md) {
             if (algo.BuyOrSell == EBuySell.Buy) {
-                if (md.AskPrice1 <= algo.Price) {
+                if (md.AskQty1 > 0 && md.AskPrice1 <= algo.Price) {
                     var qtyLeft = algo.Qty - algo.FillQty;
                     _tradeHandler.SendNewOrder(algo.BuyOrSell, algo.Price, qtyLeft, algo.Type.ToString(), ETIF.FAK);
 
@@ -327,7 +301,7 @@ namespace ThmCommon.Handlers {
             }
 
             if (algo.BuyOrSell == EBuySell.Sell) {
-                if (md.BidPrice1 >= algo.Price) {
+                if (md.BidQty1 > 0 && md.BidPrice1 >= algo.Price) {
                     var qtyLeft = algo.Qty - algo.FillQty;
                     _tradeHandler.SendNewOrder(algo.BuyOrSell, algo.Price, qtyLeft, algo.Type.ToString(), ETIF.FAK);
 
