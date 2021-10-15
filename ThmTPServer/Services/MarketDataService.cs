@@ -32,8 +32,8 @@ namespace ThmTPServer.Services {
             var conn = ConnectionService.GetConnector((EProviderType)request.Provider);
             var instHandler = conn.GetInstrumentHandler(request.Symbol);
 
-            instHandler.OnMarketDataUpdated += delegate (MarketDepthData data) {
-                responseStream.WriteAsync(BuildRsp(data));
+            instHandler.OnMarketDataUpdated += delegate () {
+                responseStream.WriteAsync(BuildRsp(instHandler.CurMarketDepthData));
             };
 
             while (true) {

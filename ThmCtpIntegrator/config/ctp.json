@@ -1,0 +1,26 @@
+{
+    "Enabled": true,
+    "Provider": "CTP",
+    "SaveData": false,
+    "StreamDataServer": "tcp://127.0.0.1:9969",
+    "StreamTradeServer": "tcp://127.0.0.1:9968",
+    "LogLevel": 1,
+    "Account": {
+        "MDServer": "tcp://116.246.25.180:51313",
+        "TradeServer": "tcp://116.246.25.180:51305",
+        "BrokerId": "66666",
+        "UserId": "52717",
+        "Password": "00112233",
+        "AppId": "LH_futures_1.0.0",
+        "AuthCode": "B3EPET7RK3TZ12ZK",
+        "Auth": true
+    },
+    "Exchanges": [
+        {
+            "Enabled": true,
+            "Market": "DCE",
+            "Type": "Future",
+            "Contracts": [ "i2201" ]
+        }
+    ]
+}

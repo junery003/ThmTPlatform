@@ -35,10 +35,10 @@ namespace ThmTTIntegrator.TTHandler {
         private TTAPI _ttApi = null; // Declare the API objects
 
         // <instrumentID, productID>
-        private readonly Dictionary<ulong, ProductKey> _instrumentProductDic = new Dictionary<ulong, ProductKey>();
+        private readonly Dictionary<ulong, ProductKey> _instrumentProductDic = new();
 
         // <productID, instrumentCatalogHandler>
-        private readonly Dictionary<ProductKey, TTInstrumentCatalogHandler> _instrumentCatalogHandlerDic = new Dictionary<ProductKey, TTInstrumentCatalogHandler>();
+        private readonly Dictionary<ProductKey, TTInstrumentCatalogHandler> _instrumentCatalogHandlerDic = new();
 
         public TTConnector() {
             _ttConfigHelper = new TTConfigHelper();
@@ -48,6 +48,7 @@ namespace ThmTTIntegrator.TTHandler {
             if (!Init(loginCfg)) {
                 return false;
             }
+            InstrumentHandlerBase.EnableSaveData = _ttConfig.SaveData;
 
             var ttAccount = _ttConfig.Account;
             ServiceEnvironment environment; // UatCert;

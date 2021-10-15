@@ -22,6 +22,8 @@ namespace ThmCommon.Handlers {
         public List<string> Accounts { get; protected set; } = new();
         public string CurAccount { get; protected set; }
 
+        public virtual MarketDepthData CurMarketDepthData { get; protected set; }
+
         public abstract bool Start();
         public abstract void Stop();
 
@@ -36,16 +38,16 @@ namespace ThmCommon.Handlers {
         protected abstract TradeHandlerBase TradeHandler { get; }
 
         #region data update
-        public event Action<MarketDepthData> OnMarketDataUpdated;
-        public void UpdateMarketData(MarketDepthData depthData) {
+        public event Action OnMarketDataUpdated;
+        public void UpdateMarketData() {
             var task1 = Task.Run(() => {
-                ProcessWorkingAlgos(depthData.CurBestQuot);
+                ProcessWorkingAlgos(CurMarketDepthData.CurBestQuot);
             });
             var task2 = Task.Run(async () => {
-                _ = await SaveDataAsync(depthData);
+                _ = await SaveDataAsync(CurMarketDepthData);
             });
             var task3 = Task.Run(() => {
-                OnMarketDataUpdated?.Invoke(depthData);
+                OnMarketDataUpdated?.Invoke();
             });
 
             _ = Task.WhenAll(task1, task2, task3).ConfigureAwait(false);
@@ -81,17 +83,18 @@ namespace ThmCommon.Handlers {
         /// <returns>1 if added successfully but not being executed; 
         ///          0 if added and then executed; 
         ///         -1 if not added</returns>
-        public int ProcessAlgo(AlgoData algo, MarketDepthData depthData) {
+        public int ProcessAlgo(AlgoData algo) {
             if (algo.Type == EAlgoType.InterTrigger) {
-                //if (0 == algo.RefInstrument.CheckInterTrigger(algo, this, algo.RefInstrument.CurMarketDepthData.CurBestQuot)) {
-                //    return 0;
+                //if (algo.RefInstrumentHandler.CheckInterTrigger(algo, this, algo.RefInstrumentHandler.CurMarketDepthData.CurBestQuot) > 0) {
+                //   return 0;
                 //}
 
-                //algo.RefInstrument._interTriggers.Add(new Tuple<AlgoData, InstrumentHandlerBase>(algo, this));
+                // algo.RefInstrumentHandler._interTriggers.Add(new Tuple<AlgoData, InstrumentHandlerBase>(algo, this));
+                //AlgoHandler.AddWorkingAlgo(algo);
                 return 1;
             }
 
-            return AlgoHandler.ProcessAlgo(algo, depthData.CurBestQuot);
+            return AlgoHandler.ProcessAlgo(algo, CurMarketDepthData.CurBestQuot);
         }
 
         public void ProcessWorkingAlgos(BestQuot md) {
@@ -141,7 +144,7 @@ namespace ThmCommon.Handlers {
         #endregion
 
         #region Inter-trigger algo
-        private readonly List<Tuple<AlgoData, InstrumentHandlerBase>> _interTriggers = new List<Tuple<AlgoData, InstrumentHandlerBase>>();
+        private readonly List<Tuple<AlgoData, InstrumentHandlerBase>> _interTriggers = new();
 
         /// <summary>
         /// check for Inter-Trigger algo
@@ -181,7 +184,7 @@ namespace ThmCommon.Handlers {
         #endregion
 
         #region db
-        private static readonly DataProcessor _dataProcessor = new DataProcessor();
+        private static readonly DataProcessor _dataProcessor = new();
         public async Task<bool> SaveDataAsync(MarketDepthData depthData) {
             try {
                 if (EnableSaveData) {

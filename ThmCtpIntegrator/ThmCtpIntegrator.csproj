@@ -1,29 +1,42 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Library</OutputType>
         <TargetFramework>net48</TargetFramework>
         <LangVersion>9.0</LangVersion>
-        <BaseOutputPath>bin/</BaseOutputPath>
+        <BaseOutputPath>../x64</BaseOutputPath>
         <Description>Any feedback, please contact: leijun@themeinternationaltrading.com.</Description>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <OutputType>Library</OutputType>
+        <Copyright>TTP</Copyright>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <PlatformTarget>x64</PlatformTarget>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <PlatformTarget>x64</PlatformTarget>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="config\ctp.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="config\ctp.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NetMQ" Version="4.0.1.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="NLog" Version="4.7.11" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
-        <PackageReference Include="System.Data.Common" Version="4.3.0" />
-        <PackageReference Include="TT.NET.SDK" Version="3.0.0.49" />
+        <PackageReference Include="System.Memory" Version="4.5.4" />
     </ItemGroup>
 
     <ItemGroup>
@@ -31,9 +44,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="App.config">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
       <None Update="NLog.config">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

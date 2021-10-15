@@ -49,5 +49,6 @@ namespace ThmCommon.Models {
         ATP = 1,
         TT = 2,
         TITAN = 3,
+        CTP = 4
     };
 }

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : AtpInstrumentHandler
+// File Name   : CtpInstrumentHandler
 // Author      : junlei
 // Date        : 5/29/2020 5:10:34 PM
 // Description : 
@@ -8,36 +8,36 @@
 //
 //-----------------------------------------------------------------------------
 using System;
-using ThmAtpIntegrator.AtpFunctions;
-using ThmAtpIntegrator.Models;
 using ThmCommon.Handlers;
 using ThmCommon.Models;
 using ThmCommon.Utilities;
+using ThmCtpIntegrator.CtpFunctions;
+using ThmCtpIntegrator.Models;
 
-namespace ThmAtpIntegrator.AtpHandler {
-    public class AtpInstrumentHandler : InstrumentHandlerBase {
+namespace ThmCtpIntegrator.CtpHandler {
+    public class CtpInstrumentHandler : InstrumentHandlerBase {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         protected override AlgoHandlerBase AlgoHandler => _algoHandler;
         protected override TradeHandlerBase TradeHandler => _tradeHandler;
 
-        private readonly AtpTradeHandler _tradeHandler;
-        private readonly AtpAlgoHandler _algoHandler;
-        public AtpInstrumentHandler(string instrumentID, string exchange = null) {
+        private readonly CtpTradeHandler _tradeHandler;
+        private readonly CtpAlgoHandler _algoHandler;
+        public CtpInstrumentHandler(string instrumentID, string exchange) {
             InstrumentInfo = new ThmInstrumentInfo {
-                Provider = EProviderType.ATP,
-                ProductType = "Future",
+                Provider = EProviderType.CTP,
+                Exchange = exchange,
                 InstrumentID = instrumentID
             };
-            (InstrumentInfo.Exchange, InstrumentInfo.Product, InstrumentInfo.Contract) = AtpUtil.ExtractContract(instrumentID);
+            (InstrumentInfo.Product, InstrumentInfo.Contract) = CtpUtil.ExtractContract(instrumentID);
 
-            _tradeHandler = new AtpTradeHandler(this);
-            _algoHandler = new AtpAlgoHandler(_tradeHandler);
+            _tradeHandler = new CtpTradeHandler(this);
+            _algoHandler = new CtpAlgoHandler(_tradeHandler);
         }
 
         public override bool Start() {
             Logger.Info("Starting instrument: {}", InstrumentInfo.InstrumentID);
-            if (DllHelper.SubscribeContract(InstrumentInfo.InstrumentID) != 0) {
+            if (DllHelper.SubscribeContract(InstrumentInfo.InstrumentID, InstrumentInfo.Exchange) != 0) {
                 Logger.Error($"Failed to subscribe contract {InstrumentInfo.InstrumentID}");
 
                 return false;
@@ -55,24 +55,24 @@ namespace ThmAtpIntegrator.AtpHandler {
             return _tradeHandler.GetPosition();
         }
 
-        internal void ParseInstrumentInfo(AtpInstrumentInfo instrumentInfo) {
+        internal void ParseInstrumentInfo(CtpInstrumentInfo instrumentInfo) {
             InstrumentInfo.TickSize = instrumentInfo.PriceTick;
             Logger.Info($"Ticksize for instrument {instrumentInfo.InstrumentID} is {InstrumentInfo.TickSize}");
         }
 
-        internal void ParseMarketDepthData(AtpDepthData depthDataMsg) {
+        internal void ParseMarketDepthData(CtpDepthData depthDataMsg) {
             BuildDepthData(depthDataMsg);
 
             UpdateMarketData();
         }
 
-        private MarketDepthData BuildDepthData(AtpDepthData mdMsg) {
+        private MarketDepthData BuildDepthData(CtpDepthData mdMsg) {
             if (CurMarketDepthData == null) {
                 CurMarketDepthData = new MarketDepthData() {
-                    Provider = mdMsg.Provider,  // "ATP"
-                    Exchange = mdMsg.Exchange,
+                    Provider = mdMsg.Provider,  // "CTP"
+                    Exchange = string.IsNullOrEmpty(mdMsg.Exchange) ? InstrumentInfo.Exchange : mdMsg.Exchange,
                     ProductType = "Future",  // by default //_instrument.Product.Type.ToString(),
-                    Product = mdMsg.Product, //obj.Product.Name,                
+                    Product = mdMsg.Product, //obj.Product.Name,
                     Contract = mdMsg.Contract, //_instrument.Product.Alias
                     InstrumentID = mdMsg.InstrumentID,
                 };
@@ -81,24 +81,24 @@ namespace ThmAtpIntegrator.AtpHandler {
             CurMarketDepthData.DateTime = TimeUtil.String2DateTime(mdMsg.DateTime);
             CurMarketDepthData.LocalDateTime = DateTime.Now; // TimeUtil.MilliSeconds2DateTime(atpMDMsg.LocalTime);
 
-            CurMarketDepthData.HighPrice = mdMsg.HighPrice;
-            CurMarketDepthData.LowPrice = mdMsg.LowPrice;
-            CurMarketDepthData.OpenPrice = mdMsg.OpenPrice;
+            CurMarketDepthData.HighPrice = (decimal)(mdMsg.HighPrice == double.MaxValue ? 0 : mdMsg.HighPrice);
+            CurMarketDepthData.LowPrice = (decimal)(mdMsg.LowPrice == double.MaxValue ? 0 : mdMsg.LowPrice);
+            CurMarketDepthData.OpenPrice = (decimal)(mdMsg.OpenPrice == double.MaxValue ? 0 : mdMsg.OpenPrice);
             CurMarketDepthData.TotalTradedQuantity = mdMsg.Volume;
             //CurDepthData.LastTradedQuantity = atpObj.Volume;
-            CurMarketDepthData.LastTradedPrice = mdMsg.LastPrice;
-            CurMarketDepthData.SettlementPrice = mdMsg.SettlementPrice;
+            CurMarketDepthData.LastTradedPrice = (decimal)mdMsg.LastPrice;
+            CurMarketDepthData.SettlementPrice = (decimal)(mdMsg.SettlementPrice == double.MaxValue ? 0 : mdMsg.SettlementPrice);
 
-            CurMarketDepthData.DirectAskPrice = mdMsg.DirectAskPrice;
+            CurMarketDepthData.DirectAskPrice = (decimal)mdMsg.DirectAskPrice;
             CurMarketDepthData.DirectAskQty = mdMsg.DirectAskQty;
-            CurMarketDepthData.DirectBidPrice = mdMsg.DirectBidPrice;
+            CurMarketDepthData.DirectBidPrice = (decimal)mdMsg.DirectBidPrice;
             CurMarketDepthData.DirectBidQty = mdMsg.DirectBidQty;
 
-            CurMarketDepthData.AskPrice1 = mdMsg.AskPrice1;
-            CurMarketDepthData.AskPrice2 = mdMsg.AskPrice2;
-            CurMarketDepthData.AskPrice3 = mdMsg.AskPrice3;
-            CurMarketDepthData.AskPrice4 = mdMsg.AskPrice4;
-            CurMarketDepthData.AskPrice5 = mdMsg.AskPrice5;
+            CurMarketDepthData.AskPrice1 = (decimal)(mdMsg.AskPrice1 == double.MaxValue ? 0 : mdMsg.AskPrice1);
+            CurMarketDepthData.AskPrice2 = (decimal)mdMsg.AskPrice2;
+            CurMarketDepthData.AskPrice3 = (decimal)mdMsg.AskPrice3;
+            CurMarketDepthData.AskPrice4 = (decimal)mdMsg.AskPrice4;
+            CurMarketDepthData.AskPrice5 = (decimal)mdMsg.AskPrice5;
 
             CurMarketDepthData.AskQty1 = mdMsg.AskQty1;
             CurMarketDepthData.AskQty2 = mdMsg.AskQty2;
@@ -106,11 +106,11 @@ namespace ThmAtpIntegrator.AtpHandler {
             CurMarketDepthData.AskQty4 = mdMsg.AskQty4;
             CurMarketDepthData.AskQty5 = mdMsg.AskQty5;
 
-            CurMarketDepthData.BidPrice1 = mdMsg.BidPrice1;
-            CurMarketDepthData.BidPrice2 = mdMsg.BidPrice2;
-            CurMarketDepthData.BidPrice3 = mdMsg.BidPrice3;
-            CurMarketDepthData.BidPrice4 = mdMsg.BidPrice4;
-            CurMarketDepthData.BidPrice5 = mdMsg.BidPrice5;
+            CurMarketDepthData.BidPrice1 = (decimal)(mdMsg.BidPrice1 == double.MaxValue ? 0 : mdMsg.BidPrice1);
+            CurMarketDepthData.BidPrice2 = (decimal)mdMsg.BidPrice2;
+            CurMarketDepthData.BidPrice3 = (decimal)mdMsg.BidPrice3;
+            CurMarketDepthData.BidPrice4 = (decimal)mdMsg.BidPrice4;
+            CurMarketDepthData.BidPrice5 = (decimal)mdMsg.BidPrice5;
 
             CurMarketDepthData.BidQty1 = mdMsg.BidQty1;
             CurMarketDepthData.BidQty2 = mdMsg.BidQty2;
@@ -121,7 +121,7 @@ namespace ThmAtpIntegrator.AtpHandler {
             return CurMarketDepthData;
         }
 
-        internal void ParseOrderData(AtpOrderData orderMsg) {
+        internal void ParseOrderData(CtpOrderData orderMsg) {
             UpdateOrderData(_tradeHandler.BuildOrderData(orderMsg));
         }
 

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="market_data_client.cpp">
+      <Filter>ctp_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="trader_client.cpp">
+      <Filter>ctp_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="logger.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ctp_apis</Filter>
+    </ClCompile>
+    <ClCompile Include="ctp_client.cpp">
+      <Filter>ctp_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ctp_export.cpp">
+      <Filter>ctp_apis</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>ctp_apis</Filter>
+    </ClCompile>
+    <ClCompile Include="config_helper.cpp">
+      <Filter>ctp_handlers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="market_data_client.h">
+      <Filter>ctp_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="trader_client.h">
+      <Filter>ctp_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="logger.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="zmq_helper.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ctp_client.h">
+      <Filter>ctp_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="ctp_export.h">
+      <Filter>ctp_apis</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>ctp_apis</Filter>
+    </ClInclude>
+    <ClInclude Include="config_helper.h">
+      <Filter>ctp_handlers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="utils">
+      <UniqueIdentifier>{df11d242-2a0d-4e63-abcd-cf1eb53741c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ctp_apis">
+      <UniqueIdentifier>{6e2db17b-650b-4c2e-bcf4-ba374e178e02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ctp_handlers">
+      <UniqueIdentifier>{38df08c8-bd0d-4a13-8b7a-c36902d103c2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CtpAdapter.rc" />
+  </ItemGroup>
+</Project>

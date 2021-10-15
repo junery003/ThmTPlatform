@@ -17,6 +17,7 @@ namespace ThmCommon.Handlers {
         bool Connect(LoginCfgBase loginCfg = null);
         //IAccount GetAccount();
         bool StartContract(string instrumentID, string exchange = null);
+        bool StopContract(string instrumentID);
         void StartContracts();
 
         //InstrumentHandlerBase GetInstrumentHandler(string market, string productType, string product, string contract);

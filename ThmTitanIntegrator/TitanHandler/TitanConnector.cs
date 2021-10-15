@@ -186,7 +186,7 @@ namespace ThmTitanIntegrator.TitanHandler {
         }
 
         public bool ChangePassword(string usrId, string curPwd, string newPwd) {
-            return DllHelper.ChangePassword(TitanCfg.Account.OuchCfg.UserID, curPwd, newPwd);
+            return DllHelper.ChangePassword(usrId, curPwd, newPwd);
         }
 
         public void Dispose() {

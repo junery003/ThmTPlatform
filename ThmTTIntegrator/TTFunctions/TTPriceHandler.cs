@@ -19,7 +19,8 @@ namespace ThmTTIntegrator.TTFunctions {
     public sealed class TTPriceHandler : IDisposable {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private MarketDepthData _curMarketData;
+        internal MarketDepthData CurMarketData { get; private set; }
+
         private TimeSalesData _curTimeSalesData = null;
 
         private readonly PriceSubscription _mdPriceSubsciption = null;
@@ -57,7 +58,7 @@ namespace ThmTTIntegrator.TTFunctions {
 
             BuildDepthData(e.Fields, e.UpdateType);
 
-            _instrumentHandler.UpdateMarketData(_curMarketData);
+            _instrumentHandler.UpdateMarketData();
             /*
             if (false) { //enable option MM
                 GetTradeDataNow(e.Fields);
@@ -121,10 +122,10 @@ namespace ThmTTIntegrator.TTFunctions {
         }
 
         private bool BuildDepthData(PriceSubscriptionFields fields, UpdateType updateType) {
-            if (_curMarketData == null) {
+            if (CurMarketData == null) {
                 Logger.Info("Initialised " + _ttInstrument.InstrumentDetails.Alias);
-                _curMarketData = new MarketDepthData() {
-                    Provider = EProviderType.TT,
+                CurMarketData = new MarketDepthData() {
+                    Provider = EProviderType.TT, // "TT",
                     Product = _ttInstrument.Product.Name,
                     ProductType = _ttInstrument.Product.Type.ToString(),
                     Exchange = _ttInstrument.Key.MarketId.ToString(),
@@ -134,15 +135,15 @@ namespace ThmTTIntegrator.TTFunctions {
                 };
             }
 
-            _curMarketData.LocalDateTime = DateTime.Now;
-            _curMarketData.DateTime = TimeUtil.NanoSeconds2DateTime((long)fields.ExchangeRecvTime);
+            CurMarketData.LocalDateTime = DateTime.Now;
+            CurMarketData.DateTime = TimeUtil.NanoSeconds2DateTime((long)fields.ExchangeRecvTime);
 
             // Received a market data snapshot: the snapshot event can come multiple times
             if (updateType == UpdateType.Snapshot) {
                 //Debug.WriteLine("\nSnapshot Update...");
                 foreach (FieldId id in fields.GetFieldIds()) {
                     //Debug.WriteLine("    {0} : {1}", id.ToString(), e.Fields[id].FormattedValue);
-                    UpdateDepthData(_curMarketData, fields, id);
+                    UpdateDepthData(CurMarketData, fields, id);
                 }
             }
             else // Only some fields have changed
@@ -153,7 +154,7 @@ namespace ThmTTIntegrator.TTFunctions {
             //Debug.WriteLine("Top and level 0 field(s):");
             foreach (FieldId id in fields.GetChangedFieldIds()) {
                 //Debug.WriteLine("    {0} : {1}", id.ToString(), e.Fields[id].FormattedValue);
-                UpdateDepthData(_curMarketData, fields, id);
+                UpdateDepthData(CurMarketData, fields, id);
             }
 
             int depthLevels = Math.Min(fields.GetMaxDepthLevel(), MarketDepthData.MaxLevel);  // tt max levels : 40
@@ -165,7 +166,7 @@ namespace ThmTTIntegrator.TTFunctions {
                     foreach (FieldId id in fieldIds) {
                         isDepthDataUpdated = true;
                         //Debug.WriteLine("    {0}: {1}", id.ToString(), e.Fields[id, i].FormattedValue);
-                        UpdateDepthLevel(_curMarketData, i, fields[id, i].FormattedValue, id);
+                        UpdateDepthLevel(CurMarketData, i, fields[id, i].FormattedValue, id);
                     }
                 }
             }

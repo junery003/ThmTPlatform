@@ -1,7 +1,7 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : AtpConnector
+// File Name   : CtpConnector
 // Author      : junlei
-// Date        : 1/20/2020 5:03:18 PM
+// Date        : 8/20/2021 5:03:18 PM
 // Description : 
 // Version     : 1.0.0      
 // Updated     : 
@@ -12,73 +12,69 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using ThmAtpIntegrator.AtpFunctions;
 using ThmCommon.Config;
 using ThmCommon.Handlers;
+using ThmCtpIntegrator.CtpFunctions;
 
-namespace ThmAtpIntegrator.AtpHandler {
+namespace ThmCtpIntegrator.CtpHandler {
     /// <summary>
     /// AtpConnector
     /// </summary>
-    public class AtpConnector : IConnector {
+    public class CtpConnector : IConnector {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         // instrumentID, handler
-        internal Dictionary<string, AtpInstrumentHandler> InstrumentHandlerDic { get; } = new();
+        internal Dictionary<string, CtpInstrumentHandler> InstrumentHandlerDic { get; } = new Dictionary<string, CtpInstrumentHandler>();
 
         private ZmqHelper _zmqHelper;
-        private readonly AtpConfigHelper _cfgHelper;
+        private readonly CtpConfigHelper _cfgHelper;
 
-        private readonly List<ExchangeCfg> _exchanges = new();
-        private readonly List<string> _allAccounts = new();
+        private readonly List<ExchangeCfg> _exchanges = new List<ExchangeCfg>();
+        private readonly List<string> _allAccounts = new List<string>();
 
         public bool IsConnected { get; set; } = false;  // MarketDataConnected
         //private bool _tradeConnected;
 
         private Timer _mdReconnTimer = null;
 
-        public AtpConnector() {
-            _cfgHelper = new AtpConfigHelper();
+        public CtpConnector() {
+            _cfgHelper = new CtpConfigHelper();
         }
 
         public bool Connect(LoginCfgBase loginCfg = null) {
             if (!Init(loginCfg)) {
                 return false;
             }
-
-            //var accounts = _atpConfig.AtpLogin.Where(x => x.Enabled).ToArray();
-            var account = AtpConfigHelper.Config.Account;
-            DllHelper.InitConfig(account.MDServer,
-                account.TradeServer,
-                account.BrokerId,
-                account.UserId,
-                account.Password,
-                account.UserId,
-                account.AppId,
-                account.AuthCode,
-                AtpConfigHelper.Config.StreamDataServer,
-                AtpConfigHelper.Config.StreamTradeServer);
+            InstrumentHandlerBase.EnableSaveData = _cfgHelper.GetConfig().SaveData;
             Task.Delay(200).Wait();
 
-            DllHelper.UpdateTradeClient(account.TradeServer,
-                account.BrokerId,
-                account.UserId,
-                account.Password,
-                account.UserId,
-                account.AppId,
-                account.AuthCode);
+            _zmqHelper = new ZmqHelper(this,
+                CtpConfigHelper.Config.StreamDataServer,
+                CtpConfigHelper.Config.StreamTradeServer);
 
+            Task.Delay(300).Wait();
+
+            //var accounts = _atpConfig.AtpLogin.Where(x => x.Enabled).ToArray();
+            //var account = CtpConfigHelper.Config.Account;
+            if (!DllHelper.Init()) {
+                Logger.Error("Failed to init CTP client.");
+                return false;
+            }
+
+            Task.Delay(300).Wait();
+
+            //DllHelper.UpdateTradeClient(account.UserId, account.Password);
             return true;
         }
 
         private bool Init(LoginCfgBase loginCfg = null) {
             if (!_cfgHelper.LoadConfig()) {
-                Logger.Error("ATP failed to load config.");
+                Logger.Error("CTP failed to load config.");
                 return false;
             }
 
-            if (AtpConfigHelper.Config == null || AtpConfigHelper.Config.Account == null) {
-                Logger.Error("Atp Login information is not correct.");
+            if (CtpConfigHelper.Config == null || CtpConfigHelper.Config.Account == null) {
+                Logger.Error("Ctp Login information is not correct.");
                 return false;
             }
 
@@ -89,31 +85,22 @@ namespace ThmAtpIntegrator.AtpHandler {
                 //}
             }
 
-            AtpConfigHelper.Config.Exchanges?.ForEach(x => {
+            CtpConfigHelper.Config.Exchanges?.ForEach(x => {
                 if (x.Enabled) {
                     _exchanges.Add(x);
 
-                    x.Products.ForEach(x => {
-                        x.Contracts.ToList().ForEach(c => { // instrumentID: ("CPF2006-APEX");
-                            Logger.Info("Add contract: " + c);
-                            InstrumentHandlerDic.Add(c, new AtpInstrumentHandler(c));
-                        });
-                    });
+                    //x.Contracts?.ToList().ForEach(c => { // instrumentID: ("CPF2006-APEX");
+                    //    Logger.Info("Add contract: " + c);
+                    //    InstrumentHandlerDic.Add(c, new CtpInstrumentHandler(c, x.Market));
+                    //});
                 }
             });
-
-            Task.Delay(200).Wait();
-
-            _zmqHelper = new ZmqHelper(this,
-                AtpConfigHelper.Config.StreamDataServer,
-                AtpConfigHelper.Config.StreamTradeServer);
-
             return true;
         }
 
         public bool StartContract(string instrumentID, string exchange = null) {
             if (!InstrumentHandlerDic.ContainsKey(instrumentID)) {
-                InstrumentHandlerDic[instrumentID] = new AtpInstrumentHandler(instrumentID, exchange);
+                InstrumentHandlerDic[instrumentID] = new CtpInstrumentHandler(instrumentID, exchange);
             }
 
             return InstrumentHandlerDic[instrumentID].Start();
@@ -157,9 +144,11 @@ namespace ThmAtpIntegrator.AtpHandler {
         public InstrumentHandlerBase GetInstrumentHandler(string market, string productType, string product, string instrument) {
             foreach (var pair in InstrumentHandlerDic) {
                 var info = pair.Value.InstrumentInfo;
-                var (exch, prod, contract) = AtpUtil.ExtractContract(instrument);
-                if (info.Exchange == exch && info.ProductType == productType
-                    && info.Product == prod && info.Contract == contract) {
+                var (prod, contract) = CtpUtil.ExtractContract(instrument);
+                if (info.Exchange == market
+                    && info.ProductType == productType
+                    && info.Product == prod
+                    && info.Contract == contract) {
                     return InstrumentHandlerDic[pair.Key];
                 }
             }
@@ -170,11 +159,7 @@ namespace ThmAtpIntegrator.AtpHandler {
         public List<string> GetInstruments(string market, string productType, string product) {
             foreach (var ex in _exchanges) {
                 if (ex.Market == market && ex.Type == productType) {
-                    foreach (var p in ex.Products) {
-                        if (p.Name == product) {
-                            return p.Contracts.ToList();
-                        }
-                    }
+                    //return ex.Contracts.ToList();
                 }
             }
 
@@ -214,7 +199,7 @@ namespace ThmAtpIntegrator.AtpHandler {
         }
 
         private void ReconnectTimer_Elapsed(object sender, ElapsedEventArgs e) {
-            Logger.Info("Reconnecting ATP...");
+            Logger.Info("Reconnecting CTP...");
 
             StartContracts();
         }
@@ -236,7 +221,7 @@ namespace ThmAtpIntegrator.AtpHandler {
         }
 
         public void Dispose() {
-            Logger.Info("ATP connection closed");
+            Logger.Info("CTP connection closed");
 
             foreach (var hanlder in InstrumentHandlerDic.Values) {
                 hanlder.Dispose();
