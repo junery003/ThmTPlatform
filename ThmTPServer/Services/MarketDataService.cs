@@ -7,6 +7,7 @@
 // Updated     : 
 //
 //-----------------------------------------------------------------------------
+using System;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -25,8 +26,7 @@ namespace ThmTPServer.Services {
         }
 
         public override async Task Subscribe(DepthDataSubscribeReq request,
-            IServerStreamWriter<DepthDataSubscribeRsp> responseStream,
-            ServerCallContext context) {
+            IServerStreamWriter<DepthDataSubscribeRsp> responseStream, ServerCallContext context) {
             _logger.LogInformation("Sending to Subscribe " + request.Symbol);
 
             var conn = ConnectionService.GetConnector((EProviderType)request.Provider);
@@ -36,10 +36,11 @@ namespace ThmTPServer.Services {
                 responseStream.WriteAsync(BuildRsp(instHandler.CurMarketDepthData));
             };
 
-            while (true) {
+            while (!context.CancellationToken.IsCancellationRequested) {
                 await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
                 });
-                await Task.Delay(1000);
+
+                await Task.Delay(TimeSpan.FromMilliseconds(100), context.CancellationToken);
             }
         }
 

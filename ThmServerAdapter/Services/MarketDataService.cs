@@ -45,7 +45,7 @@ namespace ThmServerAdapter.Services {
             },
             cancellationToken: cts.Token);
 
-            await foreach (var rsp in call.ResponseStream.ReadAllAsync()) {
+            await foreach (var rsp in call.ResponseStream.ReadAllAsync(cts.Token)) {
                 OnMarketDataUpdate?.Invoke(ParseDepthData(rsp));
             }
 
