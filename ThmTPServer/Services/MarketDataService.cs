@@ -32,14 +32,11 @@ namespace ThmTPServer.Services {
             var conn = ConnectionService.GetConnector((EProviderType)request.Provider);
             var instHandler = conn.GetInstrumentHandler(request.Symbol);
 
-            instHandler.OnMarketDataUpdated += delegate () {
-                responseStream.WriteAsync(BuildRsp(instHandler.CurMarketDepthData));
+            instHandler.OnMarketDataUpdated += async delegate () {
+                await responseStream.WriteAsync(BuildRsp(instHandler.CurMarketDepthData));
             };
 
             while (!context.CancellationToken.IsCancellationRequested) {
-                await responseStream.WriteAsync(new DepthDataSubscribeRsp() {
-                });
-
                 await Task.Delay(TimeSpan.FromMilliseconds(100), context.CancellationToken);
             }
         }
