@@ -87,7 +87,7 @@ void MarketDataClient::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin
     }
 
     if (pRspInfo->ErrorID != 0) {
-        Logger::Log()->error("[{}:{}] Failed to login, ErrorCode={}, ErrorMsg={}, RequestID={}, Chain={}", __func__, __LINE__,
+        Logger::Log()->error("[{}:{}] CTP MD Failed to login, ErrorCode={}, ErrorMsg={}, RequestID={}, Chain={}", __func__, __LINE__,
             pRspInfo->ErrorID, pRspInfo->ErrorMsg, nRequestID, bIsLast);
         return;
     }
@@ -107,10 +107,10 @@ int MarketDataClient::SubscribeContract(const char* symbol) {
     char* instruments[] = { (char*)symbol };
     int rtnCode = md_api_->SubscribeMarketData(instruments, sizeof(instruments) / sizeof(char*));
     if (rtnCode != 0) {
-        Logger::Log()->error("[{}:{}] subscribe contract {} request failed: code={}", __func__, __LINE__, symbol, rtnCode);
+        Logger::Log()->error("[{}:{}] CTP subscribe contract {} request failed: code={}", __func__, __LINE__, symbol, rtnCode);
     }
     else {
-        Logger::Log()->info("[{}:{}] Requested to subscribe market data: instrumentID={}.", __func__, __LINE__, symbol);
+        Logger::Log()->info("[{}:{}] CTP Requested to subscribe market data: instrumentID={}.", __func__, __LINE__, symbol);
     }
 
     return rtnCode;
@@ -127,10 +127,10 @@ int MarketDataClient::SubscribeContract(std::vector<char*> symbols) {
 
     int rtnCode = md_api_->SubscribeMarketData(ppInstID, cnt);
     if (rtnCode != 0) {
-        Logger::Log()->error("[{}:{}] subscribe contracts {} request failed: code={}", __func__, __LINE__, cnt, rtnCode);
+        Logger::Log()->error("[{}:{}] CTP subscribe contracts {} request failed: code={}", __func__, __LINE__, cnt, rtnCode);
     }
     else {
-        Logger::Log()->info("[{}:{}] Requested to subscribe market data: total={}.", __func__, __LINE__, cnt);
+        Logger::Log()->info("[{}:{}] CTP Requested to subscribe market data: total={}.", __func__, __LINE__, cnt);
     }
 
     delete[] ppInstID;
@@ -140,13 +140,13 @@ int MarketDataClient::SubscribeContract(std::vector<char*> symbols) {
 void MarketDataClient::OnRspSubMarketData(CThostFtdcSpecificInstrumentField* inst,
     CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) {
     if (pRspInfo != nullptr && pRspInfo->ErrorID != 0) {
-        Logger::Log()->error("[{}:{}] Market data subscribe failed: symbol={}, errorCode={}, msg={}", __func__, __LINE__,
+        Logger::Log()->error("[{}:{}] CTP Market data subscribe failed: symbol={}, errorCode={}, msg={}", __func__, __LINE__,
             inst == nullptr ? "nullptr" : inst->InstrumentID, pRspInfo->ErrorID, pRspInfo->ErrorMsg);
         return;
     }
 
     if (inst == nullptr) { // Should not happen
-        Logger::Log()->error("[{}:{}] Invalid server response, got null pointer of instrument info.", __func__, __LINE__);
+        Logger::Log()->error("[{}:{}] CTP MD Invalid server response, got null pointer of instrument info.", __func__, __LINE__);
         return;
     }
 
@@ -157,7 +157,7 @@ void MarketDataClient::UnsubscribeContract(const char* symbol) {
     char* instrumentIDs[] = { (char*)symbol };
     int rtnCode = md_api_->UnSubscribeMarketData(instrumentIDs, sizeof(instrumentIDs) / sizeof(char*));
     if (rtnCode != 0) {
-        Logger::Log()->error("[{}:{}] UnsubscribeContract Request failed for {}: code={}.", __func__, __LINE__, symbol, rtnCode);
+        Logger::Log()->error("[{}:{}] CTP unsubscribeContract Request failed for {}: code={}.", __func__, __LINE__, symbol, rtnCode);
     }
     else {
         Logger::Log()->info("[{}:{}] Requested to unsubscribe market data: instrumentID={}.", __func__, __LINE__, symbol);
@@ -167,7 +167,7 @@ void MarketDataClient::UnsubscribeContract(const char* symbol) {
 void MarketDataClient::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField* inst,
     CThostFtdcRspInfoField* status, int requestID, bool isLast) {
     if (status != nullptr && status->ErrorID != 0) {
-        Logger::Log()->error("[{}:{}] Failed to unsubscribe market data: instrumentID={}, errorID={}, errorMsg={}",
+        Logger::Log()->error("[{}:{}] CTP Failed to unsubscribe market data: instrumentID={}, errorID={}, errorMsg={}",
             __func__, __LINE__, inst == nullptr ? "nullptr" : inst->InstrumentID, status->ErrorID, status->ErrorMsg);
         return;
     }
@@ -189,7 +189,7 @@ void MarketDataClient::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField* data
     }
 
     json j;
-    //j["Provider", "CTP";
+    //j["Provider"] = "CTP";
     j["Exchange"] = data->ExchangeID;
     j["InstrumentID"] = data->InstrumentID;
 

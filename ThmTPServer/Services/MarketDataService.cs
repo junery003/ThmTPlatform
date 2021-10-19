@@ -72,7 +72,8 @@ namespace ThmTPServer.Services {
                 Bid4 = (double)data.BidPrice4,
                 Bid5 = (double)data.BidPrice5,
 
-                DateTime = data.DateTime.ToTimestamp(),
+                //DateTime = data.DateTime.ToTimestamp(), // NOK
+                DateTime = data.DateTime.ToUniversalTime().ToTimestamp(),
             };
         }
     }

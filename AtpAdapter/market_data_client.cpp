@@ -108,7 +108,7 @@ int MarketDataClient::SubscribeContract(const char* symbol) {
     char* instruments[] = { (char*)symbol };
     int rtnCode = md_api_->SubscribeMarketData(instruments, sizeof(instruments) / sizeof(char*));
     if (rtnCode != 0) {
-        Logger::Log()->error("[{}:{}] subscribe contract {} request failed: code={}", __func__, __LINE__, symbol, rtnCode);
+        Logger::Log()->error("[{}:{}] ATP subscribe contract {} request failed: code={}", __func__, __LINE__, symbol, rtnCode);
     }
     else {
         Logger::Log()->info("[{}:{}] Requested to subscribe market data: instrumentID={}.", __func__, __LINE__, symbol);
@@ -120,13 +120,13 @@ int MarketDataClient::SubscribeContract(const char* symbol) {
 void MarketDataClient::OnRspSubMarketData(CThostFtdcSpecificInstrumentField* inst,
     CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) {
     if (pRspInfo != nullptr && pRspInfo->ErrorID != 0) {
-        Logger::Log()->error("[{}:{}] Market data subscribe failed: symbol={}, errorCode={}, msg={}", __func__, __LINE__,
+        Logger::Log()->error("[{}:{}] ATP Market data subscribe failed: symbol={}, errorCode={}, msg={}", __func__, __LINE__,
             inst == nullptr ? "nullptr" : inst->InstrumentID, pRspInfo->ErrorID, pRspInfo->ErrorMsg);
         return;
     }
 
     if (inst == nullptr) { // Should not happen
-        Logger::Log()->error("[{}:{}] Invalid server response, got null pointer of instrument info.", __func__, __LINE__);
+        Logger::Log()->error("[{}:{}] ATP Invalid server response, got null pointer of instrument info.", __func__, __LINE__);
         return;
     }
 
@@ -138,7 +138,7 @@ void MarketDataClient::UnsubscribeContract(const char* symbol) {
     char* instrumentIDs[] = { (char*)symbol };
     int rtnCode = md_api_->UnSubscribeMarketData(instrumentIDs, sizeof(instrumentIDs) / sizeof(char*));
     if (rtnCode != 0) {
-        Logger::Log()->error("[{}:{}] UnsubscribeContract Request failed for {}: code={}.", __func__, __LINE__, symbol, rtnCode);
+        Logger::Log()->error("[{}:{}] ATP UnsubscribeContract Request failed for {}: code={}.", __func__, __LINE__, symbol, rtnCode);
     }
     else {
         Logger::Log()->info("[{}:{}] Requested to unsubscribe market data: instrumentID={}.", __func__, __LINE__, symbol);
@@ -148,13 +148,13 @@ void MarketDataClient::UnsubscribeContract(const char* symbol) {
 void MarketDataClient::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField* inst,
     CThostFtdcRspInfoField* status, int requestID, bool isLast) {
     if (status != nullptr && status->ErrorID != 0) {
-        Logger::Log()->error("[{}:{}] Failed to unsubscribe market data: instrumentID={}, errorID={}, errorMsg={}",
+        Logger::Log()->error("[{}:{}] ATP Failed to unsubscribe market data: instrumentID={}, errorID={}, errorMsg={}",
             __func__, __LINE__, inst == nullptr ? "nullptr" : inst->InstrumentID, status->ErrorID, status->ErrorMsg);
         return;
     }
 
     if (inst == nullptr) { // Should not happen
-        Logger::Log()->error("[{}:{}] Invalid server response, got null pointer of instrument info.", __func__, __LINE__);
+        Logger::Log()->error("[{}:{}] ATP Invalid server response, got null pointer of instrument info.", __func__, __LINE__);
         return;
     }
 
@@ -170,7 +170,7 @@ void MarketDataClient::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField* data
     }
 
     json j;
-    //j["Provider", "ATP";
+    //j["Provider"] = "ATP";
     j["Exchange"] = data->ExchangeID;
     j["InstrumentID"] = data->InstrumentID;
 
