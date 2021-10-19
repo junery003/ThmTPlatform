@@ -37,7 +37,7 @@ namespace ThmTPServer.Services {
             };
 
             while (!context.CancellationToken.IsCancellationRequested) {
-                await Task.Delay(TimeSpan.FromMilliseconds(100), context.CancellationToken);
+                await Task.Delay(TimeSpan.FromSeconds(1), context.CancellationToken);
             }
         }
 
