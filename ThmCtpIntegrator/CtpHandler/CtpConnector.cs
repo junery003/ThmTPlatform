@@ -89,10 +89,12 @@ namespace ThmCtpIntegrator.CtpHandler {
                 if (x.Enabled) {
                     _exchanges.Add(x);
 
-                    //x.Contracts?.ToList().ForEach(c => { // instrumentID: ("CPF2006-APEX");
-                    //    Logger.Info("Add contract: " + c);
-                    //    InstrumentHandlerDic.Add(c, new CtpInstrumentHandler(c, x.Market));
-                    //});
+                    x.Products.ForEach(p => {
+                        p.Contracts.ToList().ForEach(c => {
+                            Logger.Info("Add contract: " + c);
+                            InstrumentHandlerDic.Add(c, new CtpInstrumentHandler(c, x.Market));
+                        });
+                    });
                 }
             });
             return true;

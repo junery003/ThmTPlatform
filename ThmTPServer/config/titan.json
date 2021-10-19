@@ -1,5 +1,5 @@
 {
-    "Enabled": true,
+    "Enabled": false,
     "StreamDataServer": "tcp://127.0.0.1:9989",
     "StreamTradeServer": "tcp://127.0.0.1:9988",
 

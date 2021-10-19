@@ -14,7 +14,7 @@ using ThmCommon.Models;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
     public class LoginAtpVM : BindableBase, ILoginTabItm {
-        public EProviderType Provider => EProviderType.ATP;
+        public EProviderType Provider { get; } = EProviderType.ATP;
 
         private bool _isChecked = true;
         public bool IsChecked {

@@ -4,10 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ThmTPWin.Views"
-             mc:Ignorable="d"
-             d:DesignWidth="800">
-    <DockPanel Margin="3" LastChildFill="True">
-        <StackPanel DockPanel.Dock="Top" Margin="0 0 0 5" HorizontalAlignment="Left">
+             mc:Ignorable="d">
+    <DockPanel Margin="2" LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top" Margin="0 0 0 2" HorizontalAlignment="Left">
             <Button Content="Cancel" IsEnabled="{Binding IsCancelEnabled}" FontWeight="Bold" Background="Crimson" Foreground="White" Width="80" Command="{Binding CancelSelectedOrdersCmd}" Style="{DynamicResource CstButton}" />
         </StackPanel>
 

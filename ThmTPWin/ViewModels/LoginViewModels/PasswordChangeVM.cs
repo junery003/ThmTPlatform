@@ -14,8 +14,12 @@ using ThmServerAdapter;
 using ThmTPWin.Controllers;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
-    class PasswordChangeVM : BindableBase {
-        public string CurUserId { get; }
+    internal class PasswordChangeVM : BindableBase {
+        private string _userId;
+        public string CurUserId {
+            get => _userId;
+            set => SetProperty(ref _userId, value);
+        }
 
         private string _curPwd;
         public string CurPwd {
@@ -66,7 +70,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
             _newPwdBoardColor = defaultColor;
             _confirmPwdBoardColor = defaultColor;
 
-            CurUserId = ConfigHelper.LoginCfg.TitanLogin.Account;
+            //CurUserId = ConfigHelper.LoginCfg.TitanLogin.Account;
         }
 
         public async Task<string> ChangePasswordAsync() {

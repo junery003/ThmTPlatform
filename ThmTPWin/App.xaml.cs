@@ -18,7 +18,7 @@ namespace ThmTPWin {
     public partial class App : Application {
         private static Mutex _mutex;
         protected override void OnStartup(StartupEventArgs e) {
-            const string thisApp = "themeTP";
+            const string thisApp = "TTPC";
 
             _mutex = new Mutex(true, thisApp, out bool createdNew);
             if (!createdNew) {

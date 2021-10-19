@@ -1,7 +1,7 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : LoginTtUsrCtrl
+// File Name   : LoginCtpUsrCtrl
 // Author      : junlei
-// Date        : 5/20/2020 9:04:37 AM
+// Date        : 8/27/2021 9:04:37 AM
 // Description : 
 // Version     : 1.0.0      
 // Updated     : 
@@ -11,10 +11,10 @@ using System.Windows.Controls;
 
 namespace ThmTPWin.Views.LoginViews {
     /// <summary>
-    /// Interaction logic for LoginWin.xaml
+    /// Interaction logic for LoginCtpUsrCtrl.xaml
     /// </summary>
-    public partial class LoginTtUsrCtrl : UserControl {
-        public LoginTtUsrCtrl() {
+    public partial class LoginCtpUsrCtrl : UserControl {
+        public LoginCtpUsrCtrl() {
             InitializeComponent();
         }
     }

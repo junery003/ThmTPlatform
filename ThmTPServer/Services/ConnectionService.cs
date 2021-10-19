@@ -8,16 +8,17 @@
 //
 //-----------------------------------------------------------------------------
 
-using Grpc.Core;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Grpc.Core;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ThmAtpIntegrator.AtpHandler;
 using ThmCommon.Config;
 using ThmCommon.Handlers;
 using ThmCommon.Models;
+using ThmCtpIntegrator.CtpHandler;
 using ThmServices;
 using ThmTitanIntegrator.TitanHandler;
 using ThmTTIntegrator.TTHandler;
@@ -60,6 +61,9 @@ namespace ThmTPServer.Services {
                 case ProviderType.Atp:
                     providerType = EProviderType.ATP;
                     break;
+                case ProviderType.Ctp:
+                    providerType = EProviderType.CTP;
+                    break;
                 case ProviderType.Tt:
                     providerType = EProviderType.TT;
                     break;
@@ -78,6 +82,9 @@ namespace ThmTPServer.Services {
             switch (req.Provider) {
                 case ProviderType.Atp:
                     conn = new AtpConnector();
+                    break;
+                case ProviderType.Ctp:
+                    conn = new CtpConnector();
                     break;
                 case ProviderType.Tt:
                     conn = new TTConnector();
@@ -114,6 +121,10 @@ namespace ThmTPServer.Services {
 
             if (IsEnabled(EProviderType.ATP)) {
                 providers.Add(BuildProvider(EProviderType.ATP));
+            }
+
+            if (IsEnabled(EProviderType.CTP)) {
+                providers.Add(BuildProvider(EProviderType.CTP));
             }
 
             if (IsEnabled(EProviderType.TT)) {

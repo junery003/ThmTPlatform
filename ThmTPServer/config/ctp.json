@@ -20,7 +20,12 @@
             "Enabled": true,
             "Market": "DCE",
             "Type": "Future",
-            "Contracts": [ "i2201" ]
+            "Products": [
+                {
+                    "Name": "i",
+                    "Contracts": [ "i2201" ]
+                }
+            ]
         }
     ]
 }

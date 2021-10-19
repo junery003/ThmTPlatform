@@ -28,7 +28,7 @@ namespace ThmCommon.Config {
         public bool Enabled { get; set; } = true;
         public string Market { get; set; }
         public string Type { get; set; } // Future, Option
-        public List<ProductCfg> Products { get; } = new List<ProductCfg>();
+        public List<ProductCfg> Products { get; } = new();
     }
 
     public class ProductCfg {

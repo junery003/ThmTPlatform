@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : LoginTTVM
+// File Name   : LoginTtVM
 // Author      : junlei
 // Date        : 5/26/2020 8:55:48 AM
 // Description : 
@@ -12,8 +12,8 @@ using ThmCommon.Config;
 using ThmCommon.Models;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
-    public class LoginTTVM : BindableBase, ILoginTabItm {
-        public EProviderType Provider => EProviderType.TT;
+    public class LoginTtVM : BindableBase, ILoginTabItm {
+        public EProviderType Provider { get; } = EProviderType.TT;
 
         private bool _isChecked = true;
         public bool IsChecked {
@@ -32,7 +32,7 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
         }
 
         private readonly TTLoginCfg _ttAccount;
-        public LoginTTVM(TTLoginCfg ttAccount) {
+        public LoginTtVM(TTLoginCfg ttAccount) {
             _ttAccount = ttAccount;
         }
 

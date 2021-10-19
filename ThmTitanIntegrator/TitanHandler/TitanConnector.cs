@@ -65,11 +65,11 @@ namespace ThmTitanIntegrator.TitanHandler {
                 _account = loginCfg.Account;
             }
 
-            TitanCfg.Exchanges?.ForEach(exch => {
-                if (exch.Enabled) {
-                    _exchanges.Add(exch);
+            TitanCfg.Exchanges?.ForEach(x => {
+                if (x.Enabled) {
+                    _exchanges.Add(x);
 
-                    exch.Products.ForEach(prod => prod.Contracts.ToList().ForEach(c => { // instrumentID: "FEFH21";
+                    x.Products.ForEach(p => p.Contracts.ToList().ForEach(c => { // instrumentID: "FEFH21";
                         Logger.Info("Add contract: " + c);
                         InstrumentHandlerDic.Add(c, new TitanInstrumentHandler(c, _account));
                     }));

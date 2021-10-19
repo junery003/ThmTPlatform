@@ -56,11 +56,12 @@ namespace ThmTPWin.Controllers {
     internal class LoginConfig {
         public ThmLogin Login { get; set; }
         public AtpLoginCfg AtpLogin { get; set; }
+        public CtpLoginCfg CtpLogin { get; set; }
         public TTLoginCfg TTLogin { get; set; }
         public TitanLoginCfg TitanLogin { get; set; }
 
         public bool IsValid(ref string err) { // login account
-            if (AtpLogin.Enabled || TTLogin.Enabled || TitanLogin.Enabled) {
+            if (AtpLogin.Enabled || CtpLogin.Enabled || TTLogin.Enabled || TitanLogin.Enabled) {
                 return true;
             }
 
@@ -72,5 +73,7 @@ namespace ThmTPWin.Controllers {
     public class ThmLogin {
         public string UserID { get; set; }
         public string Password { get; set; }
+        public string Server { get; set; }
+        public int Port { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace ThmTPWin.Views {
         internal AutospreaderEditorWin(AutospeaderParas asParas) {
             InitializeComponent();
 
-            _vm = new AutospreaderEditorVM(asParas.Name, asParas.IsEnabled, asParas.ASLegs);
+            _vm = new(asParas.Name, asParas.IsEnabled, asParas.ASLegs);
             DataContext = _vm;
 
             _asParas = asParas;

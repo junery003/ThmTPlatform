@@ -13,7 +13,7 @@ using ThmCommon.Models;
 
 namespace ThmTPWin.ViewModels.LoginViewModels {
     public class LoginTitanVM : BindableBase, ILoginTabItm {
-        public EProviderType Provider => EProviderType.TITAN;
+        public EProviderType Provider { get; } = EProviderType.TITAN;
 
         private bool _isChecked = true;
         public bool IsChecked {

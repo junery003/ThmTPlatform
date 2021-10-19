@@ -27,11 +27,16 @@ struct CtpAccount {
     bool is_auth;
 };
 
+struct ProductConfig {
+    std::string name;
+    std::set<std::string> contracts;
+};
+
 struct ExchangeConfig {
     bool is_enabled{ true };
     std::string market;
     std::string type{ "Future" };
-    std::set<std::string> contracts;
+    std::vector<ProductConfig> products;
 };
 
 struct CtpConfig {

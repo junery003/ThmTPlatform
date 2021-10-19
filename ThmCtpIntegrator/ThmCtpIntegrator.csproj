@@ -20,16 +20,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="config\ctp.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="config\ctp.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="NetMQ" Version="4.0.1.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="NLog" Version="4.7.11" />

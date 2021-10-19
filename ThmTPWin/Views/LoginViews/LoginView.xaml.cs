@@ -43,6 +43,7 @@ namespace ThmTPWin.Views.LoginViews {
             var rlt = await _vm.StartAsync();
             if (rlt) {
                 DialogResult = true;
+                //_connMgr.SaveConfig();
             }
 
             Cursor = null;

@@ -3,6 +3,11 @@
         "UserID": "Jun",
         "Password": "jun123"
     },
+    "CtpLogin": {
+        "Enabled": true,
+        "UserId": "52717",
+        "Password": "00112233"
+    },
     "AtpLogin": {
         "Enabled": true,
         "BrokerId": "2SP004",
@@ -13,11 +18,11 @@
         "Auth": true
     },
     "TTLogin": {
-        "Enabled": false,
+        "Enabled": true,
         "Account": ""
     },
     "TitanLogin": {
-        "Enabled": false,
+        "Enabled": true,
         "Account": "B000219",
         "CustomerInfo": "B219A11"
     }

@@ -93,8 +93,8 @@ namespace ThmAtpIntegrator.AtpHandler {
                 if (x.Enabled) {
                     _exchanges.Add(x);
 
-                    x.Products.ForEach(x => {
-                        x.Contracts.ToList().ForEach(c => { // instrumentID: ("CPF2006-APEX");
+                    x.Products.ForEach(p => {
+                        p.Contracts.ToList().ForEach(c => { // instrumentID: ("CPF2006-APEX");
                             Logger.Info("Add contract: " + c);
                             InstrumentHandlerDic.Add(c, new AtpInstrumentHandler(c));
                         });

@@ -35,11 +35,16 @@ void from_json(const json& j, AtpAccount& cfg) {
     j.at("AuthCode").get_to(cfg.auth_code);
 }
 
+void from_json(const json& j, ProductConfig& cfg) {
+    j.at("Name").get_to(cfg.name);
+    j.at("Contracts").get_to<std::set<std::string>>(cfg.contracts);
+}
+
 void from_json(const json& j, ExchangeConfig& cfg) {
     j.at("Enabled").get_to(cfg.is_enabled);
     j.at("Market").get_to(cfg.market);
     j.at("Type").get_to(cfg.type);
-    j.at("Contracts").get_to<std::set<std::string>>(cfg.contracts);
+    j.at("Products").get_to<std::vector<ProductConfig>>(cfg.products);
 }
 
 void from_json(const json& j, AtpConfig& cfg) {
@@ -57,7 +62,7 @@ bool ConfigHelper::Load() {
         path += kConfigPath;
 
         Logger::Log()->info("====================================================================");
-        Logger::Log()->info("Titan Init...\r\n[{}:{}] Init config file: {}", __func__, __LINE__, path);
+        Logger::Log()->info("ATP Init...\r\n[{}:{}] Init config file: {}", __func__, __LINE__, path);
 
         fstream fs(path);
         string data((istreambuf_iterator<char>(fs)), istreambuf_iterator<char>());
@@ -71,7 +76,7 @@ bool ConfigHelper::Load() {
         return true;
     }
     catch (exception& e) {
-        Logger::Log()->error("[{}:{}] Failed to init Titan config. {}", __func__, __LINE__, e.what());
+        Logger::Log()->error("[{}:{}] Failed to init ATP config. {}", __func__, __LINE__, e.what());
         return false;
     }
 }

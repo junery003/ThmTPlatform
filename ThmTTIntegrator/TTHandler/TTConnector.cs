@@ -113,17 +113,17 @@ namespace ThmTTIntegrator.TTHandler {
                 _initAccountName = _ttConfig.Account.Account; // default
             }
 
-            _ttConfig.Exchanges?.ForEach(exch => {
-                if (exch.Enabled) {
+            _ttConfig.Exchanges?.ForEach(x => {
+                if (x.Enabled) {
                     //AddInstrumentCatalog("CME", "Future", "OQB");
                     //AddInstrument("SGX", "Future", "FEF", "FEF Apr20");
 
-                    exch.Products.ForEach(product => {
-                        Logger.Info("Add product: " + product.Name);
+                    x.Products.ForEach(p => {
+                        Logger.Info("Add product: " + p.Name);
 
-                        MarketId marketKey = Market.GetMarketIdFromName(exch.Market);
-                        ProductType productType = Product.GetProductTypeFromName(exch.Type);
-                        var productKey = new ProductKey(marketKey, productType, product.Name);
+                        MarketId marketKey = Market.GetMarketIdFromName(x.Market);
+                        ProductType productType = Product.GetProductTypeFromName(x.Type);
+                        var productKey = new ProductKey(marketKey, productType, p.Name);
 
                         _instrumentCatalogHandlerDic[productKey] = new TTInstrumentCatalogHandler(productKey, _instrumentProductDic);
                     });

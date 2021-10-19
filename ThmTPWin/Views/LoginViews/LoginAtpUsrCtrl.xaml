@@ -43,7 +43,6 @@
             <TextBlock Text="App ID:" Grid.Row="1" Grid.Column="0"  TextAlignment="Right"  Margin="3" />
             <TextBox Text="{Binding AppId}"  Grid.Row="1" Grid.Column="1"  Margin="3" Style="{StaticResource CstTextBox}" />
 
-
             <TextBlock Text="Password:" Grid.Row="1" Grid.Column="2" TextAlignment="Right"  Margin="3"/>
             <TextBox Text="{Binding Password}" Grid.Row="1" Grid.Column="3"  Margin="3" Style="{StaticResource CstTextBox}" />
         </Grid>

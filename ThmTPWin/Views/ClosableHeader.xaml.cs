@@ -1,7 +1,7 @@
 ﻿//-----------------------------------------------------------------------------
-// File Name   : LoginTtUsrCtrl
+// File Name   : ClosableHeader
 // Author      : junlei
-// Date        : 5/20/2020 9:04:37 AM
+// Date        : 9/21/2021 9:55:36 AM
 // Description : 
 // Version     : 1.0.0      
 // Updated     : 
@@ -9,12 +9,12 @@
 //-----------------------------------------------------------------------------
 using System.Windows.Controls;
 
-namespace ThmTPWin.Views.LoginViews {
+namespace ThmTPWin.Views {
     /// <summary>
-    /// Interaction logic for LoginWin.xaml
+    /// Interaction logic for ClosableHeader.xaml
     /// </summary>
-    public partial class LoginTtUsrCtrl : UserControl {
-        public LoginTtUsrCtrl() {
+    public partial class ClosableHeader : UserControl {
+        public ClosableHeader() {
             InitializeComponent();
         }
     }

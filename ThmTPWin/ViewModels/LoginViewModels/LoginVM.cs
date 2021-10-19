@@ -23,8 +23,8 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
     public class LoginVM : BindableBase {
         private static readonly NLog.ILogger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public ObservableCollection<ILoginTabItm> LoginTabItms { get; } = new ObservableCollection<ILoginTabItm>();
-        public ObservableCollection<Status> ProcessLogs { get; } = new ObservableCollection<Status>();
+        public ObservableCollection<ILoginTabItm> LoginTabItms { get; } = new();
+        public ObservableCollection<Status> ProcessLogs { get; } = new();
 
         private ILoginTabItm _selectedItm = null!;
         public ILoginTabItm SelectedItm {
@@ -51,9 +51,15 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                     IsChecked = true
                 });
             }
+            
+            if (ConfigHelper.LoginCfg.CtpLogin.Enabled) {
+                LoginTabItms.Add(new LoginCtpVM(ConfigHelper.LoginCfg.CtpLogin) {
+                    IsChecked = true
+                });
+            }
 
             if (ConfigHelper.LoginCfg.TTLogin.Enabled) {
-                LoginTabItms.Add(new LoginTTVM(ConfigHelper.LoginCfg.TTLogin) {
+                LoginTabItms.Add(new LoginTtVM(ConfigHelper.LoginCfg.TTLogin) {
                     IsChecked = true
                 });
             }
@@ -143,6 +149,9 @@ namespace ThmTPWin.ViewModels.LoginViewModels {
                 switch (providerType) {
                     case EProviderType.ATP:
                         loginCfg = ConfigHelper.LoginCfg.AtpLogin;
+                        break;
+                    case EProviderType.CTP:
+                        loginCfg = ConfigHelper.LoginCfg.CtpLogin;
                         break;
                     case EProviderType.TT:
                         loginCfg = ConfigHelper.LoginCfg.TTLogin;
